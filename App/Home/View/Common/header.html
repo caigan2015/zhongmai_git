@@ -1,0 +1,59 @@
+<header>
+    <div class="block clearfix">
+        <div class="header_top">
+            <div class="header_nav clearfix">
+                <div class="header_nav_l clearfix">
+                    <em>欢迎来到提车吧，</em>
+                    <if condition="$userInfo.username neq ''">
+                        <a href="{:U('User/index')}" class="login_a">{$userInfo.show_phone}</a>
+                        <a href="{:U('User/logout')}" class="resigter_a">退出</a>
+                        <else/>
+                        <a href="{:U('User/login')}" class="login_a">请登录</a>
+                        <a href="{:U('User/register')}" class="resigter_a">免费注册</a>
+                    </if>
+                </div>
+                <ul class="header_nav_r clearfix">
+                    <li><a href="javascript:void(0);" class="personal_center_a">提车热线: {$sys.phone} | {$sys.time}</a></li>
+                    <li class="separator"></li>
+                    <li class="phone_code_a phone_code_wei"><i></i><a href="javascript:void(0)">官方服务号<div class="phone_code"><img src="__PUBLIC__/Home/PCimages/phone_code.png" alt="" /><span>扫描二维码</span></div></a></li>
+                    <!--<li class="separator"></li>
+                    <li class="phone_code_a phone_code_app"><i></i><a href="javascript:void(0)">官方订阅号<div class="phone_code"><img src="__PUBLIC__/Home/PCimages/phone_code_dyh.png" alt="" /><span>官方订阅号</span></div></a></li>-->
+                    <li class="separator"></li>
+                    <li><a href="{:U('Index/contact')}" class="personal_center_a">联系我们</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="header_mid clearfix">
+            <div class="header_logo">
+                <a href="{:U('Index/index')}"><img src="__PUBLIC__/Home/PCimages/logo.png" alt=""></a>
+            </div>
+            <nav id="HeaderNav">
+                <ul>
+                    <li <if condition="$Think.const.CONTROLLER_NAME eq 'Index' && $Think.const.ACTION_NAME eq 'index'">class="current"</if> ><a href="{:U('Index/index')}">首页</a></li>
+                    <li <if condition="$Think.const.CONTROLLER_NAME eq 'Index' && $Think.const.ACTION_NAME eq 'lists'">class="current"</if> ><a href="{:U('Index/lists')}" class="header_nav_list_a">我要买车</a></li>
+                    <li <if condition="$Think.const.CONTROLLER_NAME eq 'Index' && $Think.const.ACTION_NAME eq 'about'">class="current"</if> ><a href="{:U('Index/about')}" class="header_nav_list_a">关于我们</a></li>
+                    <li <if condition="$Think.const.CONTROLLER_NAME eq 'Index' && $Think.const.ACTION_NAME eq 'help'">class="current"</if> ><a href="{:U('Index/help')}" class="header_nav_list_a">使用帮助</a></li>
+                </ul>
+            </nav>
+            <div class="search fl clrfix" style="width:300px;margin-top:34px;margin-left:50px;">
+            	<div class="search-box fl clrfix" style="width: 220px;height: 28px;background: #fff;border: 2px solid #e95a47;position: relative;">
+            		<input type="text" name="keys" value="{$key_name}" style="width:215px;height:28px;border:0;padding-left:5px;"/>
+            	</div>
+	        	<a class="search-btn fl" style="display: block;width: 76px;height: 32px;line-height: 32px;background: #e95a47;color: #fff;font-size: 14px;text-align: center;cursor:pointer;"><i></i>搜索</a>
+	        </div>
+            <div class="login-status">
+                <a href="{:U('User/index')}">我的申请</a><i></i>
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="ui-sidebar">
+    <!--<a class="ui-sidebar-block app" href="javascript:void(0)"><i class="qrCodeWeixin"><img src="__PUBLIC__/Home/PCimages/phone_code_dyh.png"><span>关注官方订阅号</span></i></a>-->
+    <a class="ui-sidebar-block weixin" href="javascript:void(0)"><i class="qrCodeWeixin"><img src="__PUBLIC__/Home/PCimages/phone_code.png"><span>扫描二维码<span>关注公众号</span></span></i></a>
+    <a class="ui-sidebar-block onlineService" href="{:U('Index/feedback')}"></a>
+    <a class="ui-sidebar-block feedback" href="javascript:void(0)"><span class="feedbackBox">{$sys.phone}</span></a>
+    <div id="backTop"><a class="ui-sidebar-block backtop" href="javascript:void(0)"></a>
+    </div>
+</div>
+

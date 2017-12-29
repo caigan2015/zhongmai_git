@@ -1,0 +1,39 @@
+<include file="Common:meta" title="找回密码"/>
+<style>
+    .success-ctn{width: 90%;margin: 5% auto;text-align: center;line-height: 30px;}
+    .success-ctn img{margin: 20px 0;}
+    .login_aging {
+        display: block;
+        text-align: center;
+        padding: .8em 1em;
+        line-height: 1em;
+        border-radius: 4px;
+        width: 60%;
+        margin: 10px auto;
+    }
+    .login_aging.red {
+        background-color: #C82126;
+        color: #FFF;
+    }
+</style>
+</head>
+    <body>
+        <div class="top_header">
+            <div class="left"></div>
+            <div class="center"><p class="title">找回密码</p></div>
+            <div class="right">
+                <a href="{:U('User/login')}" class="link_a"><p class="text red">登录</p></a>
+            </div>
+        </div>
+        <div class="co_second_warp co_login_warp">
+            <div class="co_second_warp_box">
+                <div class="fl success-ctn">
+                    <img src="__PUBLIC__/Apps/images/is_success.png">
+                    <div class="success-tit">密码修改成功！</div>
+                    <div class="success-des">请牢记新密码，如有疑问请拨打400-662-6660客服热线</div>
+                </div>
+                <a href="{:U('User/login')}" class="button_a login_aging red">重新登录</a>
+            </div>
+        </div>
+    </body>
+</html>

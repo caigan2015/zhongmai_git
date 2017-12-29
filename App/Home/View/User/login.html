@@ -1,0 +1,417 @@
+<include file="Common:meta" title="用户登录"/>
+
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="login" style="background-image: url('__PUBLIC__/Home/PCimages/login_back.jpg')">
+    <article class="content clrfix">
+        <blockquote class="login-form">
+            <div class="form clrfix">
+                <header class="tab-box clrfix out-order">
+                    <aside id="2" class="fl tab cur-p cur">手机快捷登录</aside>
+                    <aside id="1" class="fl tab cur-p">账号密码登录</aside>
+                </header>
+                <article class="login-con">
+                    <blockquote id="form">
+                        <!-- 账号密码登录 -->
+                        <blockquote id="tab1" class="hide">
+                            <div class="pad10B pad30RL">
+                                <div class="input-item clrfix">
+                                    <div class="input-box"><input id="mobile1" name="mobile" maxlength="11" class="inputNumber AppCheck nocheck data" autocomplete="off" placeholder="请输入手机号" type="text"></div>
+                                </div>
+                            </div>
+                            <div class="pad10B pad30RL">
+                                <div class="input-item clrfix">
+                                    <div class="input-box"><input id="password" name="password" minlength="6" maxlength="20" class="AppCheck nocheck data" autocomplete="off" placeholder="请输入密码" type="password"></div>
+                                </div>
+                            </div>
+
+                            <div class="pad10B pad30RL clrfix">
+                                <div class="input-item fl clrfix w-180">
+                                    <div class="input-box"><input id="ImgValidateCode1" name="code" maxlength="4" class="inputNumber AppCheck nocheck data w-120" autocomplete="off" placeholder="请输入图片验证码" type="text"></div>
+                                </div>
+                                <div id="GetImgValidateCode1" class="GetImgValidateCode fr"><img id="code_img" src="{:U('Index/code?code_len=4&font_size=14&width=100&height=38&code='.time())}"></div>
+                                <div id="changeImgValidateCode1" class="fr change">换一张</div>
+                            </div>
+
+                            <div class="jyts-box bor-box font-red"><div><span class="jyts jyts1" style="display: none;"></span></div></div>
+
+                        </blockquote>
+
+                        <!-- 动态密码登录 -->
+                        <blockquote id="tab2">
+                            <div class="pad10B pad30RL">
+                                <div class="input-item clrfix">
+                                    <div class="input-box"><input id="m_mobile" name="m_mobile" maxlength="11" autocomplete="off" class="inputNumber AppCheck nocheck data" placeholder="请输入手机号" type="text"></div>
+                                </div>
+                            </div>
+
+                            <div class="pad10B pad30RL clrfix codebox">
+                                <div class="input-item fl clrfix w-180">
+                                    <div class="input-box"><input id="ValidateCode" name="m_code" minlength="6" maxlength="6" autocomplete="off" class="inputNumber AppCheck nocheck data w-120" placeholder="请输入验证码" type="text"></div>
+                                </div>
+                                <div id="GetValidateCode" class="fr btn code-btn disable">获取验证码</div>
+                            </div>
+
+                            <div class="jyts-box bor-box font-red"><div><span class="jyts jyts2" style="display: none;"></span></div></div>
+
+                        </blockquote>
+
+                        <div id="user-btn1" class="btn user-btn hide disable">立即登录</div>
+                        <div id="user-btn2" class="btn user-btn disable">立即登录</div>
+
+                        <div class="reg-link">
+                            <a class="apart hide" href="{:U('User/pass')}">忘记密码</a><span class="apart hide"> | </span><a href="{:U('User/register')}">免费注册</a>
+                        </div>
+
+                    </blockquote>
+                </article>
+            </div>
+        </blockquote>
+    </article>
+    <aside class="banner_btm"></aside>
+
+
+</div>
+
+<div class="footer-bottom">
+    Copyright © 2015-{$data.time|default=time()|date='Y',###} 版权所有 中迈融资租赁（广州）有限公司. &nbsp;&nbsp;<a href="http://www.miibeian.gov.cn/" target="_blank" style="color: #737476;font-size: 12px;">粤ICP备17115139号</a> <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030002000001" target="_blank" style="color: #737476;font-size: 12px;"><img src="__PUBLIC__/Home/PCimages/icon_yuewangga1.png" style="margin: -2px 0 0 5px;"> 粤公网安备 44030002000001号</a>
+</div>
+
+<script src="__PUBLIC__/Home/PCscript/jquery-1.3.2.min.js"></script>
+<script src="__PUBLIC__/Home/PCscript/function.js"></script>
+<script src="__PUBLIC__/Home/PCscript/main.js"></script>
+<script src="__PUBLIC__/Home/confirm/jquery.confirm.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.cur-p').on('click',function(){
+            var id = $(this).attr('id');
+            $('.cur-p').removeClass('cur');
+            $(this).addClass('cur');
+            if(id==1){
+                $('#tab2').addClass('hide');
+                $('#tab1').removeClass('hide');
+                $('.apart').removeClass('hide');
+                $('#user-btn1').removeClass('hide');
+                $('#user-btn2').addClass('hide');
+            }else{
+                $('#tab1').addClass('hide');
+                $('#tab2').removeClass('hide');
+                $('.apart').addClass('hide');
+                $('#user-btn2').removeClass('hide');
+                $('#user-btn1').addClass('hide');
+            }
+        });
+        $('.change').on('click',function(){
+            var that = document.getElementById('code_img');
+            that.src = that.src + '&' + Math.random();
+        });
+
+        $('#user-btn1').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var phone = $('input[name=mobile]').val();
+            var code = $('input[name=code]').val();
+            var password = $('input[name=password]').val();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/login?submit=1')}",
+                data:{phone:phone,code:code,password:password},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        location.href="{:U('User/index')}";
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $('#user-btn2').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var phone = $('input[name=m_mobile]').val();
+            var code = $('input[name=m_code]').val();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/login?msg=1')}",
+                data:{phone:phone,code:code},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        location.href="{:U('User/index')}";
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+
+        $('#GetValidateCode').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+
+    });
+
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$("#m_mobile").val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('#GetValidateCode').html('重新获取验证码');
+            $('#GetValidateCode').removeClass('disable');
+            return false;
+        }
+        $('#GetValidateCode').addClass('disable');
+        $('#GetValidateCode').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+
+    $('#tab1 :input').live('input propertychange', function()
+    {
+        var flag1 = false;
+        var flag2 = false;
+        var flag3 = false;
+        var phone = $('input[name=mobile]').val();
+        var password = $('input[name=password]').val();
+        var code = $('input[name=code]').val();
+        var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(phone!=''&&phone!=null){
+            if(!rp.test(phone)){
+                flag1  = false;
+                $('.jyts1').html('手机号码不正确!');
+                $('.jyts1').fadeIn('block');
+            }else{
+                flag1  = true;
+                $('.jyts1').html('');
+                $('.jyts1').fadeOut('block');
+            }
+        }else{
+            flag1  = false;
+            $('.jyts1').html('');
+            $('.jyts1').fadeOut('block');
+        }
+
+        if(password!=''&&password!=null){
+            if(password.length<6||password.length>20){
+                flag2  = false;
+                $('.jyts1').html('请输入6-20位密码!');
+                $('.jyts1').fadeIn('block');
+            }else{
+                flag2  = true;
+                $('.jyts1').html('');
+                $('.jyts1').fadeOut('block');
+            }
+        }else{
+            if(flag1) {
+                flag2 = false;
+                $('.jyts1').html('');
+                $('.jyts1').fadeOut('block');
+            }
+        }
+
+        if(code!=''&&code!=null){
+            if(code.length<4){
+                flag3  = false;
+                $('.jyts1').html('请输入4位验证码!');
+                $('.jyts1').fadeIn('block');
+            }else{
+                flag3  = true;
+                $('.jyts2').html('');
+                $('.jyts2').fadeOut('block');
+            }
+        }else{
+            if(flag2) {
+                flag3 = false;
+                $('.jyts1').html('');
+                $('.jyts1').fadeOut('block');
+            }
+        }
+
+        if(flag1&&flag2&&flag3){
+            $('#user-btn1').removeClass('disable');
+        }else{
+            $('#user-btn1').addClass('disable');
+        }
+
+    });
+
+    $('#tab2 :input').live('input propertychange', function()
+    {
+        var flag1 = false;
+        var flag2 = false;
+        var phone = $('input[name=m_mobile]').val();
+        var code = $('input[name=m_code]').val();
+        var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(phone!=''&&phone!=null){
+            if(!rp.test(phone)){
+                flag1  = false;
+                $('.jyts2').html('手机号码不正确!');
+                $('.jyts2').fadeIn('block');
+                $('#GetValidateCode').addClass('disable');
+            }else{
+                flag1  = true;
+                $('.jyts2').html('');
+                $('.jyts2').fadeOut('block');
+                $('#GetValidateCode').removeClass('disable');
+            }
+        }else{
+            flag1  = false;
+            $('#GetValidateCode').addClass('disable');
+            $('.jyts2').html('');
+            $('.jyts2').fadeOut('block');
+        }
+
+        if(code!=''&&code!=null){
+            if(code.length<6){
+                flag2  = false;
+                $('.jyts2').html('请输入6位验证码!');
+                $('.jyts2').fadeIn('block');
+            }else{
+                flag2  = true;
+                $('.jyts2').html('');
+                $('.jyts2').fadeOut('block');
+            }
+        }else{
+            if(flag1) {
+                flag2 = false;
+                $('.jyts2').html('');
+                $('.jyts2').fadeOut('block');
+            }
+        }
+
+        if(flag1&&flag2){
+            $('#user-btn2').removeClass('disable');
+        }else{
+            $('#user-btn2').addClass('disable');
+        }
+
+    });
+</script>
+</body>
+</html>

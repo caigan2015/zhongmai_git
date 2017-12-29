@@ -1,0 +1,55 @@
+﻿<include file="common:head" title="购物车"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>购物车</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="pro_con" style="display:{$sign};">
+<form id="getForm" action="#" method="post">
+ <ul class="order_ul">
+    <li><a href="{:U('Index/store')}" class="all_a"></a>
+      <p class="order_con"><span class="rebBg_dom">商家</span>智慧 社区</p></li>
+    <volist name="shoppingcar_list" id="shop">
+    <if condition="$shop.title eq ''">
+     <li class="order_pro_li">
+     	<div class="cart_select">
+    		<a href="{:U('Cart/delete_shoppingcar',array('shop_id'=>$shop['id']))}"></a>
+        </div>
+        <div class="left_f">
+        	该商品已删除
+        </div>
+     </li>
+    <else/>
+    <li class="order_pro_li">
+      <div class="cart_select">
+    	<a href="{:U('Cart/delete_shoppingcar',array('shop_id'=>$shop['id']))}"></a>
+      </div>
+      <div class="left_f"><a href="{:U('Index/pro_info',array('id'=>$shop['id']))}"><img src="__PUBLIC__/upload/product/{$shop['smallpic']}"/></a></div>
+      <div class="right_f">
+        <a href="{:U('Index/pro_info',array('id'=>$shop['id']))}"><p class="pro_title">{$shop['title']}</p></a>
+        <div class="order_ul_function"><p class="pro_price">￥<em class="onePrice">{$shop['price']}</em></p><div class="pro_cart_num_all">{$shop['quantity']}件</div><!--  <div class="pro_cart_num_div buy_num"><a href="javascript:void(0);" class="cart_num_a cart_num_minus minus_num">-</a>
+        <input class="cart_num_input input_num" type="text" value="{$shop['quantity']}">
+        <a href="javascript:void(0);" class="cart_num_a cart_num_add add_num">+</a></div>--></div>
+      </div>
+    </li>
+    </if>
+    </volist>
+    <li><div class="pro_buy_li_price reb">￥{$amount}</div></li>
+  </ul>
+  <aside class="shopping_cart_aside footer_aside">
+    <ul class="buy_function_ul">
+        <li class="buy_function_con"><div class="buy_function_text">合计：<span class="big_font">￥<em id='fastPrice'>{$amount}</em></span></div></li>
+        <li class="buy_function_submit"><a href="{:U('Cart/pro_buy')}" class="shopping_cart_submit submit" data-form="getForm">立即购买</a></li>
+    </ul>
+	</aside>
+  </form>
+</div>
+<p style="text-align:center;padding:2em 0em;">{$tips}</p>
+
+<include file="Common:footer" />
+</body>
+</html>

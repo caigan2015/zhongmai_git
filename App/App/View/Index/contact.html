@@ -1,0 +1,60 @@
+<include file="Common:meta" title="联系我们"/>
+<script type="text/javascript">
+    function initialize() {
+        var mp = new BMap.Map('map_container');
+        mp.disableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        mp.disableDragging();
+        var lon = "{$sys.lon}";
+        var lat = "{$sys.lat}";
+        var point = new BMap.Point(lon,lat);
+        mp.centerAndZoom(point,15);
+        var marker = new BMap.Marker(point);// 创建标注
+        mp.addOverlay(marker);             // 将标注添加到地图中
+        marker.disableDragging();
+    }
+    function loadScript(){
+        var script1 = document.createElement("script");
+        script1.src = "http://api.map.baidu.com/api?v=1.4&&callback=initialize";
+        document.body.appendChild(script1);
+
+        var script2 = document.createElement("script");
+        script2.src = "http://developer.baidu.com/map/jsdemo/demo/convertor.js";
+        document.body.appendChild(script2);
+    }
+    window.onload = loadScript;
+</script>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="{:U('Index/index')}" class="link_a back_a"></a></div>
+        <div class="center"><p class="title">联系我们</p></div>
+        <div class="right">
+
+        </div>
+    </div>
+</header>
+<div class="co_second_warp co_about_warp">
+    <div class="co_about_logo" style="padding: 5px 0 0 0;">
+        <div id="map_container" style="width: 100%;height: 180px;">
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="co_second_warp co_about_warp">
+    <div class="co_my_link_box">
+        <ul class="lo_my_link">
+            <li><a href="javascript:void(0);" class="link_a">{$sys.phone} | {$sys.time}</a></li>
+            <li><a href="javascript:void(0);" class="link_a">免费咨询、建议、投诉</a></li>
+            <li><a href="javascript:void(0);" class="link_a">提车吧官方公众号</a></li>
+            <li><img src="__PUBLIC__/Home/PCimages/phone_code.png" style="width: 50%;"> <!--<img src="__PUBLIC__/Home/PCimages/phone_code_dyh.png" style="width: 50%;">--></li>
+            <li><a href="javascript:void(0);" class="link_a">所在城市:　广州</a> </li>
+            <li><a href="javascript:void(0);" class="link_a"><img src="__PUBLIC__/Apps/images/is_map.png" style="float: left;margin-right: 5px;">{$sys.address}</a> </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

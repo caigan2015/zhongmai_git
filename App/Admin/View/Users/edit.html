@@ -1,0 +1,128 @@
+<include file="Public:meta" title="会员编辑"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-user-edit">
+	<input type="hidden" name="id" value="{$ulist.id}"/>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>会员账号：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$ulist.username}" placeholder="" id="username" name="username" readonly="readonly">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">新密码：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="password" class="input-text" autocomplete="off" value="" placeholder="新密码为空则不修改" id="password" name="password">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">确认密码：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="repassword" name="repassword">
+		</div>
+	</div>	
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">手机：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$ulist.phone}" placeholder="" id="phone" name="phone">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$ulist.email}" placeholder="@" name="email" id="email">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">状态：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<if condition="$ulist.flag eq 1">
+			<div class="radio-box">
+				<input name="flag" value="1" type="radio" id="flag-1" checked>
+				<label for="flag-1">正常</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="flag-0" value="0" name="flag">
+				<label for="flag-0">禁用</label>
+			</div>
+			<else/>
+			<div class="radio-box">
+				<input name="flag" value="1" type="radio" id="flag-1">
+				<label for="flag-1">正常</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="flag-0" value="0" name="flag" checked>
+				<label for="flag-0">禁用</label>
+			</div>
+			</if>
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+$(function(){	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-user-edit").validate({
+		rules:{
+			username:{
+				required:true,
+				minlength:4,
+				maxlength:16
+			},
+			password:{
+				required:false,
+				minlength:6,
+				maxlength:20
+			},
+			repassword:{
+				required:false,
+				equalTo: "#password"
+			},
+			phone:{
+				required:false,
+				isPhone:true,
+			},
+			email:{
+				required:false,
+				email:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Users/edit?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

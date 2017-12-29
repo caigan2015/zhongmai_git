@@ -1,0 +1,40 @@
+<!Doctype html>
+<html xmlns=http://www.w3.org/1999/xhtml><head>                   
+<meta http-equiv=Content-Type content="text/html;charset=utf-8">
+<meta http-equiv=X-UA-Compatible content="IE=edge,chrome=1">
+<meta content=always name=referrer>
+<title>提示信息</title>
+<style type="text/css">
+h4{margin:5px 0;padding:0;line-height:30px;text-indent:10px;color:#fff;}
+a{color:#08c;text-decoration:none}
+a:hover,a:focus{color:#005580;text-decoration:underline}
+</style>
+</head>
+<body>
+<div style="width:380px;height:220px;border:1px solid #D4D4D4;margin:10rem auto;border-radius: 0.5em;background:#438eb9;">
+	<h4>提示窗口</h4>
+	<div style="font-size:18px;text-align:center;margin:10px auto;border:1px solid #D4D4D4;width:360px;height:160px;background:#ffffff;">
+		<present name="message">
+			<p class="success">{$message}</p>
+		<else/>
+			<p class="error">{$error}</p>
+		</present>
+		<p style="font-size:12px">
+			页面自动 <a id="href" href="{$jumpUrl}">跳转</a> 等待时间： <b id="wait">{$waitSecond}</b>
+		</p>
+	</div>
+</div>
+<script type="text/javascript">
+(function(){
+var wait = document.getElementById('wait'),href = document.getElementById('href').href;
+var interval = setInterval(function(){
+	var time = --wait.innerHTML;
+	if(time <= 0) {
+		location.href = href;
+		clearInterval(interval);
+	};
+}, 1000);
+})();
+</script>
+</body>
+</html>

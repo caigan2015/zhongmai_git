@@ -1,0 +1,42 @@
+<include file="common:head" title="找回密码"/>
+    <script type="text/javascript">
+        var url="{:U('User/login')}";
+        var timer = null;
+        function judge(){
+                var i = 6;
+                timer = setInterval(function(){
+                    if(i<=0){
+                        clearInterval(timer);
+                        window.location.href=url;
+                    }
+                    else{
+                        i--;
+                        $(".time").html(i);
+                    }
+                },1000)
+
+        }
+        judge();
+    </script>
+</head>
+<body>
+<header class="skin_topHeader">
+    <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+    <h1><span>重置密码成功</span></h1>
+    <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="index_kuang">
+    <section class="myInfoCon">
+        <div class="login_div">
+            <form action="my.html">
+                <ul class="form_ul">
+                    <li>重置成功,系统会在<span style="color: #e60012;" class="time"> 6 </span>秒内跳转登录，<a href="{:U('User/login')}" style="color: #e60012;text-decoration: underline;">如果没有跳转请点击这里！</a></li>
+                </ul>
+            </form>
+        </div>
+    </section>
+</div>
+<include file="Common:footer" />
+</body>
+</html>

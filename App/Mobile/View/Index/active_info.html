@@ -1,0 +1,45 @@
+﻿<include file="common:head" title="活动详情"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>详细</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="pro_con">
+	<div class="active_info_title_div">
+  	<div class="active_info_title_con">
+    	<h3>{$title}</h3>
+        <p class="active_info_title_p">{$postdate}        {$hit} 浏览</p>
+    </div>
+  </div>
+  <article class="pro_info_article">
+  {$info}
+  <aside class="article_shace_aside">
+  	<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#uuid=<你的UUID>&style=-1"></script>
+	<script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC3.js"></script>
+  	<p class="article_shace_title"><span>分享文章</span></p>
+  	<div class="article_shace_div">
+		<div class="bshare-custom">
+           <a title="分享到微信" class="bshare-weixin"><p>微信</p></a>
+           <a title="分享到QQ" class="bshare-qqim"><p>QQ好友</p></a>
+           <a title="分享到腾讯微博" class="bshare-qqmb"><p>腾讯微博</p></a>
+           <a title="分享到新浪微博" class="bshare-sinaminiblog"><p>新浪微博</p></a>
+		</div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+		bShare.addEntry({
+			title: "{$title}",
+			summary: "{$c_info}",
+		});
+	</script>
+  </aside>
+  
+  
+</div>
+
+<include file="Common:footer" />
+</body>
+</html>

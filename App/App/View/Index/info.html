@@ -1,0 +1,144 @@
+<include file="Common:meta" title="详情页"/>
+<script type="text/javascript">
+    $(function(){
+        $('.apply-btn').on('click',function(){
+            var id = "{$_GET['id']}";
+            $.post("{:U('Index/checkLogin')}",{id:id},function(data){
+                str = $.parseJSON(data);
+                if(str.code=='000'){
+                    location.href = "{:U('User/apply',array('id'=>$_GET['id']))}";
+                }else{
+                    location.href = "{:U('User/login')}";
+                }
+            });
+        });
+        if($(window).width()<=480){
+            $('.co_pro_info_box').find('img').removeAttr("style");
+        }
+    });
+</script>
+</head>
+    <body>
+        <header class="top_header_box">
+            <div class="top_header">
+                <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+                <div class="center">
+                    <a href="index.html" class="link_a top_logo"><img src="__PUBLIC__/Apps/images/logo.png" class="logo" alt="" /></a>
+                </div>
+                <div class="right">
+                    <div class="top_more_box">
+                        <a href="javascript:void(0);" class="link_a top_more_a openParent"></a>
+                        <div class="top_more">
+                            <a href="{:U('Index/index')}" class="button_a"><i class="icon home"></i><span>首页</span></a>
+                            <a href="{:U('User/user')}" class="button_a"><i class="icon user"></i><span>个人中心</span></a>
+                            <a href="{:U('Index/about')}" class="button_a"><i class="icon about"></i><span>中迈简介</span></a>
+                            <a href="{:U('Index/contact')}" class="button_a"><i class="icon contact"></i><span>联系我们</span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="co_index_banner" id="mBanner">
+            <ul class="lo_index_banner">
+                <volist name="imgs" id="m">
+                <li>
+                    <a href="javascript:void(0);" class=""><img src="__PUBLIC__/upload/product/{$m.name}"></a>
+                </li>
+                </volist>
+            </ul>
+        </div>
+        <div class="co_second_warp co_pro_info_warp">
+            <div class="co_pro_info_main">
+                <h3 class="title">{$info.title}</h3>
+                <p class="des"><span class="key">厂商指导价</span><span class="name">{$info.money}万</span></p>
+                <div class="co_pro_info_cop">
+                    <span class="info">{$info.specs}</span>
+                </div>
+            </div>
+        </div>
+        <div class="co_second_warp co_pro_info_warp" id="aaa">
+            <div class="co_pro_info_shape">
+                <h4>
+                    <!--<span class="title">先开一年</span>
+                    <span class="sub_title">(首年花费)</span>-->
+                </h4>
+                <div class="co_pro_info_scheme">
+                    <span>首付<em>{$info.cost}万</em></span>
+                    <span>月供<em>{$info.price}元</em></span>
+                    <span>期限<em>{$info.num}期</em></span>
+                </div>
+                <ul class="lo_ul">
+                    <li>带厂家发票，享受厂家所有售后保修保养政策</li>
+                    <li>包含购置税、交强险、车船税、第三者100万、车损险、盗抢险、涉水险、司机险、乘客险、玻璃险、不计免赔等超全保险以及上牌费和GPS安装费</li>
+                </ul>
+            </div>
+        </div>
+        <aside class="co_pro_info_jump jumpScroll">
+            <div class="co_pro_info_jump_box">
+                <a href="javascript:void(0);" class="link_a jumpA ac" data-id="about">产品详情</a>
+                <a href="javascript:void(0);" class="link_a jumpA" data-id="recent">最近申请</a>
+                <a href="javascript:void(0);" class="link_a jumpA" data-id="ask">常见问题</a>
+            </div>
+        </aside>
+        <div class="co_second_warp" id="about">
+            <div class="co_second_warp_box co_pro_info_box">
+
+                <p style="text-align:center;">
+                    {$info.content}
+                </p>
+            </div>
+        </div>
+        <div class="co_second_warp" id="apply">
+            <div class="co_second_warp_box">
+                <h3 class="co_title">
+                    <p class="title">申请流程</p>
+                    <i class="line"></i>
+                </h3>
+                <ul class="lo_index_li">
+                    <li><span>1</span>拨打提车吧热线或登录官网</li>
+                    <li><span>2</span>提出订车需求</li>
+                    <li><span>3</span>定制灵活、个性的购车方案</li>
+                    <li><span>4</span>交订金（3000元）</li>
+                    <li><span>4</span>提车（15个工作日内便可把爱车带回家）</li>
+                </ul>
+            </div>
+        </div>
+        <div class="co_second_warp" id="recent">
+            <div class="co_second_warp_box">
+                <h3 class="co_title">
+                    <p class="title">最近申请</p>
+                    <i class="line"></i>
+                </h3>
+                <ul class="lo_recent">
+                    <volist name="apply" id="vp">
+                    <li>
+                        <p class="title">{$vp.title}</p>
+                        <div class="des">
+                            <p class="user">{$vp.phone} {$vp.city}</p>
+                            <p class="data">{$vp.otime}</p>
+                        </div>
+                    </li>
+                    </volist>
+                </ul>
+            </div>
+        </div>
+        <div class="co_second_warp" id="ask">
+            <include file="Common:wen"/>
+        </div>
+        <aside class="ot_footer_fun">
+            <div class="ot_footer_fun_box">
+                <a href="tel:{$sys.phone}" class="left_a bg_color_a">
+
+                    <div class="text">
+                        <i class="icon tel"></i>
+                        <p class="title">免费谘询</p>
+                        <p class="sub_title">时间{$sys.time}</p>
+                    </div>
+                </a>
+                <a href="javascript:void(0);" class="right_a button_a apply-btn">
+                    <p class="title">预约到店</p>
+                </a>
+            </div>
+        </aside>
+    </body>
+</html>

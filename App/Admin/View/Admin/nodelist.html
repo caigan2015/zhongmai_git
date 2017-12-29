@@ -1,0 +1,168 @@
+<include file="Public:meta" title="节点管理"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+	<!-- <div class="text-c">
+		<form class="Huiform" method="post" action="{:U('Admin/nodelist')}" target="_self">
+			<input type="text" class="input-text" style="width:250px" placeholder="权限名称" id="" name="title">
+			<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜权限节点</button>
+		</form>
+	</div> -->
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --> <a href="javascript:;" onclick="admin_permission_add('添加权限节点','{:U('Admin/addnode')}','','560')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加权限节点</a></span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+	<table class="table table-border table-bordered table-bg">
+		<thead>
+			<tr>
+				<th scope="col" colspan="7">权限节点</th>
+			</tr>
+			<tr class="text-c">
+				<!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+				<th width="40">ID</th>
+				<th width="40">排序</th>
+				<th width="200">节点等级</th>
+				<th>权限名称</th>
+				<th width="200">字段名</th>
+				<th width="100">是否显示</th>
+				<th width="100">是否授权</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="level" id="vo">
+			<tr class="text-c">
+				<!-- <td><input type="checkbox" value="{$vo.id}" name="ids"></td> -->
+				<td>{$vo.id}</td>
+				<td><input type="text" name="sort" class="input-text setSort" val-id="{$vo.id}" value="{$vo.sort}"/></td>
+				<td style="background:#FFE1E6;">一级节点</td>
+				<td style="text-align:left;text-indent:20px;">{$vo.title}</td>
+				<td>{$vo.name}</td>
+				<td class="td-status">
+					<if condition="$vo.display eq 1">
+					<span class="label label-success radius">显示</span>
+					<else/>
+					<span class="label radius">不显示</span>
+					</if>
+				</td>
+				<td class="td-licensed">
+					<if condition="$vo.licensed eq 1">
+					<span class="label label-success radius">授权</span>
+					<else/>
+					<span class="label radius">不授权</span>
+					</if>
+				</td>
+				<td><a title="编辑" href="javascript:;" onclick="admin_permission_edit('角色编辑','{:U('Admin/editnode')}','{$vo.id}','','310')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_permission_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+			</tr>
+				<volist name="vo[zi]" id="vz">
+				<tr class="text-c">
+					<!-- <td><input type="checkbox" value="{$vz.id}" name="ids"></td> -->
+					<td>{$vz.id}</td>
+					<td><input type="text" name="sort" class="input-text setSort" val-id="{$vz.id}" value="{$vz.sort}"/></td>
+					<td style="background:#FDFDD7;">二级节点</td>
+					<td style="text-align:left;text-indent:20px;"> ├─{$vz.title}</td>
+					<td>{$vz.name}</td>
+					<td class="td-status">
+						<if condition="$vz.display eq 1">
+						<span class="label label-success radius">显示</span>
+						<else/>
+						<span class="label radius">不显示</span>
+						</if>
+					</td>
+					<td class="td-licensed">
+						<if condition="$vz.licensed eq 1">
+						<span class="label label-success radius">授权</span>
+						<else/>
+						<span class="label radius">不授权</span>
+						</if>
+					</td>
+					<td><a title="编辑" href="javascript:;" onclick="admin_permission_edit('角色编辑','{:U('Admin/editnode')}','{$vz.id}','','310')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_permission_del(this,'{$vz.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				</tr>
+					<volist name="vz[last]" id="vl">
+					<tr class="text-c">
+						<!-- <td><input type="checkbox" value="{$vl.id}" name="ids"></td> -->
+						<td>{$vl.id}</td>
+						<td><input type="text" name="sort" class="input-text setSort" val-id="{$vl.id}" value="{$vl.sort}"/></td>
+						<td style="background:#E1FFE8;">三级节点</td>
+						<td style="text-align:left;text-indent:20px;">│　　├─{$vl.title}</td>
+						<td>{$vl.name}</td>
+						<td class="td-status">
+							<if condition="$vl.display eq 1">
+							<span class="label label-success radius">显示</span>
+							<else/>
+							<span class="label radius">不显示</span>
+							</if>
+						</td>
+						<td class="td-licensed">
+							<if condition="$vl.licensed eq 1">
+							<span class="label label-success radius">授权</span>
+							<else/>
+							<span class="label radius">不授权</span>
+							</if>
+						</td>
+						<td><a title="编辑" href="javascript:;" onclick="admin_permission_edit('角色编辑','{:U('Admin/editnode')}','{$vl.id}','','310')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_permission_del(this,'{$vl.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+					</tr>
+					</volist>
+				</volist>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/> 
+<script type="text/javascript">
+/*
+	参数解释：
+	title	标题
+	url		请求的url
+	id		需要操作的数据id
+	w		弹出层宽度（缺省调默认值）
+	h		弹出层高度（缺省调默认值）
+*/
+/*管理员-权限-添加*/
+function admin_permission_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*管理员-权限-编辑*/
+function admin_permission_edit(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+
+/*管理员-权限-删除*/
+function admin_permission_del(obj,id){
+	layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+		var url = "{:U('Admin/deletenode')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").remove();
+				layer.msg(str.msg,{icon:1,time:1000});
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+			}
+		});
+	});
+}
+
+/*刷新页面*/ 
+function refresh(){
+	window.location.reload();
+}
+$(function(){
+	$('.setSort').blur(function(){
+		var id = $(this).attr("val-id");
+		var val = $(this).val();
+		var url = "{:U('Admin/setnode')}";
+		$.post(url,{id:id,val:val},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				refresh();
+				layer.msg(str.msg,{icon:1,time:1000});
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+			}
+		});
+	});
+});
+</script>
+</body>
+</html>

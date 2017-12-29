@@ -1,0 +1,76 @@
+<include file="common:head" title="我的"/>
+    <script>
+        $(function(){
+            $('.inputSubmit').click(function(){
+                var name = $('input[name=username]').val();
+                var email = $('input[name=email]').val();
+                if(name==''){
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '用户名不能为空',
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+                if(email!=''){
+                    if (!email.match(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/)) {
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: '邮箱格式不正确',
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+                $.post("{:U('User/personal_detail')}",$("#myForm").serialize(),function(data){
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="skin_topHeader">
+    <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+    <h1><span>修改信息</span></h1>
+    <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<section class="person_detail">
+    <form id="myForm">
+        <input type="hidden" name="id" value="{$info.id}"/>
+    <ul class="pro_buy_ul pro_buyform_ul">
+        <li class="pro_buy_con_li"><div class="pro_buy_key">姓名</div><div class="pro_buy_con reb"><label for="p1" class="pro_buy_label my_label" style="display: block;">请输入您的姓名</label><input class="pro_buy_inputText" name="username" id="p1" type="text" value="{$info.username}"/></div></li>
+        <li class="pro_buy_con_li"><div class="pro_buy_key">手机号码</div><div class="pro_buy_con reb"><label for="p2" class="pro_buy_label my_label" style="display: block;">请输入您的手机号码</label><input class="pro_buy_inputText" name="phone" id="p2" value="{$info.phone}" type="text" readonly="readonly"/></div></li>
+        <li class="pro_buy_con_li"><div class="pro_buy_key">邮箱</div><div class="pro_buy_con reb"><label for="p3" class="pro_buy_label my_label" style="display: block;">请填定您的邮箱</label><input class="pro_buy_inputText" name="email" id="p3" value="{$info.email}" type="text"/></div></li>
+        <li class="submit_li"><input type="button" value="保存修改" class="inputSubmit"></li>
+    </ul>
+    </form>
+</section>
+<include file="Common:footer" />
+</body>
+</html>

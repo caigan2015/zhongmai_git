@@ -1,0 +1,34 @@
+.lo_stap li:first-child:after{background-color:#999;top:13px;}
+.lo_stap li:first-child{color:#999;}
+.lo_stap li p{display: inline-block;}
+.lo_stap li .title{margin-right: 10px;}
+.ping{padding:0 1em;margin: 0;color: #999;font-size: 0.9em;}
+.ping dt{height: 40px;line-height: 40px;margin: 0;padding: 0 0 10px 0;}
+.ping dt span{float: left;display: inline-block;width: 80px;text-align: left;}
+.ping dt p{padding: 0;margin: 0;float: right;}
+.ping dd{margin: 0;padding: 0;}
+.ping dd span{float: left;display: inline-block;width: 80px;text-align: left;}
+.ping dd .con{border: 1px solid #ddd;width: 12.5em;height: 80px;float: right;margin-top:2px;}
+.doPing{border: 0;background: #C82126;color:#fff;width: 150px;height: 30px;cursor: pointer;}
+.star_p {
+    float: left;
+    color: #F8B600;
+}
+.star_big_icon {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.star_big_icon.ac {
+    background-position: 0px center;
+}
+.star_big_icon {
+    background: url(../images/top_header_icon.png) no-repeat -20px center;
+    background-position-x: -20px;
+    background-position-y: center;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -2px;
+}

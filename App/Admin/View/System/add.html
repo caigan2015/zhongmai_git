@@ -1,0 +1,75 @@
+<include file="Public:meta" title="添加问题"/>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-question-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">问题：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="" placeholder="请输入问题" id="title" name="title">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">开始日期：</label>
+            <div class="formControls col-xs-8 col-sm-2">
+                <input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$now}" name="ctime" id="ctime" class="input-text Wdate">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-2">解答内容：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                {$fck}
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交</button>
+                <button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Public:footscript"/>
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/Admin/other/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-question-add").validate({
+            rules:{
+                title:{
+                    required:true,
+                },
+            },
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var url = "{:U('System/add?dosubmit=1')}";
+                CKupdate();
+                $.post(url,$(form).serialize(),function(data){
+                    str = $.parseJSON(data);
+                    if(str.error==0){
+                        alert(str.msg);
+                        parent.refresh();
+                        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                        parent.layer.close(index);
+                    }else{
+                        alert(str.msg);
+                    }
+                });
+            }
+        });
+    });
+    function CKupdate() {
+        for (instance in CKEDITOR.instances)
+            CKEDITOR.instances[instance].updateElement();
+    }
+</script>
+</body>
+</html>

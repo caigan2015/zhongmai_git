@@ -1,0 +1,14 @@
+.path-nav {
+    width: 1200px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #000;
+    height: 60px;
+    line-height: 60px;
+}
+.path-nav a {
+    color: #666;
+}
+.path-nav a:link, .path-nav a:visited {
+    text-decoration: none;
+}

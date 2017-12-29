@@ -1,0 +1,258 @@
+<include file="Common:meta" title="用户注册"/>
+
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="login" style="background-image: url('__PUBLIC__/Home/PCimages/login_back.jpg');">
+
+    <article class="content clrfix">
+        <blockquote class="login-form">
+            <div class="form clrfix">
+                <header class="tab-box out-order">
+                    <aside class="reg-tab">快速注册</aside>
+                    <div>已注册可直接<a href="{:U('User/login')}">登录</a></div>
+                </header>
+                <article id="form" class="login-con">
+                    <blockquote id="regForm" class="reg-box">
+                        <div class="pad10B pad30RL">
+                            <div class="input-item clrfix">
+                                <div class="input-box"><input id="mobile" name="mobile" maxlength="11" autocomplete="off" class="inputNumber AppCheck nocheck data" placeholder="请输入手机号" type="text"></div>
+                            </div>
+                        </div>
+
+                        <div class="pad10B pad30RL clrfix codebox">
+                            <div class="input-item fl clrfix w-180">
+                                <div class="input-box"><input id="RegValidateCode" name="code" minlength="6" maxlength="6" autocomplete="off" class="inputNumber AppCheck nocheck data w-120" placeholder="请输入验证码" type="text"></div>
+                            </div>
+                            <div id="GetRegValidateCode" class="fr btn code-btn disable">获取验证码</div>
+                        </div>
+
+                        <div class="pad10B pad30RL">
+                            <div class="input-item clrfix">
+                                <div class="input-box"><input id="password" name="password" autocomplete="off" minlength="6" maxlength="20" class="AppCheck nocheck data" placeholder="请输入密码" type="password"></div>
+                            </div>
+                        </div>
+
+                        <div class="checked-num">
+                            密码不能为纯数字，6-20位
+                        </div>
+
+                        <div class="jyts-box"><div class="jyts warning-tips"></div></div>
+
+                        <div class="tools-box terms-service">
+                            <div><input id="rule" checked="checked" value="" type="checkbox"> 我已经看过并同意<a target="_blank" href="{:U('Index/terms')}" class="reg-rule">《网络服务条款》</a></div>
+                        </div>
+                        <div id="reg-btn" class="btn reg-btn disable">立即注册</div>
+                    </blockquote>
+                </article>
+            </div>
+        </blockquote>
+    </article>
+    <aside class="banner_btm"></aside>
+</div>
+<div class="footer-bottom">
+    Copyright © 2015-{$data.time|default=time()|date='Y',###} 版权所有 中迈融资租赁（广州）有限公司. &nbsp;&nbsp;<a href="http://www.miibeian.gov.cn/" target="_blank" style="color: #737476;font-size: 12px;">粤ICP备17115139号</a> <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030002000001" target="_blank" style="color: #737476;font-size: 12px;"><img src="__PUBLIC__/Home/PCimages/icon_yuewangga1.png" style="margin: -2px 0 0 5px;"> 粤公网安备 44030002000001号</a>
+</div>
+
+<script src="__PUBLIC__/Home/PCscript/jquery-1.3.2.min.js"></script>
+<script src="__PUBLIC__/Home/PCscript/function.js"></script>
+<script src="__PUBLIC__/Home/PCscript/main.js"></script>
+<script src="__PUBLIC__/Home/confirm/jquery.confirm.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('#GetRegValidateCode').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+
+        $('#reg-btn').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var phone = $('input[name=mobile]').val();
+            var code = $('input[name=code]').val();
+            var password = $('input[name=password]').val();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/register?submit=1')}",
+                data:{phone:phone,code:code,password:password},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        location.href="{:U('User/index')}";
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+
+    });
+
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$("#mobile").val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+    $('#form :input').live('input propertychange', function()
+    {
+        var flag1 = false;
+        var flag2 = false;
+        var flag3 = false;
+        var phone = $('input[name=mobile]').val();
+        var code = $('input[name=code]').val();
+        var password = $('input[name=password]').val();
+        var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(phone!=''&&phone!=null){
+            if(!rp.test(phone)){
+                flag1  = false;
+                $('.jyts').html('手机号码不正确!');
+                $('.jyts').fadeIn('block');
+                $('#GetRegValidateCode').addClass('disable');
+            }else{
+                flag1  = true;
+                $('.jyts').html('');
+                $('.jyts').fadeOut('block');
+                $('#GetRegValidateCode').removeClass('disable');
+            }
+        }else{
+            flag1  = false;
+            $('#GetRegValidateCode').addClass('disable');
+            $('.jyts').html('');
+            $('.jyts').fadeOut('block');
+        }
+
+        if(code!=''&&code!=null){
+            if(code.length<6){
+                flag2  = false;
+                $('.jyts').html('请输入6位验证码!');
+                $('.jyts').fadeIn('block');
+            }else{
+                flag2  = true;
+                $('.jyts').html('');
+                $('.jyts').fadeOut('block');
+            }
+        }else{
+            if(flag1) {
+                flag2 = false;
+                $('.jyts').html('');
+                $('.jyts').fadeOut('block');
+            }
+        }
+
+        if(password!=''&&password!=null){
+            var reg = /^[0-9]+$/;
+            if(reg.test(password)||(password.length<6||password.length>20)){
+                flag1  = false;
+                $('.jyts').html('密码格式不正确!');
+                $('.jyts').fadeIn('block');
+            }else{
+                if(flag2) {
+                    flag3 = true;
+                    $('.jyts').html('');
+                    $('.jyts').fadeOut('block');
+                }
+            }
+        }else{
+            flag3  = false;
+        }
+
+        if(flag1&&flag2&&flag3){
+            $('#reg-btn').removeClass('disable');
+        }else{
+            $('#reg-btn').addClass('disable');
+        }
+
+    });
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('#GetRegValidateCode').html('重新获取验证码');
+            $('#GetRegValidateCode').removeClass('disable');
+            return false;
+        }
+        $('#GetRegValidateCode').addClass('disable');
+        $('#GetRegValidateCode').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+</script>
+</body>
+</html>

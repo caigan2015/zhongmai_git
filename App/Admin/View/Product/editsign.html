@@ -1,0 +1,111 @@
+<include file="Public:meta" title="商品属性编辑"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-sign-edit">
+	<input type="hidden" name="id" value="{$info.id}"/>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>属性名称：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="text" class="input-text" value="{$info.name}" placeholder="" id="name" name="name">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>价格：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="{$info.price}" placeholder="0.00" name="price" id="price">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">编号：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="{$info.number}" placeholder="" id="number" name="number">			
+		</div>
+		<span>默认库存：1000</span>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">库存：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="{$info.amount}" placeholder="" name="amount" id="amount">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否开启：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<if condition="$info.status eq 1">
+			<div class="radio-box">
+				<input name="status" value="1" type="radio" id="status-1" checked>
+				<label for="status-1">开启</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="status-0" value="0" name="status">
+				<label for="status-0">禁用</label>
+			</div>
+			<else/>
+			<div class="radio-box">
+				<input name="status" value="1" type="radio" id="status-1">
+				<label for="status-1">开启</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="status-0" value="0" name="status" checked>
+				<label for="status-0">禁用</label>
+			</div>
+			</if>
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+$(function(){	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-sign-edit").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			price:{
+				required:true,
+				min:0,
+			},
+			amount:{
+				digits:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Product/editsign?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

@@ -1,0 +1,253 @@
+<include file="Public:meta" title="商品编辑"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-article-edit">
+		<input type="hidden" name="id" value="{$con.id}"/>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>商品名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$con.title}" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<volist name="clist" id="vc">
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-2">分类-{$vc.name}：</label>
+				<div class="formControls col-xs-8 col-sm-2"> <span class="select-box">
+					<select name="sid[]" id="s_id" class="select">
+						<volist name="vc[zi]" id="vz">
+							<option value="{$vz.id}" {$vz.selected}> {$vz.name}</option>
+						</volist>
+					</select>
+				</span>
+				</div>
+			</div>
+		</volist>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>全车指导价：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.money}" placeholder="" id="money" name="money">
+			</div>
+			<span style="color: red;">单位：万元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>首付：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.cost}" placeholder="" id="cost" name="cost">
+			</div>
+			<span style="color: red;">单位：万元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>月供：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.price}" placeholder="" id="price" name="price">
+			</div>
+			<span style="color: red;">单位：元</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分期数次：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.num}" placeholder="" id="num" name="num">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">库存：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.amount}" placeholder="" id="amount" name="amount">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">标签：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$con.specs}" placeholder="" id="specs" name="specs">
+			</div>
+		</div>
+		<div class="row cl">
+			<table>
+				<tr class="img_input" style="height:50px;line-height:50px;">
+					  <td style="text-align:left;height:30px;;font-size:14px;">
+						<label class="form-label col-xs-4 col-sm-2">上传图片：</label>
+						<img class="add_img" title="新增" src="__PUBLIC__/Admin/other/images/add_file.png"/>
+						<span style="margin-left:20px;font-size:12px;color:red;">支持JPG/PNG格式，单个图片大小建议小于5MB，比例:300px*200px（注：图片按上传时间排序，最多上传4张）</span>
+					  </td>
+				</tr>
+				<!-- <volist name="imgs" id="vi" > -->
+				<tr>
+					<td>
+					<label class='form-label col-xs-4 col-sm-2'>&nbsp;</label>
+					<img class='delete_file' title='删除' src='__PUBLIC__/Admin/other/images/delete_file.png' />
+					<span class="img_title">{$vi[title]}</span>　
+					<img width=300 src='__PUBLIC__/upload/product/{$vi[name]}'/>
+					<input type='hidden' name='img_title[]' value='{$vi[title]}' />
+					<input type='hidden' name='img_name[]' value='{$vi[name]}' />
+					</td>
+				</tr>
+				<!-- </volist> -->
+			</table>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">添加日期：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$con.date_time|date='Y-m-d H:i:s',###}" name="date_time" id="date_time" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">限时特惠：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="check-box">
+					<if condition="$con.ishui eq 1">
+					<input type="checkbox" name="ishui" value="1" id="checkbox-pinglun" checked="checked">
+					<else/>
+					<input type="checkbox" name="ishui" value="1" id="checkbox-pinglun">
+					</if>
+					<label for="checkbox-pinglun">&nbsp;是否特惠 </label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">开始时间：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$con.stime}" name="stime" id="stime" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">结束时间：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$con.etime}" name="etime" id="etime" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">商品详情：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				{$fck}
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="closeNewIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</article>
+<include file="Public:footscript"/>
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/Admin/other/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	//动态删除行
+	$('table').delegate('.delete_file','click', function (event) {
+		if(confirm('确定删除吗？')){
+			$(this).parent('td').parent('tr').remove();
+			$('.add_img').fadeIn('block');
+		}
+	});
+
+	//鼠标经过变手形
+	$('table').delegate('.delete_file','mouseover', function (event) {
+		$(this).css('cursor','pointer');
+	});
+	$('table').delegate('.delete_file','mouseout', function (event) {
+		$(this).css('cursor','default');
+	});
+
+	//异步上传图片
+	function ajaxImgUp(o){
+		$(o).hide();
+		var loading = $("<span><img class='loading' src='__PUBLIC__/Admin/other/images/loading.gif' style='height:20px;'/> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+		$('.add_img').fadeIn('block');
+		$.ajaxFileUpload({
+
+			    url:"{:U('Product/ajaxImgUp')}", //你处理上传文件的服务端
+                      secureuri:false,
+                      fileElementId:'img',
+                      dataType: 'json',
+					//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                      success: function (data){
+
+					loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='img_size[]' value='"+data.size+"' /><input type='hidden' name='img_title[]' class='pro_pic' value='"+data.name+"' /><input type='hidden' name='img_name[]' value='"+data.savename+"' />　<img width='300' src='__PUBLIC__/upload/product/s_"+data.savename+"'/>");
+
+                      }
+		});
+		return false;
+
+           }
+
+	//添加图片
+	$('.add_img').click(function (event){
+		if ($(".pro_pic").length > 3) {
+			alert("最多可上传4张图片!");
+			return false;
+		}
+		//动态创建行
+		var s="<tr><td><label class='form-label col-xs-4 col-sm-2'>&nbsp;</label><img class='delete_file' title='删除' src='__PUBLIC__/admin/other/images/delete_file.png' />　<input type='file' size='50' name='img' id='img' /></td></tr>";
+
+		$(this).parent('td').parent('tr').after(s);
+		$(this).fadeOut('block');
+
+	}).css('cursor','pointer');
+
+	//添加图片的绑定函数
+	$('table').delegate('#img','change', function () {
+		ajaxImgUp(this)
+
+	});
+
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+
+	$("#form-article-edit").validate({
+		rules:{
+			title:{
+				required:true,
+			},
+			c_id:{
+				required:true,
+			},
+			cost: {
+		        required: true,
+		     },
+		     price: {
+		        required: true,
+		     },
+			 num: {
+				required: true,
+			 },
+			date_time:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Product/edit?dosubmit=1')}";
+			CKupdate();
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+					parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                    parent.layer.close(index);
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+function CKupdate() {
+    for (instance in CKEDITOR.instances)
+        CKEDITOR.instances[instance].updateElement();
+}
+function closeNewIframe(){
+	var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+    parent.layer.close(index);
+}
+</script>
+</body>
+</html>

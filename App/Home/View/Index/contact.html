@@ -1,0 +1,76 @@
+<include file="Common:meta" title="联系我们"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/about.css">
+<style>
+  #map_container{width:800px;height: 400px;}
+</style>
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="container">
+    <div class="page page-contact">
+        <p>联系我们</p>
+        <article>
+            <dl>
+                <dt class="icon icon-tel"></dt>
+                <dd>
+                    <span>{$sys.phone} | {$sys.time}</span>
+                    <em>免费咨询、建议、投诉</em>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="icon icon-weixin"></dt>
+                <dd>
+                    <span>提车吧官方公众号</span>
+                    <em>关注最新租赁活动，查询租赁进度</em>
+                    <p>
+                        <img src="__PUBLIC__/Home/PCimages/phone_code.png"> <!--<img src="__PUBLIC__/Home/PCimages/phone_code_dyh.png">-->
+                    </p>
+                </dd>
+            </dl>
+            <dl>
+                <dt class="icon icon-location"></dt>
+                <dd>
+                    <p><span>广州  {$sys.address}</span></p>
+                    <div class="map-container">
+                        <div class="map-item">
+                            <div id="map_container">
+
+                            </div>
+                            <p>广州</p>
+                        </div>
+                    </div>
+                </dd>
+            </dl>
+        </article>
+    </div>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    function initialize() {
+        var mp = new BMap.Map('map_container');
+        mp.disableScrollWheelZoom();   //启用滚轮放大缩小，默认禁用
+        mp.disableDragging();
+        var lon = "{$sys.lon}";
+        var lat = "{$sys.lat}";
+        var point = new BMap.Point(lon,lat);
+        mp.centerAndZoom(point,15);
+        var marker = new BMap.Marker(point);// 创建标注
+        mp.addOverlay(marker);             // 将标注添加到地图中
+        marker.disableDragging();
+    }
+    function loadScript(){
+        var script1 = document.createElement("script");
+        script1.src = "http://api.map.baidu.com/api?v=1.4&&callback=initialize";
+        document.body.appendChild(script1);
+
+        var script2 = document.createElement("script");
+        script2.src = "http://developer.baidu.com/map/jsdemo/demo/convertor.js";
+        document.body.appendChild(script2);
+    }
+    window.onload = loadScript;
+</script>
+</body>
+</html>
+</html>

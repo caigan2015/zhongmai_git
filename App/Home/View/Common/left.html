@@ -1,0 +1,36 @@
+<article class="user_nav_box" id="userLeft" style="height: 802px;">
+
+    <div class="user_photo_box">
+        <div class="user_photo">
+            <img src="__PUBLIC__/Home/PCimages/user_photo_bg.png" class="user_photo_bg">
+            <img src="__PUBLIC__/Home/PCimages/car-002.png" class="photo">
+        </div>
+        <div class="user_name">{$userInfo.show_phone}</div>
+    </div>
+    <article class="user_icon_art">
+        <a class="user_icon l add_info" href="{:U('User/my')}">
+            <i class="i_1" onclick=""></i>
+                <span class="text">
+                    <i class="tip_top"></i>完善您的个人资料
+                </span>
+        </a>
+        <a class="user_icon c add_info" href="{:U('User/xin')}">
+            <i class="i_2"></i>
+            <span class="text" style="display: none;"><i class="tip_top"></i>完善您的信用信息</span>
+        </a>
+        <a class="user_icon r add_info" href="{:U('User/name')}">
+            <i class="i_3"></i>
+            <span class="text"><i class="tip_top"></i>完善您的认证信息</span>
+        </a>
+
+    </article>
+    <nav class="user_nav">
+        <ul class="user_ul">
+            <li class="[a]"><a href="{:U('User/index')}">我的申请<i class="tip_r"></i></a></li>
+            <li class="[b]"><a href="{:U('User/my')}">个人资料<i class="tip_r"></i></a></li>
+            <li class="[c]"><a href="{:U('User/xin')}">信用信息<i class="tip_r"></i></a></li>
+            <li class="[d]"><a href="{:U('User/name')}">实名认证<i class="tip_r"></i></a></li>
+            <li class="[e]"><a href="{:U('User/setting')}">修改密码<i class="tip_r"></i></a></li>
+        </ul>
+    </nav>
+</article>

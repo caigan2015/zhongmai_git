@@ -1,0 +1,152 @@
+<include file="Public:meta" title="角色编辑"/>
+</head>
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-admin-role-edit">
+		<input type="hidden"  name="id" value="{$roleInfo[0][id]}"/>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$roleInfo[0]['name']}" placeholder="" id="name" name="name" readonly="readonly" datatype="*4-16" nullmsg="角色名不能为空">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色简称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$roleInfo[0]['title']}" placeholder="" id="title" name="title" datatype="*4-16" nullmsg="角色简称不能为空">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">是否开启：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<if condition= "$roleInfo[0][status] eq 1 " >
+				<div class="radio-box">
+					<input name="status" type="radio" value="1" id="status-1" checked>
+					<label for="status-1">开启</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="0" id="status-0" name="status">
+					<label for="status-0">禁用</label>
+				</div>
+				<else/>
+				<div class="radio-box">
+					<input name="status" type="radio" value="1" id="status-1">
+					<label for="status-1">开启</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="0" id="status-0" name="status" checked>
+					<label for="status-0">禁用</label>
+				</div>
+				</if>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">备注：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="{$roleInfo[0][remark]}" placeholder="" id="" name="remark">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">网站权限：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<dl class="permission-list">
+					<volist name="level1" id="vo1" key="i" >
+					<dt>
+						<label>
+							<input type="checkbox" value="{$vo1.id}" name="level1[]"  {$vo1.check}  id="user-Character-0">
+							<font color="#06f">{$vo1.title}</font></label>
+					</dt>
+					<dd>
+						<volist name="level2[$i-1]" id="vo2" key="j" >
+						<dl class="cl permission-list2">
+							<dt>
+								<label class="">
+									<input type="checkbox" value="{$vo2.id}" name="level2[]"  {$vo2.check}  id="user-Character-0-0">
+									<font color="#f60">{$vo2.title}</font></label>
+							</dt>
+							<dd>
+								<volist name="level3[$i-1][$j-1]" id="vo3" key="k" >
+								<label class="">
+									<input type="checkbox" value="{$vo3.id}" name="level3[]" {$vo3.check}  id="user-Character-0-0-0">
+									{$vo3.title}</label>
+								</volist>
+							</dd>
+						</dl>
+						</volist>
+					</dd>
+					</volist>
+				</dl>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
+			</div>
+		</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript">
+$(function(){
+	$(".permission-list dt input:checkbox").click(function(){
+		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+	});
+	$(".permission-list2 dd input:checkbox").click(function(){
+		var l =$(this).parent().parent().find("input:checked").length;
+		var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+		if($(this).prop("checked")){
+			$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+			$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+		}
+		else{
+			if(l==0){
+				$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+			}
+			if(l2==0){
+				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+			}
+		}
+	});
+	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-role-edit").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			title:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Admin/editrole?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

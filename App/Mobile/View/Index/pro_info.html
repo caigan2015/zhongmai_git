@@ -1,0 +1,64 @@
+﻿<include file="common:head" title="商品详情"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>商品详情</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<volist name="goods_info" id="goods">
+<section class="top_banner">
+  <aside class="top_banner_aside indexBanner_aside"></aside>
+  <ul id="indexBanner" class="top_banner_ul">
+  	<volist name="goods_img" id="img">
+    <li> <a href="javascript:;"><img src="__PUBLIC__/upload/product/{$img['name']}"/></a> </li>
+    </volist>
+  </ul>
+  <img src="__PUBLIC__/Mobile/images/pro_info_geikai.gif" class="top_banner_geikai"/> </section>
+<div class="pro_con">
+<form id="getForm" method="post">
+<input type="hidden" name="goods_id" value="{$goods['id']}" />
+  <div class="pro_info_list pro_info_des">
+    <h3>{$goods['title']}</h3>
+    <p class="pro_old_price hui">市场价：{$goods['price']}元</p>
+    <p class="pro_price reb">￥{$goods['cost']}<span class="rebBg_dom">现价</span></p>
+  </div>
+  <div class="pro_info_list">
+    <div class="pro_info_list_con"> <span class="pro_info_key">数量：</span>
+      <div class="pro_cart_num_div buy_num"><a href="javascript:void(0);" class="cart_num_a cart_num_minus minus_num">-</a>
+        <input class="cart_num_input input_num" type="text" value="1" name="quantity">
+        <a href="javascript:void(0);" class="cart_num_a cart_num_add add_num">+</a></div>
+    </div>
+
+    <div class="pro_info_list_con"> <span class="pro_info_key">规格：</span>
+      <p class="pro_info_key_p">{$goods['specs']}</p>
+    </div>
+
+    <div class="pro_info_list_con"> <span class="pro_info_key">月销量：</span>
+      <p class="pro_info_key_p">{$mcount}</p>
+    </div>
+  </div>
+  <aside class="shopping_cart_aside footer_aside">
+    <input type="hidden" name="proid" value="1">
+	<ul class="shopping_cart_function_ul">
+    	<li class="shopping_store_up"><a href="javascript:void(0);" class="shopping_cart_store_up store_up {$ac}" onclick="store_up('{:U('User/my_collection',array('goods_id'=>$goods['id']))}','.store_up')"><span>{$text}</span></a></li>
+        <li class="shopping_add_cart"><input class="shopping_cart_add getForm_url" type="submit" value="加入购物车" data-url="{:U('Cart/add_shoppingcar')}"></li>
+        <li class="shopping_buy"><input class="shopping_input_submit getForm_url" type="submit" value="立即购买" data-url="{:U('Cart/pro_buy')}"></li>
+    </ul>
+	</aside>
+  <div class="pro_info_list">
+    <div class="pro_info_list_con"> <span class="pro_info_key">图文信息：</span> </div>
+  </div>
+  </form>
+  <article class="pro_info_article">
+    {$goods['content']}
+  </article>
+  <!-- <div class="load_more_div"><a href="javascript:void(0);">加载中...</a></div>-->
+</div>
+</volist>
+
+<include file="Common:footer" />
+</body>
+</html>

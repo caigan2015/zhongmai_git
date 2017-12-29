@@ -1,0 +1,119 @@
+<include file="Common:meta" title="更多车型"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/more.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/list.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/page.css">
+
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="container-center">
+    <nav class="path-nav">
+        <div class="breadcrumb">
+            <a href="{:U('Index/index')}">首页</a>
+            <i> &gt; </i>
+            <a href="javascript:void(0);">车型列表页</a>
+        </div>
+    </nav>
+
+    <section class="budget-filter">
+        <volist name="clist" id="sa" key="k">
+        <div class="condition-wrap">
+            <if condition="$arr eq ''">
+            <dl>
+                <dt>{$sa.name}</dt>
+                <dd><a href="{:U('Index/lists')}" class="active">不限</a></dd>
+                <volist name="sa[zi]" id="sb">
+                    <switch name="k">
+                        <case value="1">
+                            <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$sb['id'].'_0_0','key'=>$_GET['key']))}">{$sb.name}</a></dd>
+                        </case>
+                        <case value="2">
+                            <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>'0_'.$sb['id'].'_0','key'=>$_GET['key']))}">{$sb.name}</a></dd>
+                        </case>
+                        <case value="3">
+                            <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>'0_0_'.$sb['id'],'key'=>$_GET['key']))}">{$sb.name}</a></dd>
+                        </case>
+                    </switch>
+                </volist>
+            </dl>
+            <else/>
+                <dl>
+                    <dt>{$sa.name}</dt>
+                    <switch name="k">
+                        <case value="1">
+                        <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>'0_'.$arr[1].'_'.$arr[2],'key'=>$_GET['key']))}" <if condition="$arr[0] eq '0'">class="active"</if> >不限</a></dd>
+                        </case>
+                        <case value="2">
+                            <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_0_'.$arr[2],'key'=>$_GET['key']))}" <if condition="$arr[1] eq '0'">class="active"</if> >不限</a></dd>
+                        </case>
+                        <case value="3">
+                            <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$arr[1].'_0','key'=>$_GET['key']))}" <if condition="$arr[2] eq '0'">class="active"</if> >不限</a></dd>
+                        </case>
+                    </switch>
+                    <volist name="sa[zi]" id="sb">
+                        <switch name="k">
+                            <case value="1">
+                                <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$sb['id'].'_'.$arr[1].'_'.$arr[2],'key'=>$_GET['key']))}" <if condition="$arr[0] eq $sb['id']">class="active"</if> >{$sb.name}</a></dd>
+                            </case>
+                            <case value="2">
+                                <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$sb['id'].'_'.$arr[2],'key'=>$_GET['key']))}" <if condition="$arr[1] eq $sb['id']">class="active"</if> >{$sb.name}</a></dd>
+                            </case>
+                            <case value="3">
+                                <dd><a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$arr[1].'_'.$sb['id'],'key'=>$_GET['key']))}" <if condition="$arr[2] eq $sb['id']">class="active"</if> >{$sb.name}</a></dd>
+                            </case>
+                        </switch>
+                    </volist>
+                </dl>
+            </if>
+        </div>
+        </volist>
+
+    </section>
+
+    <div class="sort-wrap" id="sort-wrap">
+        <ul class="sort">
+            <li><a href="{:U('Index/lists',array('sort'=>$_GET['sort'],'key'=>$_GET['key']))}" <if condition="$_GET['order'] eq ''">class="active"</if> >首付最低</a></li>
+            <li><a href="{:U('Index/lists',array('order'=>'month','sort'=>$_GET['sort'],'key'=>$_GET['key']))}" <if condition="$_GET['order'] eq 'month'">class="active"</if> >月供最低</a></li>
+            <li><a href="{:U('Index/lists',array('order'=>'hot','sort'=>$_GET['sort'],'key'=>$_GET['key']))}" <if condition="$_GET['order'] eq 'hot'">class="active"</if> >人气最高</a></li>
+        </ul>
+    </div>
+
+    <ul class="ki-list" id="ki-list">
+        <volist name="list" id="vo">
+        <li>
+            <a href="{:U('Index/info',array('id'=>$vo['id']))}" target="_blank">
+                <div class="price">
+                    <dl class="downpayment">
+                        <dt>首付</dt>
+                        <dd><em>{$vo.cost}万</em></dd>
+                    </dl>
+                    <dl class="monthly-payment">
+                        <dt>月供</dt>
+                        <dd><em>{$vo.price}元</em></dd>
+                    </dl>
+                    <div class="tax">{$vo.specs}</div>
+                </div>
+                <div class="image">
+                    <img src="__PUBLIC__/upload/product/{$vo.img}" alt="{$vo.title}">
+                </div>
+                <div class="text">
+                    <div class="tit" title="{$vo.title}">{$vo.title}</div>
+                    <div class="car-price">厂商指导价：{$vo.money}万</div>
+                </div>
+            </a>
+        </li>
+        </volist>
+    </ul>
+    <div id="listPagination" class="list_pagination">
+        <div class="co_page_change">
+            <div class="pagination">
+                {$page}
+            </div>
+        </div>
+    </div>
+</div>
+
+<include file="Common:footer"/>
+</body>
+</html>

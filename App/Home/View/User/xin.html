@@ -1,0 +1,212 @@
+<include file="Common:meta" title="个人中心"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_left.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_con.css">
+<style>
+    .no-border{border:none;}
+    .sel-xin{height: 35px;line-height: 35px;width: 220px;border: 1px solid #ddd;}
+    select.sel-xin option{height: 30px;line-height: 30px;padding-top: 10px;}
+</style>
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="bg_col">
+    <article class="user_warp">
+        <include file="Common:left" a="" b="" c="cur" d="" e=""/>
+        <article class="user_con" id="userRight" style="height: 878px;">
+            <div class="title_box">
+                <p class="h2">信用信息</p>
+            </div>
+
+            <section class="user_from_box">
+                <div class="tab_input_box prompt_tip" id="qualificationInput" style="display: block;">
+                    <div class="user_prompt_box">
+                        <div class="user_p_tit"><i></i>温馨提示</div>
+                        <div class="user_p_info">完善个人真实资质信息，加入平台实名认证体系，获取中迈优质金融方案推荐，精准匹配、快速申请，让你的申请不再繁琐！</div>
+                    </div>
+                    <ul class="user_from">
+                        <li class="item">
+                            <div class="txt">职业</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="Career">
+                                    <select name="wid" id="wid" class="select sel-xin">
+                                        <option value="0">请选择职业身份</option>
+                                        <foreach name="work" item="w">
+                                            <if condition="$key eq $me[wid]">
+                                                <option value="{$key}" selected="selected">{$w}</option>
+                                            <else/>
+                                                <option value="{$key}">{$w}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">工资收入</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="Income">
+                                    <select name="pid" id="pid" class="select sel-xin">
+                                        <option value="0">请选择工资收入</option>
+                                        <foreach name="pay" item="p">
+                                            <if condition="$key eq $me[pid]">
+                                                <option value="{$key}" selected="selected">{$p}</option>
+                                            <else/>
+                                                <option value="{$key}">{$p}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">社保情况</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="Insurance">
+                                    <select name="sid" id="sid" class="select sel-xin">
+                                        <option value="0">请选择社保情况</option>
+                                        <foreach name="bao" item="bo">
+                                            <if condition="$key eq $me[did]">
+                                                <option value="{$key}" selected="selected">{$bo}</option>
+                                            <else/>
+                                                <option value="{$key}">{$bo}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">公积金</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="Funds">
+                                    <select name="gid" id="gid" class="select sel-xin">
+                                        <option value="0">请选择公积金</option>
+                                        <foreach name="jin" item="j">
+                                            <if condition="$key eq $me[gid]">
+                                                <option value="{$key}" selected="selected">{$j}</option>
+                                            <else/>
+                                                <option value="{$key}">{$j}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">信用记录</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="Credit">
+                                    <select name="xid" id="xid" class="select sel-xin">
+                                        <option value="0">请选择信用记录</option>
+                                        <foreach name="xin" item="x">
+                                            <if condition="$key eq $me[xid]">
+                                                <option value="{$key}" selected="selected">{$x}</option>
+                                            <else/>
+                                                <option value="{$key}">{$x}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">住房状态</div>
+                            <div class="info">
+                                <span class="input input_select no-border" id="HouseState">
+                                    <select name="zid" id="zid" class="select sel-xin">
+                                        <option value="0">请选择住房状态</option>
+                                        <foreach name="zhu" item="z">
+                                            <if condition="$key eq $me[zid]">
+                                                <option value="{$key}" selected="selected">{$z}</option>
+                                                <else/>
+                                                <option value="{$key}">{$z}</option>
+                                            </if>
+                                        </foreach>
+                                    </select>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="user_btn_box">
+                        <a href="javascript:;" class="btn_org" id="UserQuaSaveBtn">保存</a>
+                    </div>
+                </div>
+
+            </section>
+
+        </article>
+    </article>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    $(function(){
+        $('.user_icon i').hover(function(){
+            $(this).next('.text').stop(true,false).fadeIn('block');
+        },function(){
+            $(this).next('.text').stop(true,false).fadeOut('block');
+        });
+        $('#UserQuaSaveBtn').on('click',function(){
+            var i=0;
+            $(".select").each(function(){
+                if($(this).val()!='0'){
+                    i++;
+                }
+            });
+            if(i==0){
+                return false;
+            }
+            var wid = $('#wid').val();
+            var pid = $('#pid').val();
+            var sid = $('#sid').val();
+            var gid = $('#gid').val();
+            var xid = $('#xid').val();
+            var zid = $('#zid').val();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/xin?submit=1')}",
+                data:{wid:wid,pid:pid,sid:sid,gid:gid,xid:xid,zid:zid},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    if(str.code=='000'){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

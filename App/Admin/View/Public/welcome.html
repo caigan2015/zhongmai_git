@@ -1,0 +1,114 @@
+﻿<include file="Public:meta" title="后台欢迎页"/>
+</head>
+<body>
+<div class="page-container">
+	<p class="f-20 text-success">欢迎使用{:C('SYSTEM_NAME')} <span class="f-14">{:C('SYSTEM_VERSION')}</span></p>
+	<p>登录次数：{$userInfo.login_count} </p>
+	<p>本次登录IP：{$userInfo.last_login_ip}  本次登录时间：{$userInfo.last_login_time|date='Y-m-d H:i:s',###}</p>
+
+	<table class="table table-border table-bordered table-bg mt-20">
+		<thead>
+			<tr>
+				<th colspan="2" scope="col">服务器信息</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th width="30%">操作系统</th>
+				<td><span id="lbServerName">{$info[操作系统]}</span></td>
+			</tr>
+			<tr>
+				<td>运行环境</td>
+				<td>{$info[运行环境]}</td>
+			</tr>
+			<tr>
+				<td>主机名</td>
+				<td>{$info[主机名]}</td>
+			</tr>
+			<tr>
+				<td>WEB服务端口 </td>
+				<td>{$info[WEB服务端口]}</td>
+			</tr>
+			<tr>
+				<td>网站文档目录 </td>
+				<td>{$info[网站文档目录]}</td>
+			</tr>
+			<tr>
+				<td>浏览器信息 </td>
+				<td>{$info[浏览器信息]}</td>
+			</tr>
+			<tr>
+				<td>通信协议 </td>
+				<td>{$info[通信协议]}</td>
+			</tr>
+			<tr>
+				<td>请求方法 </td>
+				<td>{$info[请求方法]}</td>
+			</tr>
+			<tr>
+				<td>ThinkPHP版本 </td>
+				<td>{$info[ThinkPHP版本]}</td>
+			</tr>
+			<tr>
+				<td>上传附件限制 </td>
+				<td>{$info[上传附件限制]}</td>
+			</tr>
+			<tr>
+				<td>执行时间限制 </td>
+				<td>{$info[执行时间限制]}</td>
+			</tr>
+			<tr>
+				<td>服务器时间</td>
+				<td>{$info[服务器时间]}</td>
+			</tr>
+			<tr>
+				<td>北京时间 </td>
+				<td>{$info[北京时间]}</td>
+			</tr>
+			<tr>
+				<td>服务器域名/IP </td>
+				<td>{$info[服务器域名]}</td>
+			</tr>
+			<tr>
+				<td>服务器标识 </td>
+				<td><if condition="$sysinfo['win_n'] neq ''">{$sysinfo.win_n}<else/>{:@php_uname()}</if></td>
+			</tr>
+			<tr>
+				<td>服务器操作系统 </td>
+				<td>{$os.0} &nbsp;内核版本：<if condition="DIRECTORY_SEPARATOR eq '/'">{$os.2}<else/>{$os.1}</if></td>
+			</tr>
+			<tr>
+				<td>服务器解译引擎 </td>
+				<td>{$_SERVER['SERVER_SOFTWARE']}</td>
+			</tr>
+			<tr>
+				<td>服务器语言</td>
+				<td>{:getenv("HTTP_ACCEPT_LANGUAGE")}</td>
+			</tr>
+			<tr>
+				<td>网络使用状况</td>
+				<td><neq name="net_state" value="">{$net_state}<else/>无法获取当前服务器网络使用信息</neq></td>
+			</tr>
+			<tr>
+				<td>用户的IP地址</td>
+				<td>{$info[用户的IP地址]}</td>
+			</tr>
+			<tr>
+				<td>总空间 </td>
+				<td>{$sysinfo.DiskTotal}&nbsp;GB &nbsp;&nbsp;&nbsp;&nbsp;<span title="显示的是网站所在的目录的可用空间，非服务器上所有磁盘之可用空间！">可用空间</span>： <font color='#CC0000'><span>{$sysinfo.freeSpace}</span></font>&nbsp;GB</td>
+			</tr>
+			<tr>
+				<td>剩余空间 </td>
+				<td>{$info[剩余空间]}</td>
+			</tr>
+			<tr>
+				<td>系统平均负载 </td>
+				<td>{$sysinfo.loadAvg}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+</body>
+</html>

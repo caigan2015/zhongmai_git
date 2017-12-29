@@ -1,0 +1,142 @@
+<include file="Public:meta" title="类别添加"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-class-add">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">类别名称：</label>
+		<div class="formControls col-xs-8 col-sm-6">
+			<input type="text" class="input-text" value="" placeholder="请输入类别名称" id="name" name="name">
+		</div>
+	</div>
+	<div class="row cl">
+		<table>
+			<tr class="img_input" style="height:50px;line-height:50px;">
+				  <td style="text-align:left;height:30px;;font-size:14px;">
+					<label class="form-label col-xs-4 col-sm-3">上传图片：</label>
+					<img class="add_img" title="新增" src="__PUBLIC__/Admin/other/images/add_file.png"/>
+					<span style="margin-left:20px;font-size:12px;color:red;">支持JPG/PNG/GIF格式，单个图片大小建议小于10MB</span>
+				  </td>
+			</tr>
+		</table>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">排序：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="0" placeholder="请输入序号" id="sort" name="sort">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">链接：</label>
+		<div class="formControls col-xs-8 col-sm-8">
+			<input type="text" class="input-text" value="" placeholder="请输入链接" id="link" name="link">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否显示：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select" name="state">
+				<option value="1" class="sel-level1"> 显示   </option>
+				<option value="0" class="sel-level1"> 不显示   </option>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/Admin/other/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	//动态删除行
+	$('table').delegate('.delete_file','click', function (event) {
+		if(confirm('确定删除吗？')){
+			var cd = $(this).attr('val');
+			$(this).parent('td').parent('tr').remove();
+			$('.'+cd).fadeIn('block');
+		}			
+	});
+	
+	//鼠标经过变手形
+	$('table').delegate('.delete_file','mouseover', function (event) {
+		$(this).css('cursor','pointer');
+	});
+	$('table').delegate('.delete_file','mouseout', function (event) {
+		$(this).css('cursor','default');
+	});
+	
+	//异步上传图片
+	function ajaxImgUp(o,a){						
+		$(o).hide();
+		var loading = $("<span><img class='loading' src='__PUBLIC__/Admin/other/images/loading.gif' style='height:20px;'/> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+		
+		$.ajaxFileUpload({
+	
+			    url:"{:U('System/ajaxImgUp')}", //你处理上传文件的服务端
+                      secureuri:false,
+                      fileElementId:a,
+                      dataType: 'json',
+				//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                      success: function (data){
+					
+					loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='img_size[]' value='"+data.size+"' /><input type='hidden' name='img_title' value='"+data.name+"' /><input type='hidden' name='img_name' value='"+data.savename+"' />　<img width='80' src='__PUBLIC__/upload/banner/"+data.savename+"'/>");
+				
+                      }
+		});
+		return false;
+            
+           } 
+
+	//添加图片
+	$('.add_img').click(function (event){
+		//动态创建行
+		var s="<tr><td><label class='form-label col-xs-4 col-sm-3'>&nbsp;</label><img class='delete_file' val='add_img' title='删除' src='__PUBLIC__/admin/other/images/delete_file.png' />　<input type='file' size='50' name='timg' id='timg' /></td></tr>";
+		
+		$(this).parent('td').parent('tr').after(s);
+		$(this).fadeOut('block');
+		
+	}).css('cursor','pointer');
+	
+	//添加图片的绑定函数
+	$('table').delegate('#timg','change', function () {
+		ajaxImgUp(this,'timg')
+		
+	});
+	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#form-class-add").validate({
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Product/addclass?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+</script> 
+</body>
+</html>

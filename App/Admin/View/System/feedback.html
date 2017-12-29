@@ -1,0 +1,53 @@
+<include file="Public:meta" title="常见问题"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> </span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+                <th width="80">ID</th>
+                <th width="100">姓名</th>
+                <th width="100">手机号码</th>
+                <th>内容</th>
+                <th width="180">反馈时间</th>
+                <th width="120">ip</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="vo">
+                <tr class="text-c">
+                    <!-- <td><input type="checkbox" name="" value=""></td> -->
+                    <td>{$vo.id}</td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.phone}</td>
+                    <td>{$vo.content}</td>
+                    <td>{$vo.ctime}</td>
+                    <td>{$vo.ip}</td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+    $('.table-sort').dataTable({
+        "aaSorting": [[ id, "desc" ]],//默认第几个排序
+        "bStateSave": true,//状态保存
+        "aoColumnDefs": [
+            //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+            {"orderable":false,"aTargets":[0,1,2,3,4,5]}// 制定列不参与排序
+        ]
+    });
+    /*刷新页面*/
+    function refresh(){
+        window.location.reload();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<include file="Public:meta" title="角色管理"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"> <!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --> <a class="btn btn-primary radius" href="javascript:;" onclick="admin_role_add('添加角色','{:U('Admin/addrole')}','800')"><i class="Hui-iconfont">&#xe600;</i> 添加角色</a> </span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		<thead>
+			<tr class="text-c">
+				<!-- <th width="25"><input type="checkbox" value="" name=""></th> -->
+				<th width="40">ID</th>
+				<th width="200">角色名</th>
+				<th width="200">角色</th>
+				<th width="200">上级组</th>
+				<th width="200">状态</th>
+				<th width="300">描述</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<volist name="list" id="vo">
+			<tr class="text-c">
+				<!-- <td><input type="checkbox" value="" name=""></td> -->
+				<td>{$vo.id}</td>
+				<td>{$vo.name}</td>
+				<td>{$vo.title}</td>
+				<td><empty name="$vo.pid"><!-- <if condition='$vo.pid eq null'> -->无上级组<!-- <else /> --> {$vo.pid} <!-- </if> --></empty></td>
+				<td class="td-status">
+					<if condition="$vo.status eq 1">
+					<span class="label label-success radius">开启</span>
+					<else/>
+					<span class="label radius">禁用</span>
+					</if>
+				</td>
+				<td>{$vo.remark}</td>
+				<td class="f-14"><a title="编辑" href="javascript:;" onclick="admin_role_edit('角色编辑','{:U('Admin/editrole')}','{$vo.id}')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="admin_role_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+			</tr>
+			</volist>
+		</tbody>
+	</table>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/> 
+<script type="text/javascript">
+/*管理员-角色-添加*/
+function admin_role_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*管理员-角色-编辑*/
+function admin_role_edit(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+/*管理员-角色-删除*/
+function admin_role_del(obj,id){
+	layer.confirm('角色删除须谨慎，确认要删除吗？',function(index){
+		var url = "{:U('Admin/deleterole?dosubmit=1')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").remove();
+				layer.msg(str.msg,{icon:1,time:1000});
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+			}
+		});
+	});
+}
+$('.table-sort').dataTable({
+	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[1,2,3,4,5,6]}// 制定列不参与排序
+	]
+});
+
+/*刷新页面*/ 
+function refresh(){
+	window.location.reload();
+}
+</script>
+</body>
+</html>

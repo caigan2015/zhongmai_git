@@ -1,0 +1,119 @@
+<include file="Common:meta" title="忘记密码"/>
+
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="forgetPwd">
+    <div class="for-ctn bor-box">
+        <div class="ctn-header">
+            <div class="header-text">找回密码</div>
+        </div>
+        <blockquote id="nav" class="nav">
+            <div class="step-box step01"></div>
+        </blockquote>
+        <article>
+
+            <blockquote id="form01" class="forget-box sideTip">
+                <div class="pad10B pad30RL pad175L clrfix">
+                    <div class="input-item fl clrfix">
+                        <div class="icon-box fl"><i class="icon icon01"></i></div>
+                        <div class="input-box fl"><input id="mobile" name="mobile" maxlength="11" class="AppCheck unsubmit nocheck sideTip data" placeholder="手机号" type="text"></div>
+                    </div>
+                    <div class="jyts bor-box font-red fl tip-mobile"><i class="waring"></i><span>您输入的手机号有误</span></div>
+                </div>
+
+                <div class="pad10B pad30RL pad175L clrfix">
+                    <div class="input-item fl clrfix w-210">
+                        <div class="icon-box fl"><i class="icon icon03"></i></div>
+                        <div class="input-box fl"><input id="ImgValidateCode1" name="code" maxlength="4" class="AppCheck nocheck unsubmit sideTip data w-150" placeholder="验证码" type="text"></div>
+                    </div>
+                    <div class="fl GetImgValidateCode"><img class="change" id="code_img" src="{:U('Index/code?code_len=4&font_size=14&width=110&height=40&code='.time())}" style="border: 1px solid #ddd;cursor: pointer;"></div>
+                    <div class="jyts bor-box font-red fl tip-code"><i class="waring"></i><span>您输入的验证码有误</span></div>
+                </div>
+                <div id="step-btn01" data-id="1" class="btn step-btn">提交</div>
+            </blockquote>
+
+        </article>
+    </div>
+</div>
+<div class="footer-bottom">
+    Copyright © 2015-{$data.time|default=time()|date='Y',###} 版权所有 中迈融资租赁（广州）有限公司. &nbsp;&nbsp;<a href="http://www.miibeian.gov.cn/" target="_blank" style="color: #737476;font-size: 12px;">粤ICP备17115139号</a> <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030002000001" target="_blank" style="color: #737476;font-size: 12px;"><img src="__PUBLIC__/Home/PCimages/icon_yuewangga1.png" style="margin: -2px 0 0 5px;"> 粤公网安备 44030002000001号</a>
+</div>
+
+<script src="__PUBLIC__/Home/PCscript/jquery-1.3.2.min.js"></script>
+<script src="__PUBLIC__/Home/PCscript/function.js"></script>
+<script src="__PUBLIC__/Home/PCscript/main.js"></script>
+<script src="__PUBLIC__/Home/confirm/jquery.confirm.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.change').on('click',function(){
+            var that = document.getElementById('code_img');
+            that.src = that.src + '&' + Math.random();
+        });
+        $('#step-btn01').on('click',function(){
+            var phone = $('input[name=mobile]').val();
+            var code = $('input[name=code]').val();
+            var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+            if(phone==''||phone==null){
+                $('.tip-mobile span').html('手机号码不能为空');
+                $('.tip-mobile').fadeIn('block');
+                return false;
+            }
+            if(!rp.test(phone)){
+                $('.tip-mobile span').html('您输入的手机号有误');
+                $('.tip-mobile').fadeIn('block');
+                return false;
+            }
+            if(code==''||code==null){
+                $('.tip-code span').html('验证码不能为空');
+                $('.tip-code').fadeIn('block');
+                return false;
+            }
+            $('.tip-mobile').fadeOut('block');
+            $('.tip-code').fadeOut('block');
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/pass?submit=1')}",
+                data:{phone:phone,code:code},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/pass_1')}";
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<include file="Public:meta" title="导航管理"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a class="btn btn-primary radius" onclick="system_link_add('添加导航','{:U('Content/addlink')}','800','400')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加导航</a> <a href="javascript:;" onclick="system_link_set('导航设置','{:U('Content/setlink')}','1000','250')" class="btn btn-success radius"><i class="Hui-iconfont">&#xe61d;</i> 导航设置</a></span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+					<th width="80">ID</th>
+					<th width="80">排序</th>
+					<th width="120">导航名</th>
+					<th>地址</th>
+					<th width="80">类型</th>
+					<th width="80">是否新建</th>
+					<th width="100">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr class="text-c">
+					<!-- <td><input type="checkbox" name="" value=""></td> -->
+					<td>{$vo.id}</td>
+					<td>{$vo.sort}</td>
+					<if condition="$vo.pid eq 0">
+					<td class="text-l">{$vo.name}</td>
+					<else/>
+					<td class="text-l">&nbsp;&nbsp;├&nbsp;{$vo.name}</td>
+					</if>
+					<td>{$vo.url}</td>
+					<td><if condition="$vo.type eq 1">站内<else/>站外</if></td>
+					<td><if condition="$vo.jump eq 1">新建<else/>不新建</if></td>
+					<td class="f-14"><a title="编辑" href="javascript:;" onclick="system_link_edit('导航编辑','{:U('Content/editlink')}','{$vo.id}','800','480')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="system_link_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+				</tr>
+					<volist name="vo[zi]" id="vz">
+					<tr class="text-c">
+						<!-- <td><input type="checkbox" name="" value=""></td> -->
+						<td>{$vz.id}</td>
+						<td>{$vz.sort}</td>
+						<td class="text-l">&nbsp;&nbsp;├&nbsp;{$vz.name}</td>
+						<td>{$vz.url}</td>
+						<td><if condition="$vz.type eq 1">站内<else/>站外</if></td>
+						<td><if condition="$vz.jump eq 1">新建<else/>不新建</if></td>
+						<td class="f-14"><a title="编辑" href="javascript:;" onclick="system_link_edit('导航编辑','{:U('Content/editlink')}','{$vz.id}','800','480')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="system_link_del(this,'{$vz.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+					</tr>
+					</volist>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 6, "asc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,1,2,3,4,5,6]}// 制定列不参与排序
+	]
+});
+/*导航-添加*/
+function system_link_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*导航-编辑*/
+function system_link_edit(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+/*导航-设置*/
+function system_link_set(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*导航-删除*/
+function system_link_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		var url = "{:U('Content/deletelink')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").remove();
+				layer.msg(str.msg,{icon:1,time:1000});
+				refresh();
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+			}
+		});
+	});
+}
+/*刷新页面*/ 
+function refresh(){
+	window.location.reload();
+}
+</script>
+</body>
+</html>

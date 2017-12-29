@@ -1,0 +1,70 @@
+<include file="common:head" title="首页"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="{:U('Index/index')}" class="skin_logo_icon"></a></div>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="common:link" />
+<section class="top_banner">
+  <aside class="top_banner_aside indexBanner_aside"></aside>
+  <ul id="indexBanner" class="top_banner_ul">
+    <volist name="banner" id="ban">
+      <li> <a href="{$ban['url']}"><img src="__PUBLIC__/upload/banner/{$ban['img']}"/></a> </li>
+    </volist>
+  </ul>
+  <img src="__PUBLIC__/Mobile/images/top_banner_geikai.gif" class="top_banner_geikai"/> </section>
+<div class="index_kuang">
+  <div class="warp_con">
+    <ul class="index_yuang_ul">
+      <volist name="sort" id="vs">
+      <li><a href="{:U('Index/pro',array('sort_id'=>$vs['id']))}"><span class="icon_span"><img src="__PUBLIC__/upload/banner/{$vs['banner_pic']}" alt="{$vs['name']}"/></span>
+        <p>{$vs['name']}</p>
+      </a> </li>
+      </volist>
+      <li><a href="javascript:;"><span class="icon_span"><img src="__PUBLIC__/Mobile/images/menjin.jpg" alt="门禁"/></span>
+        <p>门禁</p>
+      </a> </li>
+      <li><a href="javascript:;"><span class="icon_span"><img src="__PUBLIC__/Mobile/images/shequ.jpg" alt="社区管理"/></span>
+        <p>社区管理</p>
+      </a> </li>
+      <li><a href="javascript:;"><span class="icon_span"><img src="__PUBLIC__/Mobile/images/manager.jpg" alt="管理处"/></span>
+        <p>管理处</p>
+      </a> </li>
+    </ul>
+  </div>
+</div>
+<div class="index_kuang hui_bg">
+  <div class="warp_con">
+    <ul class="index_other_class_ul">
+      <li><a href="{:U('Index/pro')}" title="全部商品">全部商品</a></li>
+      <volist name="classify" id="cla">
+        <li><a href="{:U('Index/pro',array('classify'=>$cla['id']))}" title="{$cla['name']}">{$cla['name']}</a></li>
+      </volist>
+    </ul>
+  </div>
+</div>
+<div class="index_kuang">
+  <div class="warp_con">
+    <h2>热门推荐</h2>
+    <volist name="goods_b" id="goo">
+      <div class="index_hot_pro">
+        <h3>{$goo['title']}</h3>
+        <div class="index_hot_pro_img"> <a href="{:U('Index/pro_info',array('id'=>$goo['id']))}">
+          <div class="index_hot_pro_img_con"><span class="left_f">现价￥{$goo['price']}元</span><span class="right_f deltext">原价￥{$goo['cost']}元</span></div>
+          <img src="__PUBLIC__/upload/product/{$goo['pic']}" alt="{$goo['title']}" style="hright:"/></a></div>
+      </div>
+    </volist>
+    <ul class="index_pro_list_ul">
+      <volist name="goods_s" id="gs">
+        <li><div class="index_pro_list_img"><a href="{:U('Index/pro_info',array('id'=>$gs['id']))}"><img src="__PUBLIC__/upload/product/{$gs['pic']}"/></a></div>
+          <p class="index_pro_list_title">{$gs['name']}</p><p class="index_pro_list_oldPrice hui">市场价：{$gs['price']}元</p><p class="index_pro_list_nowPrice reb">现价:￥{$gs['cost']}元</p>
+        </li>
+      </volist>
+    </ul>
+    <!-- <div class="load_more_div"><a href="javascript:void(0);">查看更多</a></div> -->
+  </div>
+</div>
+<include file="Common:footer" />
+</body>
+</html>

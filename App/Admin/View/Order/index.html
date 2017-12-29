@@ -1,0 +1,184 @@
+<include file="Public:meta" title="订单列表"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+	<form class="Huiform" method="post" action="{:U('Order/index?dosubmit=1')}" target="_self">
+	<div class="text-c">
+		<span class="select-box inline">
+		<select name="status" class="select">
+			<option value="">全部状态</option>
+			<if condition="$status eq '0'">
+			<option value="0" selected="selected">未支付</option>
+			<else/>
+			<option value="0">未支付</option>
+			</if>
+			<if condition="$status eq '1'">
+			<option value="1" selected="selected">已支付</option>
+			<else/>
+			<option value="1">已支付</option>
+			</if>
+			<if condition="$status eq '3'">
+			<option value="3" selected="selected">已成功</option>
+			<else/>
+			<option value="3">已成功</option>
+			</if>
+			<if condition="$status eq '8'">
+			<option value="8" selected="selected">已取消</option>
+			<else/>
+			<option value="8">已取消</option>
+			</if>
+		</select>
+		</span> 日期范围：
+		<input type="text" onfocus="WdatePicker()" name="stime" value="{$stime}" id="datemin" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" onfocus="WdatePicker()" name="etime" value="{$etime}" id="datemax" class="input-text Wdate" style="width:120px;">
+		<input type="text" name="number" value="{$number}" id="" placeholder="订单编号" style="width:250px" class="input-text">
+		<button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button>
+	</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">订单金额：{$allprice}<span style="margin-left:20px;">支付订单：{$paynum}笔</span></span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-bg table-hover table-sort">
+			<thead>
+				<tr class="text-c">
+					<!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+					<th width="80">ID</th>					
+					<th>订单编码</th>
+					<th width="100">商家</th>
+					<th width="100">金额</th>
+					<th width="80">邮费</th>
+					<th width="100">姓名</th>
+					<th width="100">手机号码</th>
+					<th width="100">支付方式</th>
+					<th width="180">下单时间</th>
+					<th width="60">状态</th>
+					<th width="220">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<tr class="text-c">
+					<!-- <td><input type="checkbox" value="" name=""></td> -->
+					<td>{$vo.id}</td>					
+					<td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="order_saw('查看','{:U('Order/saw')}','{$vo.id}','800','500')" title="查看">{$vo.order_num}</u></td>					
+					<td>{$vo.m}</td>
+					<td>{$vo.amount}</td>
+					<td>{$vo.express}</td>
+					<td>{$vo.recipient}</td>
+					<td>{$vo.phone}</td>
+					<td>{$vo.payment}</td>
+					<td>{$vo.postdate|date='Y-m-d H:i:s',###}</td>
+					<td class="td-status">{$vo.status}</td>
+					<td class="f-14 td-manage">						
+						<if condition="$vo.state eq 0 || $vo.state eq 8">
+						<a style="text-decoration:none" onclick="order_del(this,{$vo.id})" href="javascript:;" title="删除"><i class="Hui-iconfont">&#xe6e2;</i></a>
+						</if>
+						<a style="text-decoration:none" class="ml-5" onClick="order_edit('订单编辑','{:U('Order/edit')}','{$vo.id}','800','500')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a> 
+					</td>
+				</tr>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[1,2,5,6,7,9,10]}// 不参与排序的列
+	]
+});
+
+/*刷新页面*/ 
+function refresh(){
+	window.location.reload();
+}
+
+/*订单-查看*/
+function order_saw(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+/*订单-编辑*/
+function order_edit(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+
+/*订单-删除*/
+function order_del(obj,id){
+	layer.confirm('确认要彻底删除吗？',function(index){
+		var url = "{:U('Order/delete')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").remove();
+				layer.msg(str.msg,{icon:1,time:1000});
+				refresh();
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+				refresh();
+			}
+		});
+	});
+}
+/*订单-修改*/
+function order_shenhe(obj,id){
+	layer.confirm('修改订单状态？', {
+		btn: ['已支付','已完成','取消'], 
+		shade: false,
+		closeBtn: 0
+	},
+	function(){
+		var url = "{:U('Order/audit')}";
+		$.post(url,{id:id,status:2},function(){
+			layer.msg('已支付', {icon:6,time:1000});
+			refresh();
+		});
+	},
+	function(){
+		var url = "{:U('Order/audit')}";
+		$.post(url,{id:id,status:2},function(){
+			layer.msg('已完成', {icon:5,time:1000});
+			refresh();
+		});
+	});	
+}
+/*订单-删除*/
+function order_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		var url = "{:U('Order/audit')}";
+		$.post(url,{id:id,status:-1},function(){
+			layer.msg('已删除!',{icon: 5,time:1000});
+			refresh();
+		});
+	});
+}
+
+/*订单-已完成*/
+function order_finish(obj,id){
+	layer.confirm('确认已完成吗？',function(index){
+		var url = "{:U('Order/audit')}";
+		$.post(url,{id:id,status:6},function(){
+			layer.msg('已完成!',{icon: 6,time:1000});
+			refresh();
+		});
+	});
+}
+/*订单-已发货*/
+function order_fahuo(obj,id){
+	var url = "{:U('Order/audit')}";
+	$.post(url,{id:id,status:3},function(){
+		layer.msg('已发货!', {icon: 1,time:2000});
+		refresh();
+	});
+}
+
+</script> 
+</body>
+</html>

@@ -1,0 +1,48 @@
+<include file="common:head" title="订单支付"/>
+    <script type="text/javascript">
+            var url="{:U('User/order')}";
+            var timer = null;
+            function judge(){
+                var i = 6;
+                timer = setInterval(function(){
+                    if(i<=0){
+                        clearInterval(timer);
+                        window.location.href=url;
+                    }
+                    else{
+                        i--;
+                        $(".time").html(i);
+                    }
+                },1000)
+
+            }
+            judge();
+        </script>
+</head>
+<body>
+<header class="skin_topHeader">
+    <div class="skin_topLeft"><a href="{:U('User/order')}" class="skin_back_icon"></a></div>
+    <h1><span>订单支付</span></h1>
+    <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="index_kuang">
+    <section class="myInfoCon">
+        <div class="login_div">
+            <form action="my.html">
+                <ul class="form_ul">
+                    <li>
+                        <if condition="$error eq '1'">
+                            支付失败
+                        <else/>
+                            支付成功，稍后会有客服人员联系您，
+                        </if>
+                        ，系统会在<em class="time">6</em>内跳到我的订单，<a href="{:U('User/order')}" style="color: #e60012;text-decoration: underline;">如何没有跳转请点击这里</a></li>
+                </ul>
+            </form>
+        </div>
+    </section>
+</div>
+<include file="Common:footer" />
+</body>
+</html>

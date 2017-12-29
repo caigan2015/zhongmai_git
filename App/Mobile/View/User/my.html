@@ -1,0 +1,57 @@
+﻿<include file="common:head" title="我的"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>我的</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="my_globel">
+  <section class="my_globel_section">
+    <div class="my_globel_con"><a href="{:U('User/personal_detail')}"><img src="__PUBLIC__/Mobile/images/my_pic.png" class="my_pic" alt=""/></a>
+      <p class="my_globel_name">{$username}</p>
+    </div>
+  </section>
+  <img src="__PUBLIC__/Mobile/images/my_banner.jpg" class="my_globel_bg"/> </div>
+<aside class="my_system_aside">
+  <ul>
+    <li> <a href="{:U('User/my_collection_goods')}" class="block_a"></a>
+      <div class="my_system_con"><em>{$collect_num}</em>
+        <p class="my_system_icon my_system_store_up_icon">收藏</p>
+      </div>
+    </li>
+    <li> <a href="{:U('User/order')}" class="block_a"></a>
+      <div class="my_system_con"><em>{$orders_num}</em>
+        <p class="my_system_icon my_system_order_icon">订单</p>
+      </div>
+    </li>
+  </ul>
+</aside>
+<div class="index_kuang topbottom_gekai">
+  <ul class="menu_list_ul">
+ 	 <li> <a href="{:U('User/my_coupon')}" class="all_a_2"></a>
+      <div class="right_f"><em class="menu_list_icon my_coupon_icon"></em>我的优惠券</div>
+    </li>
+    <li> <a href="{:U('User/logout')}" class="all_a_2"></a>
+      <div class="right_f"><em class="menu_list_icon back_icon"></em>退出登录</div>
+    </li>
+  </ul>
+  
+</div>
+<div class="index_kuang">
+  <div class="warp_con_2">
+    <h2>热门推荐</h2>
+    <volist name="goods_b" id="goo">
+    <div class="index_hot_pro">   
+      <h3>{$goo['title']}</h3>
+      <div class="index_hot_pro_img"> <a href="{:U('Index/pro_info',array('id'=>$goo['id']))}">
+        <div class="index_hot_pro_img_con"><span class="left_f">现价￥{$goo['price']}元</span><span class="right_f deltext">原价￥{$goo['cost']}元</span></div>
+        <img src="__PUBLIC__/upload/product/{$goo['pic']}" alt="{$goo['title']}" style="hright:"/></a></div>
+    </div>
+    </volist>
+  </div>
+</div>
+<include file="Common:footer" />
+</body>
+</html>

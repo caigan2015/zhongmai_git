@@ -1,0 +1,126 @@
+<include file="Common:meta" title="更多车型"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Apps/css/scrollbar.css">
+
+</head>
+    <body>
+        <header class="top_header_box">
+            <div class="top_header">
+                <div class="left"><a href="{:U('Index/index')}" class="link_a back_a"></a></div>
+                <div class="center">
+                    <!--<p class="title">车型列表</p>-->
+                    <form action="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$_GET['sort']))}" method="get">
+                    <div style="text-align:left;width: 89%;border: 1px solid #eee;border-radius: .06667rem;float: right;height: 25px;line-height: 25px;margin-top: 13px;margin-right: 10px;">
+                        <span style="float: left;position: absolute;width: 25px;height:  25px;background: url('__PUBLIC__/Apps/images/search-icon.png') no-repeat center;background-size:  15px  15px;"></span>
+                        <input type="text" name="keys" value="{$keys}" placeholder="请输入关键字" style="width: 70%;height: 25px;line-height: 25px;padding-left: 25px;"/>
+                    </div>
+                    </form>
+                </div>
+                <div class="right">
+
+                </div>
+            </div>
+        </header>
+        <aside class="ot_sel_class" id="setClass">
+            <div class="ot_sel_class_box">
+                <ul class="lo_sel_class">
+                    <volist name="clist" id="sa" key="k">
+                        <if condition="$arr eq ''">
+                            <li class="sub_li">
+                                <a href="javascript:void(0);" class="sub_a setSel" data-box="setClass"><span class="text">{$sa.name}</span></a>
+                                <div class="class">
+                                    <div class="class_box">
+                                        <a href="{:U('Index/lists')}" class="button_a ac"><p class="text">不限</p></a>
+                                        <volist name="sa[zi]" id="sb">
+                                            <switch name="k">
+                                                <case value="1">
+                                                    <a href="{:U('Index/lists',array('sort'=>$sb['id'].'_0_0','keys'=>$_GET['keys']))}" class="button_a"><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                                <case value="2">
+                                                    <a href="{:U('Index/lists',array('sort'=>'0_'.$sb['id'].'_0','keys'=>$_GET['keys']))}" class="button_a"><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                                <case value="3">
+                                                    <a href="{:U('Index/lists',array('sort'=>'0_0_'.$sb['id'],'keys'=>$_GET['keys']))}" class="button_a"><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                            </switch>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </li>
+                        <else/>
+                            <li class="sub_li">
+                                <a href="javascript:void(0);" class="sub_a setSel" data-box="setClass"><span class="text">{$sa.name}</span></a>
+                                <div class="class">
+                                    <div class="class_box">
+                                        <switch name="k">
+                                            <case value="1">
+                                                <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>'0_'.$arr[1].'_'.$arr[2],'keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[0] eq 0">ac</if>'><p class="text">不限</p></a>
+                                            </case>
+                                            <case value="2">
+                                                <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_0_'.$arr[2],'keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[1] eq 0">ac</if>'><p class="text">不限</p></a>
+                                            </case>
+                                            <case value="3">
+                                                <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$arr[1].'_0','keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[2] eq 0">ac</if>'><p class="text">不限</p></a>
+                                            </case>
+                                        </switch>
+                                        <volist name="sa[zi]" id="sb">
+                                            <switch name="k">
+                                                <case value="1">
+                                                    <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$sb['id'].'_'.$arr[1].'_'.$arr[2],'keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[0] eq $sb[id]">ac</if>'><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                                <case value="2">
+                                                    <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$sb['id'].'_'.$arr[2],'keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[1] eq $sb[id]">ac</if>'><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                                <case value="3">
+                                                    <a href="{:U('Index/lists',array('order'=>$_GET['order'],'sort'=>$arr[0].'_'.$arr[1].'_'.$sb['id'],'keys'=>$_GET['keys']))}" class='button_a <if condition="$arr[2] eq $sb[id]">ac</if>'><p class="text">{$sb.name}</p></a>
+                                                </case>
+                                            </switch>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </li>
+                        </if>
+                    </volist>
+                    <li class="sub_li">
+                        <a href="javascript:void(0);" class="sub_a setSel" data-box="setClass"><span class="text">排序</span></a>
+                        <div class="class">
+                            <div class="lists_box">
+                                <a href="{:U('Index/lists',array('sort'=>$_GET['sort'],'keys'=>$_GET['keys']))}" class="list_a <if condition="$_GET['order'] eq ''">ac</if>"><p class="text">首付最低</p></a>
+                                <a href="{:U('Index/lists',array('order'=>'month','sort'=>$_GET['sort'],'keys'=>$_GET['keys']))}" class="list_a <if condition="$_GET['order'] eq 'month'">ac</if>"><p class="text">月供最低</p></a>
+                                <a href="{:U('Index/lists',array('order'=>'hot','sort'=>$_GET['sort'],'keys'=>$_GET['keys']))}" class="list_a <if condition="$_GET['order'] eq 'hot'">ac</if>"><p class="text">人气最高</p></a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="ot_sel_class_bg bg"></div>
+        </aside>
+        <div class="co_second_warp co_pro_warp" id="wrapper">
+            <div class="co_pro_warp_box">
+                <ul class="lo_pro" id="loading-list">
+                    <volist name="list" id="vo">
+                    <li>
+                        <div class="left">
+                            <a href="{:U('Index/info',array('id'=>$vo['id']))}"><img src="__PUBLIC__/upload/product/{$vo.img}" class="img" /></a>
+                        </div>
+                        <div class="right">
+                            <p class="title"><a href="{:U('Index/info',array('id'=>$vo['id']))}">{$vo.title}</a></p>
+                            <p class="info">{$vo.specs}</p>
+                            <p class="des"><span class="key">厂商指导价：</span><span class="name">{$vo.money}万</span></p>
+                            <p class="des"><span class="key">首付：</span><span class="name hot">{$vo.cost}万</span></p>
+                            <p class="des"><span class="key">月供：</span><span class="name hot">{$vo.price}元</span></p>
+                        </div>
+                    </li>
+                    </volist>
+                </ul>
+                <div id="pullUp" <if condition="$flag neq 1">style="display:none;"</if> >
+                    <input type="hidden" class="ajax-url" value="{:U('Index/ajax_more',array('order'=>$_GET['order'],'sort'=>$_GET['sort'],'keys'=>$_GET['keys']))}"/>
+                    <input type="hidden" class="next-page" value="2"/>
+                    <input type="hidden" class="flag-page" value="{$flag}"/>
+                    <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+                </div>
+            </div>
+        </div>
+        <script type="application/javascript" src="__PUBLIC__/Apps/js/iscroll.js"></script>
+        <script type="application/javascript" src="__PUBLIC__/Apps/js/uploading.js"></script>
+    </body>
+</html>

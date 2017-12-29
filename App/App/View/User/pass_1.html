@@ -1,0 +1,155 @@
+<include file="Common:meta" title="找回密码"/>
+<script type="text/javascript">
+    $(function(){
+        $('.get_code').on('click',function(){
+            if($(this).hasClass('ac')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+        $('#step-btn02').on('click',function(){
+            var phone = $('input[name=mobile]').val();
+            var code = $('input[name=code]').val();
+            if(code==''||code==null){
+                $('.tip-code span').html('验证码不能为空');
+                $('.tip-code').fadeIn('block');
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/pass_1?submit=1')}",
+                data:{phone:phone,code:code},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/pass_2')}";
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$('input[name=mobile]').val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('.get_code').html('重新获取验证码');
+            $('.get_code').removeClass('ac');
+            return false;
+        }
+        $('.get_code').addClass('ac');
+        $('.get_code').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+</script>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left">
+            <a href="javascript:void(0);" class="link_a back_a goBack"></a>
+        </div>
+        <div class="center"><p class="title">找回密码</p></div>
+        <div class="right">
+            <a href="{:U('User/login')}" class="link_a"><p class="text red">登录</p></a>
+        </div>
+    </div>
+</header>
+<div class="co_second_warp co_login_warp">
+    <div class="co_second_warp_box">
+        <ul class="lo_form">
+            <li>
+                <div class="key">
+                    <p class="title">手机号</p>
+                </div>
+                <div class="name">
+                    <input type="text" name="mobile" value="{$phone}" class="ipt_text" placeholder="请输入您的手机号码" readonly="readonly"/>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">验证码</p>
+                </div>
+                <div class="name clo2">
+                    <input type="text" name="code" class="ipt_text" placeholder="请输入验证码" />
+                    <a href="javascript:void(0);" class="other_a get_code">获取验证码</a>
+                </div>
+            </li>
+            <li>
+                <div class="button_box">
+                    <a href="javascript:void(0);" class="button_a red" id="step-btn02">身份验证</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

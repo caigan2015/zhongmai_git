@@ -1,0 +1,54 @@
+﻿<include file="common:head" title="填写订单"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>填写订单</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="pro_con">
+<form id="getForm" action="{:U('Cart/add_order')}" method="post">
+<input type="hidden" name="inde" value={$inde} /><!-- inde的作用是用来区分是购物车购买（1）还是立即购买（2），立即购买就要传商品id和数量，购物车则不需 -->
+<input type="hidden" name="goods_id" value="{$goods_id}" />
+<input type="hidden" name="quantity" value="{$quantity}" />
+<ul class="pro_buy_ul">
+<volist name="shoppingcar_list" id="shop">
+	<li>
+    <a class="all_a" href="javascript:void(0);"></a>
+    	<div class="left_f"><img src="__PUBLIC__/upload/product/{$shop['smallpic']}" alt="{$shop['goods_name']}"/></div>
+      <div class="right_f">
+        <p class="pro_title">{$shop['goods_name']}</p>
+        <p class="pro_num">× {$shop['quantity']}</p>
+      </div>
+      <div class="pro_buy_li_price reb">￥{$shop['price']}</div>
+    </li>
+   </volist>
+</ul>
+<ul class="pro_buy_ul pro_buyform_ul">
+  	<li class="pro_buy_con_li"><div class="pro_buy_key">收件人</div><div class="pro_buy_con reb"><label for="p1" class="pro_buy_label my_label">请填定收件人姓名</label><input class="pro_buy_inputText" id="p1" type="text" value="{$info.username}" name="username"></div></li>
+    <li class="pro_buy_con_li"><div class="pro_buy_key">联系电话</div><div class="pro_buy_con reb"><label for="p2" class="pro_buy_label my_label">请填定收件人联系电话</label><input class="pro_buy_inputText" id="p2" type="text" value="{$info.phone}" name="phone"></div></li>
+    <li class="pro_buy_con_li"><div class="pro_buy_key">联系地址</div><div class="pro_buy_con reb"><label for="p3" class="pro_buy_label my_label">请填定收件人详细地址</label><input class="pro_buy_inputText" id="p3" type="text" name="address"></div></li>
+  </ul>
+  <ul class="pro_buy_ul">
+  	<li class="pro_buy_con_li"><div class="pro_buy_key">商品金额</div><div class="pro_buy_con reb">￥{$amount}</div></li>
+    <li class="pro_buy_con_li"><div class="pro_buy_key">运费</div><div class="pro_buy_con reb">￥{$express}</div></li>
+  </ul>
+ <ul class="pro_buy_ul">
+  	<li class="pro_buy_con_li"><div class="pro_buy_key">注意事项</div><div class="pro_buy_des">凭质保证书及商城发票，可享受全国联保服务（奢侈品、钟表除外；奢侈品、钟表由威之家联系保修，享受法定三包售后服务），与您亲临商场选购的商品享受相同的质量保证。商城还为您提供具有竞争力的商品价格和运费政策，请您放心购买！ </div></li>
+  </ul>
+  <aside class="shopping_cart_aside footer_aside">
+    <ul class="buy_function_ul">
+        <li class="buy_function_con"><div class="buy_function_text">实付款：<span class="big_font">￥{$allpay}</span></div></li>
+        <li class="buy_function_submit">
+        <input type="submit" class="shopping_input_submit" value="提交订单">
+        <!--<a href="javascript:void(0);" class="shopping_cart_submit submit" data-form="getForm">立即购买</a>--></li>
+    </ul>
+	</aside>
+  </form>
+</div>
+
+<include file="Common:footer" />
+</body>
+</html>

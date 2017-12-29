@@ -1,0 +1,22 @@
+#confirmBox{
+    width: 18%;
+    margin:-130px 0 0 -112px;
+}
+#confirmBox h1{
+    float: none;
+    height: 40px;
+    line-height: 40px;
+    font-size: 20px;
+}
+#confirmBox p{
+    font-size: 10.4px;
+    padding: 18px 0;
+}
+#confirmBox .closea
+{
+    display: none;
+}
+#confirmBox p{
+    text-align: center;
+    font-size: 1.0rem;
+}

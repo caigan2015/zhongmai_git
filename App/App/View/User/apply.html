@@ -1,0 +1,318 @@
+<include file="Common:meta" title=" 预约到店"/>
+<script type="text/javascript">
+    $(function(){
+        var no = '<option value="0">选择门店</option>';
+        $('.city').on('change', function () {
+            var id = $(this).val();
+            if(id!='0'){
+                $.post("{:U('Index/find_store')}",{id:id},function(data){
+                    if(data!='0'){
+                        $('.sid').html(data);
+                    }else{
+                        $('.sid').html(no);
+                    }
+                });
+            }else{
+                $('.sid').html(no);
+            }
+        });
+        $('.doSave').on('click',function(){
+            var id = $('input[name=id]').val();
+            var name= $('input[name=name]').val();
+            var sex= $('.sex').val();
+            var phone= $('input[name=phone]').val();
+            var code= $('input[name=code]').val();
+            var etime= $('input[name=etime]').val();
+            var sid = $('.sid').val();
+            if(name==''||name==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写姓名',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(sex==''){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请选择性别',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+            if(phone==''||phone==null||!rp.test(phone)){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写正确的手机号码',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(code==''||code==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写验证码',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(etime==''||etime==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写到店时间',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(sid=='0'){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请选择预约门店',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            //提交数据
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/apply?submit=1')}",
+                data:{id:id,name:name,sex:sex,phone:phone,code:code,etime:etime,sid:sid},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/index')}";
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+
+        });
+        $('.get-code').on('click',function(){
+            if($(this).hasClass('ac')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+    });
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$("input[name=phone]").val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('.get-code').html('重新获取验证码');
+            $('.get-code').removeClass('ac');
+            return false;
+        }
+        $('.get-code').addClass('ac');
+        $('.get-code').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+    $('input[name=phone]').live('input propertychange', function()
+    {
+        var phone = $(this).val();
+        var rp= /^(13[0-9]|15[0|1|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(!rp.test(phone)){
+            $('.get-code').addClass('ac');
+        }else{
+            $('.get-code').removeClass('ac');
+        }
+    });
+</script>
+</head>
+    <body>
+        <header class="top_header_box">
+            <div class="top_header">
+                <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+                <div class="center"><p class="title">预约到店</p></div>
+            </div>
+        </header>
+        <div class="co_second_warp co_buy_warp">
+            <input type="hidden" name="id" value="{$id}"/>
+            <div class="co_second_warp_box">
+                <ul class="lo_form">
+                    <li>
+                        <div class="key">
+                            <p class="title">姓名</p>
+                        </div>
+                        <div class="name">
+                            <input type="text" name="name" class="ipt_text" placeholder="请输入您的姓名" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">性别</p>
+                        </div>
+                        <div class="name">
+                            <select name="sex" class="ipt_select sex">
+                                <option value="">请选择性别</option>
+                                <option value="1">先生</option>
+                                <option value="0">小姐</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">手机号</p>
+                        </div>
+                        <div class="name">
+                            <input type="text" name="phone" class="ipt_text" placeholder="请输入您的手机号码" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">验证码</p>
+                        </div>
+                        <div class="name clo2">
+                            <input type="text" name="code" class="ipt_text" placeholder="请输入验证码" />
+                            <a href="javascript:void(0);" class="other_a get-code ac">获取验证码</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">到店时间</p>
+                        </div>
+                        <div class="name">
+                            <input type="date" name="etime" class="ipt_text"  />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">现在城市</p>
+                        </div>
+                        <div class="name">
+                            <select name="city" class="ipt_select city">
+                                <option value="0">请选择城市</option>
+                                <volist name="ca" id="ca">
+                                    <option value="{$ca.id}">{$ca.name}</option>
+                                </volist>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">预约门店</p>
+                        </div>
+                        <div class="name">
+                            <select name="sid" class="ipt_select sid">
+                                <option value="0">选择门店</option>
+                            </select>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button_box">
+                            <a href="javascript:void(0);" class="button_a doSave red">提交预约</a>
+                        </div>
+                        <div class="tip">
+                            <p class="left">请留下您的联系方式并选择附近门店，我们将2小时内安排门店销售顾问与您联系</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </body>
+</html>

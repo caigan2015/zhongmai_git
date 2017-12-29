@@ -1,0 +1,32 @@
+﻿<include file="common:head" title="商品分类"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <div class="skin_topSel">
+    <form action="">
+      <input class="topSel_input_text" placeholder="请输入关键字">
+    </form>
+  </div>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="pro_class_con">
+  <div class="pro_class_left">
+    <ul class="pro_class_left_ul data-id-button">
+    <volist name="type" id="typ">
+      <li data-url="{:U('Index/pro_class_ajax',array('id'=>$typ['id']))}"><a href="javascript:void(0);">{$typ['name']}</a></li>
+      </volist>
+    </ul>
+  </div>
+  <div class="pro_class_right data-id">
+    <section id="class_0"> 
+    
+    
+    </section>
+  </div>
+  <div class="clear"></div>
+</div>
+<include file="Common:footer" />
+</body>
+</html>

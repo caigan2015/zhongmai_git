@@ -1,0 +1,110 @@
+<include file="Public:meta" title="图片管理"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"> <a class="btn btn-primary radius" onclick="pic_add('添加图片','{:U('Product/add_pic',array('id'=>$id))}','800','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加图片</a></span> <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-hover table-bg table-sort">
+            <thead>
+            <tr class="text-c">
+                <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+                <th width="80">ID</th>
+                <th width="220">产品名称</th>
+                <th width="220">图片</th>
+                <th>图片名称</th>
+                <th width="100">类型</th>
+                <th width="100">状态</th>
+                <th width="200">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="vo">
+                <tr class="text-c">
+                    <!-- <td><input type="checkbox" name="" value=""></td> -->
+                    <td>{$vo.f_id}</td>
+                    <td>{$vo.p_name}</td>
+                    <td><img src="__PUBLIC__/upload/product/{$vo.name}" style="width:120px;"/></td>
+                    <td>{$vo.title}</td>
+                    <td>{$vo.t_name}</td>
+                    <td>{$vo.state}</td>
+                    <td class="f-14">
+                        <if condition="$vo.flag eq 0">
+                            <a style="text-decoration:none" onClick="pic_start(this,'{$vo.f_id}','{$vo.n_id}','{$vo.type}')" href="javascript:;" title="设置封面"><i class="Hui-iconfont">&#xe615;</i></a>
+                        <else/>
+                            <a style="text-decoration:none" onClick="pic_stop(this,'{$vo.f_id}','{$vo.n_id}','{$vo.type}')" href="javascript:;" title="取消封面"><i class="Hui-iconfont">&#xe631;</i></a>
+                        </if>
+                        <a title="删除" href="javascript:;" onclick="pic_del(this,'{$vo.f_id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+    $('.table-sort').dataTable({
+        "aaSorting": [[ 0, "asc" ]],//默认第几个排序
+        "bStateSave": true,//状态保存
+        "aoColumnDefs": [
+            //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+            {"orderable":false,"aTargets":[0,1,2,3,4,5,6]}// 制定列不参与排序
+        ]
+    });
+    /*添加*/
+    function pic_add(title,url,w,h){
+        layer_show(title,url,w,h);
+    }
+    /*删除*/
+    function pic_del(obj,id){
+        layer.confirm('确认要删除吗？',function(index){
+            var url = "{:U('Product/del_pic')}";
+            $.post(url,{id:id},function(data){
+                str = $.parseJSON(data);
+                if(str.error==0){
+                    $(obj).parents("tr").remove();
+                    layer.msg(str.msg,{icon:1,time:1000});
+                    refresh();
+                }else{
+                    layer.msg(str.msg,{icon:0,time:1000});
+                }
+            });
+        });
+    }
+    function pic_start(obj,id,pid,type){
+        layer.confirm('确认要设置为封面吗？',function(index){
+            var url = "{:U('Product/set_pic')}";
+            $.post(url,{id:id,pid:pid,type:type,flag:1},function(data){
+                str = $.parseJSON(data);
+                if(str.error==0){
+                    layer.msg('已设置!', {icon: 6,time:1000});
+                    refresh();
+                }else{
+                    layer.msg(str.msg,{icon:0,time:1000});
+                }
+            });
+        });
+    }
+    function pic_stop(obj,id,pid,type){
+        layer.confirm('确认要取消封面吗？',function(index){
+            var url = "{:U('Product/set_pic')}";
+            $.post(url,{id:id,pid:pid,type:type,flag:0},function(data){
+                str = $.parseJSON(data);
+                if(str.error==0){
+                    layer.msg('已取消!', {icon: 5,time:1000});
+                    refresh();
+                }else{
+                    layer.msg(str.msg,{icon:0,time:1000});
+                }
+            });
+        });
+    }
+    /*刷新页面*/
+    function refresh(){
+        window.location.reload();
+    }
+</script>
+</body>
+</html>

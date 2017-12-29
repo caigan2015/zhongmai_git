@@ -1,0 +1,157 @@
+<include file="Common:meta" title="首页"/>
+<style>
+.endtime{font-size:13px;text-align:left;padding:0 6px; font-family:"Microsoft Yahei"; color:#000;}
+.showtime{position:absolute; height:24px; line-height:24px; opacity:.6; display:block;border:1px solid #ddd;width:174px;}
+.endtime i.show-lock{width:24px;height:24px;float:left;background:url(__PUBLIC__/Home/PCimages/052.png) no-repeat;background-size:24px;}
+.endtime i.stop-lock{width:24px;height:24px;float:left;background:url(__PUBLIC__/Home/PCimages/051.png) no-repeat;background-size:24px;}
+</style>
+</head>
+<body>
+<include file="Common:header"/>
+<div class="indexKuang_2">
+    <section class="indexAdPic indexBanner">
+        <aside class="indexAdPic_aside  indexBanner_aside">
+        </aside>
+        <ul class="indexAdPic_ul" id="mybanner">
+            <volist name="banner" id="str">
+                <li><a href="{$str['url']}" target="_blank"><img src="__PUBLIC__/upload/banner/{$str['img']}" alt=""/></a></li>
+            </volist>
+        </ul>
+    </section>
+</div>
+
+<section class="main-list recommond-more">
+    <div class="container-center">
+        <h3 class="title">限时特惠</h3>
+        <ul class="ki-list" id="ki-list">
+            <volist name="hui" id="as">
+            <li>
+                <a href="{:U('Index/info',array('id'=>$as['id']))}" target="_blank">
+                    <div class="price" style="width:188px;padding-bottom:10px;">
+                        <dl class="downpayment">
+                            <dt>首付</dt>
+                            <dd><em>{$as.cost}万</em></dd>
+                        </dl>
+                        <dl class="monthly-payment">
+                            <dt>月供</dt>
+                            <dd><em>{$as.price}元</em></dd>
+                        </dl>
+                        <div class="endtime showtime" value="{$as.check_time}"></div>
+                    </div>
+                    <div class="image">
+                        <img src="__PUBLIC__/upload/product/{$as.img}" alt="{$as.title}">
+                    </div>
+                    <div class="text">
+                        <div class="tit" title="{$as.title}">{$as.title}</div>
+                        <div class="car-price">厂商指导价：{$as.money}万</div>
+                    </div>
+                </a>
+            </li>
+            </volist>
+        </ul>
+    </div>
+
+</section>
+
+<section class="main-list recommond-more">
+    <div class="container-center">
+        <h3 class="title">活动专区</h3>
+        <ul class="ki-list" id="ki-list">
+            <volist name="act" id="a">
+            <li>
+                <a href="{:U('Index/info',array('id'=>$a['id']))}" target="_blank">
+                    <div class="price">
+                        <dl class="downpayment">
+                            <dt>首付</dt>
+                            <dd><em>{$a.cost}万</em></dd>
+                        </dl>
+                        <dl class="monthly-payment">
+                            <dt>月供</dt>
+                            <dd><em>{$a.price}元</em></dd>
+                        </dl>
+                        <div class="tax">{$a.specs}</div>
+                    </div>
+                    <div class="image">
+                        <img src="__PUBLIC__/upload/product/{$a.img}" alt="{$a.title}">
+                    </div>
+                    <div class="text">
+                        <div class="tit" title="{$a.title}">{$a.title}</div>
+                        <div class="car-price">厂商指导价：{$a.money}万</div>
+                    </div>
+                </a>
+            </li>
+            </volist>
+        </ul>
+    </div>
+
+</section>
+
+<section class="main-list activity-first">
+    <div class="container-center">
+        <h3 class="title">热卖车型</h3>
+        <ul class="product-list">
+            <volist name="hot" id="h">
+            <li>
+                <a href="{:U('Index/info',array('id'=>$h['id']))}" target="_blank">
+                    <div class="image">
+                        <img src="__PUBLIC__/upload/product/{$h.img}" alt="{$h.title}">
+                    </div>
+                    <div class="text">
+                        <div class="tit" title="{$h.title}">{$h.title}</div>
+                        <div class="tax">厂商指导价：{$h.money}万</div>
+                    </div>
+                    <div class="price">
+                        <dl class="downpayment">
+                            <dt>首付</dt>
+                            <dd><em>{$h.cost}万</em></dd>
+                        </dl>
+                        <dl class="monthly-payment">
+                            <dt>月供</dt>
+                            <dd><em>{$h.price}元</em></dd>
+                        </dl>
+                    </div>
+                    <div class="go">立即预约</div>
+                </a>
+            </li>
+            </volist>
+        </ul>
+    </div>
+</section>
+
+<section class="main-list ki-all" style="margin-top:20px;">
+    <div class="container-center">
+        <h3 class="title"><a href="{:U('Index/lists')}">全部车源 &gt;</a></h3>
+    </div>
+</section>
+
+
+<include file="Common:footer"/>
+<script>
+var serverTime = "{$now_time}"; //服务器时间，毫秒数
+$(function(){
+  var dateTime = new Date();
+  var difference = dateTime.getTime() - serverTime; //客户端与服务器时间偏移量
+
+  setInterval(function(){
+   $(".endtime").each(function(){
+    var obj = $(this);
+    var endTime = new Date(parseInt(obj.attr('value')) * 1000);
+    var nowTime = new Date();
+    var nMS=endTime.getTime() - nowTime.getTime() + difference;
+    var myD=Math.floor(nMS/(1000 * 60 * 60 * 24)); //天
+    var myH=Math.floor(nMS/(1000*60*60)) % 24; //小时
+    var myM=Math.floor(nMS/(1000*60)) % 60; //分钟
+    var myS=Math.floor(nMS/1000) % 60; //秒
+    var myMS=Math.floor(nMS/100) % 10; //拆分秒
+    if(myD>= 0){
+      var str = "<i class='show-lock'></i>"+myD+"天"+myH+"小时"+myM+"分"+myS+"."+myMS+"秒";
+    }else{
+      var str = "<i class='stop-lock'></i>已结束！";
+    }
+    obj.html(str);
+   });
+  }, 100); //每个0.1秒执行一次
+});
+</script>
+</body>
+</html>

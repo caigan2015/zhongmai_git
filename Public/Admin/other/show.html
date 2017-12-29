@@ -1,0 +1,307 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>公司网站后台管理</title>
+<!-- jQuery -->
+<link href="__PUBLIC__/admin/other/jquery-ui-1.10.2.custom/css/south-street/jquery-ui-1.10.2.custom.css" rel="stylesheet"/>
+<script src="__PUBLIC__/admin/other/jquery-ui-1.10.2.custom/js/jquery-1.9.1.js"></script>
+<script src="__PUBLIC__/admin/other/jquery-ui-1.10.2.custom/js/jquery-ui-1.10.2.custom.js"></script>
+	
+<!--精确到时分秒的时间控件,要配合上面的使用-->
+<link type="text/css" href="__PUBLIC__/admin/other/css/jquery-ui-timepicker-addon.css" rel="stylesheet" /> 
+<script type="text/javascript" src="__PUBLIC__/admin/other/js/jquery-ui-timepicker-addon.js"></script> 
+<script type="text/javascript" src="__PUBLIC__/admin/other/js/jquery-ui-timepicker-zh-CN.js"></script>
+
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/admin/other/js/ajaxfileupload.js"></script>
+
+<script src="__PUBLIC__/admin/other/js/common.js"></script>
+<style type="text/css">
+	body {font-family: Arial, Helvetica, sans-serif; font-size:12px; text-align:center;background:#f0f0f0;}
+	a { text-decoration: none;}
+	.top{padding:0 15px 10px;text-align:left;text-indent:5px;}
+	.r{font-size:14px;padding:20px 0;}
+	#all {width: 900px; text-align:center; margin:auto;}
+	#main {width: 100%; line-height: 1.8; margin:auto; border:1px #5c5c5c solid;border-top:3px #5c5c5c solid; text-align: left; text-indent: 2em;padding-top:10px;}
+</style>
+<script type="text/javascript">
+	$(function(){		
+								
+		//jquer能够显示时分秒的时间插件
+		$( ".date_time" ).datetimepicker({
+			/*jquery原生的datepicker的方法*/
+			showOn: "button",
+			buttonImage: "__PUBLIC__/admin/other/images/date.png",
+			buttonImageOnly: true,
+			showSecond: true,
+			buttonText:'选择日期',  
+			dateFormat:'yy-mm-dd',
+
+			/*时分秒插件里面的方法*/
+			showSecond: true, 
+			timeFormat: 'hh:mm:ss', 
+			stepHour: 1, 
+			stepMinute: 1, 
+			stepSecond: 1 
+		});
+		
+		/*异步获取服务器时间*/
+		$.get("__APP__/Public/ajaxTime", function (data, status) {
+		 $( ".date_time" ).val(data);
+		},"json");		//返回的是json数据一定要指定返回的类型		
+		
+		//动态删除行
+		$('table').delegate('.delete_file','click', function (event) {
+			if(confirm('确定删除吗？')){
+				$(this).parent('td').parent('tr').remove();
+			}			
+		});
+		
+		//鼠标经过变手形
+		$('table').delegate('.delete_file','mouseover', function (event) {
+			$(this).css('cursor','pointer');
+		});
+		$('table').delegate('.delete_file','mouseout', function (event) {
+			$(this).css('cursor','default');
+		});
+		
+		//异步上传图片
+		function ajaxImgUp(o){						
+			$(o).hide();
+			var loading = $("<span><img class='loading' src='__PUBLIC__/admin/other/images/loading.gif' /> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+			
+			$.ajaxFileUpload({
+		
+				    url:'__URL__/ajaxImgUp', //你处理上传文件的服务端
+                          secureuri:false,
+                          fileElementId:'img',
+                          dataType: 'json',
+					//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                          success: function (data){
+						
+						loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='img_size[]' value='"+data.size+"' /><input type='hidden' name='img_title[]' value='"+data.name+"' /><input type='hidden' name='img_name[]' value='"+data.savename+"' />　<img height='200' width='300' src='__PUBLIC__/upload/b_"+data.savename+"'/>");
+					
+                          }
+			});
+			return false;
+                
+               } 
+
+		//添加图片
+		$('.add_img').click(function (event){
+			//动态创建行
+			var s="<tr><td><img class='delete_file' title='删除' src='__PUBLIC__/admin/other/images/delete_file.png' />　<input type='file' size='50' name='img' id='img' /></td></tr>";
+			
+			$(this).parent('td').parent('tr').after(s);
+			
+		}).css('cursor','pointer');
+		
+		//添加图片的绑定函数
+		$('table').delegate('#img','change', function () {
+			ajaxImgUp(this)
+			
+		});
+		
+		//附件上传
+		function ajaxAttachUp(o){
+			
+			$(o).hide();
+			var loading = $("<span><img class='loading' src='__PUBLIC__/admin/other/images/loading.gif' /> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+			
+			$.ajaxFileUpload({
+		
+				    url:'__URL__/ajaxAttachUp', //你处理上传文件的服务端
+                          secureuri:false,
+                          fileElementId:'attach',
+                          dataType: 'json',
+					//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                     success: function (data){					
+						loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='attach_size[]' value='"+data.size+"' /><input type='hidden' name='attach_title[]' value='"+data.name+"' /><input type='hidden' name='attach_name[]' value='"+data.savename+"' />");				
+                     }
+			});
+		
+		}
+
+		//添加附件
+		$('.add_file').click(function (event){
+			//动态创建行
+			var s="<tr><td><img class='delete_file' title='删除' src='__PUBLIC__/admin/other/images/delete_file.png' />　<input type='file' size='50' name='attach' id='attach' /></td></tr>";
+			
+			$(this).parent('td').parent('tr').after(s);
+			
+		}).css('cursor','pointer');
+		
+		//添加附件的绑定函数
+		$('table').delegate('#attach','change', function () {
+			ajaxAttachUp(this);
+			
+		});
+
+	
+	});
+
+</script>
+
+</head>
+
+<body>
+<div id="all">
+	<include file='Public:title'/>
+	<div id="main">
+		<span style="background:#5c5c5c;height:30px;line-height:30px;color:#fff;padding:5px 10px;margin-left:-10px;font-size:14px;">{$zi}</span>
+		<form action="" method="post" enctype="multipart/form-data" id="myForm">   			
+			<table id="tb" style="width:90%;margin-left:15px;">				
+			<!-- <volist name="list" id="vo"> --> 	
+				<thead>
+					<tr style="height:40px;line-height:40px;font-size:16px;">
+                       <th style="border-bottom:1px solid #333;border-top:1px solid #333;text-align:right;padding-right:10px;">功能栏目</th>
+					</tr>
+				</thead>
+				<tfoot>
+                    <tr>
+						<td colspan="1" style="text-align:center;font-size:14px;font-weight:bold;">↑ <a href="__URL__/show">top</a></td>
+					</tr>
+				</tfoot>
+			 
+				<tbody>
+					<!-- <if condition='$vo.title eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+                         <td colspan="1" style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">标题：<input type="text" name="title"  style="width:400px;height:22px;border:1px solid #ccc;"/></td>
+					</tr>  
+					<!-- </if> -->
+					<!-- <if condition='$vo.keyword eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+                          <td colspan="1" style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">关键字：<input type="text" name="keyword"  value="" style="height:22px;width:180px;border:1px solid #ccc;"/></td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.from eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+                          <td colspan="1" style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">来源：<input type="text" name="from"  value="" style="height:22px;width:400px;border:1px solid #ccc;"/></td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.date_time eq 1'> -->     
+					 <tr style="height:50px;line-height:50px;">
+                          <td colspan="1" style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">时间：<input type="text" class="date_time" name="date_time"  value=""  readonly="readonly" style="height:22px;width:180px;margin-right:5px;border:1px solid #ccc;"/></td>
+					</tr> 
+					<!-- </if> -->  
+					<!-- <if condition='$vo.img_name eq 1'> -->  
+					 <tr class="img_input" style="height:50px;line-height:50px;">
+						  <td style="text-align:left;height:30px;;font-size:14px;border-bottom:1px dotted #ccc;">
+							上传到首页或者子页的图片：
+							<img class="add_img" title="新增" src="__PUBLIC__/admin/other/images/add_file.png"/>
+						  </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.attach_name eq 1'> -->  
+					 <tr style="height:50px;line-height:50px;">
+						  <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">				
+							上传附件：
+							<img class="add_file" title="新增" src="__PUBLIC__/admin/other/images/add_file.png"/>
+						  </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.small eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;">缩略图：</td>
+					</tr>					
+					<tr>
+					      <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;padding-bottom:5px;">
+							<script type="text/javascript">
+							$(function(){
+								//上传
+								$('#up').click(function(){
+									var pw=$('input[name="pw"]').val();
+									var ph=$('input[name="ph"]').val();
+									if(pw=='0'||ph=='0'){
+										alert('请先输入缩略图的宽和高!');
+										return false;
+									}
+									if(pw<'1'||ph<'1'){
+										alert('输入格式不正确!');
+										return false;
+									}
+									if(!/^[0-9]+$/.test(pw)){
+										alert('输入格式不正确!');
+										return false;
+									}
+									if(!/^[0-9]+$/.test(ph)){
+										alert('输入格式不正确!');
+										return false;
+									}
+									centerWindow('__APP__/Public/upimg/width/'+pw+'/height/'+ph,'up','180','400');
+								});
+								function centerWindow(url,name,height,width){
+								    var left=(screen.width-width)/2;
+								    var top=(screen.height-height)/2;
+								    window.open(url,name,'height='+height+',width='+width+',top='+top+',left='+left);
+								};
+							});
+							</script>
+							<p style="margin-top:-10px;color:blue;"> <span style="color:red;font-size:16px;">★ </span>先设置图片规格：宽  <input type="text" name="pw" value="0" style="width:60px;"/> ：高  <input type="text" name="ph" value="0" style="width:60px;"/></p>
+							<p style="margin-top:-10px;"><input type="hidden" name="url" id="url"/><a href="javascript:;" id="up" style="padding:5px 10px;border:1px solid #5ccc;text-decoration:none;background:#5c5c5c;box-shadow:2px 2px 2px 0 #bbb;color:#fff;">本地上传</a></p>						   
+						   <img src="__PUBLIC__/admin/other/images/nopictrue.jpg" alt="" id="photo" style="float:left;margin-right:20px;border:1px solid #ccc;"/>
+					      </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.paper eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;">摘要：</td>
+					</tr>					
+					<tr>
+					      <td style="border-bottom:1px dotted #ccc;padding-bottom:5px;"><textarea name="paper" onKeyDown="textCounter(paper,remLen,400);" onKeyUp="textCounter(paper,remLen,400);" style="width:600px;height:100px;border:1px solid #ccc;"></textarea><span style="font-size:12px;margin:0 10px;color:blue;">可输入:<input name="remLen" type="text" value="400" style="width:40px;background:#fff;height:16px;border:1px solid #ccc;" readonly="readonly"/>个字符</span></td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.content eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;">内容添加：</td>
+					</tr>
+					<tr>
+                          <td colspan="1" style="border-bottom:1px dotted #ccc;padding-bottom:5px;text-indent:0;">{$fck}</td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.ping eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">允许评论：
+					      <select name="ping" style="width:60px;height:25px;">
+					      	<option value="1">允许</option>
+					      	<option value="0" selected="selected">禁止</option>
+					      </select>
+					      </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.shu eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">浏览数：
+					      <select name="shu" style="width:60px;height:25px;">
+					      	<option value="1">开启</option>
+					      	<option value="0" selected="selected">关闭</option>
+					      </select>
+					      </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.linkto eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">定向链接：
+							<input type="text" name="linkto" style="height:22px;width:400px;border:1px solid #ccc;"/>
+					      </td>
+					</tr>
+					<!-- </if> -->
+					<!-- <if condition='$vo.other eq 1'> -->
+					<tr style="height:50px;line-height:50px;">
+					      <td style="text-align:left;font-size:14px;border-bottom:1px dotted #ccc;">其它功能：
+							<input type="checkbox" value="1" name="tui"/>是否推荐
+							<input type="checkbox" value="1" name="new" style="margin-left:15px;"/>是否最新
+							<input type="checkbox" value="1" name="advert" style="margin-left:15px;"/>首页广告
+					      </td>
+					</tr>
+					<!-- </if> -->                  
+				</tbody>
+			<!-- </volist> -->
+			</table>
+						
+           </form>	
+    </div>
+</div>
+</body>
+</html>

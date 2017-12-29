@@ -1,0 +1,31 @@
+<include file="common:head" title="我的收藏"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <div class="skin_topSel">
+  <h1><span>我的收藏</span></h1>
+  </div>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="pro_con">
+  <ul class="pro_ul">
+  	<volist name="goods" id="goo">
+    <li>
+      <div class="left_f"><a href="{:U('Index/pro_info',array('id'=>$goo['id']))}"><img src="__PUBLIC__/upload/product/{$goo['pic']}" alt="{$goo['title']}"/></a></div>
+      <div class="right_f"><a href="{:U('Index/pro_info',array('id'=>$goo['id']))}">
+        <p class="pro_title">{$goo['title']}</p>
+        </a>
+        <p class="pro_old_price hui">市场价：{$goo['price']}元</p>
+        <p class="pro_now_price reb">现价:￥{$goo['cost']}元</p>
+      </div>
+    </li>
+    </volist>
+  </ul>
+  <p style="text-align:center;padding:2em 0em;">{$tips}</p>
+ 
+</div>
+<include file="Common:footer" />
+</body>
+</html>

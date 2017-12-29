@@ -1,0 +1,128 @@
+<include file="Public:meta" title="分类添加"/>
+</head>
+<body>
+<div class="page-container">
+  <form class="form form-horizontal" id="form-sort-add">
+    <div class="row cl">
+      <label class="col-2 lh-30"><span class="c-red">*</span>分类名称：</label>
+      <div class="formControls col-5">
+        <input type="text" class="input-text" value="" placeholder="" id="name" name="name">
+      </div>
+      <div class="col-5"> </div>
+    </div>
+    <div class="row cl">
+		<label class="col-2 lh-30">分类等级：</label>
+		<div class="formControls col-5"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select sel" name="level">
+				<option value="1" class="sel-level1"> 作为一级分类  </option>
+		     	<option value="2" class="sel-level2"> 作为二级分类  </option>
+		     	<!--<option value="3" class="sel-level3"> 作为三级分类   </option>-->
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div id="two-class">
+	</div>
+	<div id="three-class">
+	</div>
+	<div class="row cl">
+		<label class="col-2 lh-30">分类排序：</label>
+		<div class="formControls col-1">
+			<input type="text" class="input-text" value="0" placeholder="请输入分类排序" id="sort" name="sort">
+		</div>
+	</div>
+    <div class="row cl">
+      <label class="col-2 lh-30">备注：</label>
+      <div class="formControls col-5">
+        <textarea name="remark" cols="" rows="" class="textarea"  placeholder="说点什么...最少输入10个字符" datatype="*10-100" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,100)"></textarea>
+        <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+      </div>
+      <div class="col-5"> </div>
+    </div>
+    <div class="row cl">
+      <div class="col-9 col-offset-2">
+        <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+      </div>
+    </div>
+  </form>
+</div>
+
+<include file="Public:footscript"/> 
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-sort-add").validate({
+		rules:{
+			name:{
+				required:true,
+				minlength:2,
+				maxlength:20
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Product/addsort?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.location.reload();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+	
+	$('.sel').on('change',function(){
+		var level=$(this).val();
+		var url = "{:U('Product/findsort')}";
+		if(level!='1'){
+			$.post(url,{'level':2},function(data){
+				if(data!='0'){
+					$('#two-class').html(data);
+				}else{
+					$('#two-class').html(null);
+					$('#three-class').html(null);
+					$('.sel').val('');
+				}
+			});
+			if(level=='2'){
+				$('#three-class').html(null);
+			}
+		}else{
+			$('#two-class').html(null);
+			$('#three-class').html(null);
+		}	
+	});
+});
+function seltwo(e){
+	var pid = $(e).val();
+	var url = "{:U('Product/findsort')}";
+	var level=$('.sel').val();
+	if(pid!=''&&level=='3'){
+		$.post(url,{'level':3,'pid':pid},function(data){
+			if(data!='0'){
+				$('#three-class').html(data);
+			}else{
+				$('#three-class').html(null);
+			}
+		});
+	}else{
+		$('#three-class').html(null);
+	}
+}
+</script>
+</body>
+</html>

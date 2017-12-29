@@ -1,0 +1,270 @@
+<include file="Common:meta" title="个人中心"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_left.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/certificateinfo.css">
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="bg_col">
+    <article class="user_warp">
+        <include file="Common:left" a="" b="" c="" d="" e="cur"/>
+        <article class="user_con" id="userRight" style="height: 878px;">
+            <div class="title_box">
+                <p class="h2">修改密码</p>
+            </div>
+
+            <section class="user_from_box">
+                <if condition="$pass_code neq 1">
+                <!-- 验证手机号开始 -->
+                <div class="tab_input_box" id="checkTelphone">
+                    <div class="tips">修改密码需要先手机验证</div>
+                    <ul class="user_from">
+                        <li class="item">
+                            <div class="txt">手机号</div>
+                            <div class="info">
+                                <span class="info-txt">{$userInfo.phone}</span>
+                                <input name="mobile" id="mobile" value="{$userInfo.phone}" type="hidden">
+                            </div>
+                        </li>
+                        <li class="item" is-data="false">
+                            <div class="txt">验证码</div>
+                            <div class="info">
+                                <span class="input_line">
+                                    <input name="code" id="ValidateCode" class="" maxlength="6" placeholder="请输入验证码" type="text">
+                                    <div class="btn" id="GetValidateCode">获取验证码</div>
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="user_btn_box">
+                        <a href="javascript:;" class="btn_org" id="checkTelText">验证</a>
+                    </div>
+                </div>
+                <else/>
+                <!-- 验证手机号结束 -->
+                <div class="tab_input_box user_from_box_cer" id="ChangePwdInput" style="display: block;">
+                    <ul class="user_from">
+                        <li class="item" id="LiUserNewPWD">
+                            <div class="txt">新密码</div>
+                            <div class="info">
+                                <span class="input">
+                                    <input name="pass" class="input_line" value="" id="UserNewPWD" placeholder="请输入新密码" type="password">
+
+                                </span>
+                                <span class="alert password-code"><i></i><span></span></span>
+                                <span class="tip_f12">密码不能为纯数字，8-20位 </span>
+                            </div>
+                        </li>
+
+                        <li class="item" id="LiUserNewPWDT">
+                            <div class="txt">确认新密码</div>
+                            <div class="info">
+                                <span class="input"><input name="repass" class="input_line" value="" id="UserNewPWDT" placeholder="请确认新密码" type="password"></span>
+                                <span class="alert re-password-code"><i></i><span></span></span>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                    <div class="user_btn_box">
+                        <a href="javascript:;" class="btn_org" id="ChangePwdText">确认修改</a>
+                    </div>
+                </div>
+                </if>
+            </section>
+
+
+        </article>
+    </article>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    $(function(){
+        $('.user_icon i').hover(function(){
+            $(this).next('.text').stop(true,false).fadeIn('block');
+        },function(){
+            $(this).next('.text').stop(true,false).fadeOut('block');
+        });
+        $('#checkTelText').on('click',function(){
+            var code = $('input[name=code]').val();
+            if(code==''||code==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写验证码',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/setting?msg=1')}",
+                data:{code:code},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/setting')}"+"?code="+str.num;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+        $('#GetValidateCode').on('click',function(){
+            if($(this).hasClass('disable')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+        $('#ChangePwdText').on('click',function(){
+            var password = $('input[name=pass]').val();
+            var repass = $('input[name=repass]').val();
+            if(password==''||password==null){
+                $('.password-code span').html('密码不能为空');
+                $('.password-code').fadeIn('block');
+                return false;
+            }
+            var reg = /^[0-9]+$/;
+            if(reg.test(password)||(password.length<6||password.length>20)){
+                $('.password-code span').html('密码不能为纯数字，6-20位');
+                $('.password-code').fadeIn('block');
+                return false;
+            }
+            $('.password-code').fadeOut('block');
+            if(repass!=password||repass==''){
+                $('.re-password-code span').html('您两次输入的密码不一致');
+                $('.re-password-code').fadeIn('block');
+                return false;
+            }
+            $('.re-password-code').fadeOut('block');
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/setting?submit=1')}",
+                data:{password:password,repass:repass},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    if(str.code=='000'){
+                                        location.href="{:U('User/login')}";
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+    });
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$("#mobile").val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('#GetValidateCode').html('重新获取验证码');
+            $('#GetValidateCode').removeClass('disable');
+            return false;
+        }
+        $('#GetValidateCode').addClass('disable');
+        $('#GetValidateCode').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+</script>
+</body>
+</html>

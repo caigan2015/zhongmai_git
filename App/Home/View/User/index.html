@@ -1,0 +1,96 @@
+<include file="Common:meta" title="个人中心"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_left.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_con.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/myorder.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/page.css">
+<style>
+    .order_item_head span{display: unset;}
+</style>
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="bg_col">
+    <article class="user_warp">
+        <include file="Common:left" a="cur" b="" c="" d="" e=""/>
+        <article class="user_con" id="userRight" style="height: 878px;">
+            <section class="maincont fl">
+                <div class="nav_area">
+                    <ul class="nav_list clrfix">
+                        <li class="active"><a href="javascript:void(0);" style="color: #666;">我的申请</a></li>
+                    </ul>
+                </div>
+                <div class="order_area">
+
+                    <div class="order_thead">
+                        <div class="w1">商品信息</div>
+                        <div class="w2" style="width:150px;">分期信息</div>
+                        <div class="w3" style="width:180px;">预约定金</div>
+                        <div class="w4">交易状态</div>
+                        <div class="w5">操作</div>
+                    </div>
+                    <volist name="list" id="a">
+                    <div class="order_item">
+                        <header class="order_item_head">
+                            <ul>
+                                <li class="w6"><i class="tag_type tag_kaizouba">租车</i></li>
+                                <li class="w7 ffsong">申请时间：<span>{$a.ctime}</span></li>
+                                <li class="w8 ffsong">申请人：<span>{$a.name}</span></li>
+                                <li class="w9 ffsong">手机号码：<span>{$a.phone}</span></li>
+                                <li class="w10 ffsong">门店：<span>{$a.store}</span></li>
+                            </ul>
+                        </header>
+                        <section class="order_item_body">
+                            <ul>
+                                <li class="w1">
+                                    <img src="__PUBLIC__/upload/product/s_{$a.img}" class="order_item_img">
+                                    <p class="title" title="{$a.title}">
+                                        {$a.title}
+                                    </p>
+                                    <p title="提车吧">提车吧</p>
+                                </li>
+                                <li class="w2_1" style="text-align: center;">
+                                    <p>月  供：<span class="highlight">{$a.price}元</span></p>
+                                </li>
+                                <li class="w3_1 " style="text-align: center;">
+                                    <p class="fz12 c9">无需订金</p>
+                                </li>
+                                <li class="w4 tx-c " stateid="142" style="text-align: center;">
+                                    <p><span>{$a.state}</span></p>
+                                </li>
+                                <li class="w5 tx-c" style="text-align: center;">
+                                    <a target="_blank" href="{:U('User/order',array('id'=>$a['id']))}" class="bnt_grey"><span>申请详情</span></a>
+
+                                    <a target="_blank" href="{:U('User/order',array('id'=>$a['id']))}" class="bnt_grey"><span style="color: #f60;">评价</span></a>
+                                </li>
+                            </ul>
+                        </section>
+                    </div>
+                    </volist>
+                    <!-- 分页 -->
+                    <div class="co_page_change" style="margin-top: 20px;">
+                        <div class="pagination">
+                            {$page}
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </article>
+    </article>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    $(function(){
+        $('.user_icon i').hover(function(){
+            $(this).next('.text').stop(true,false).fadeIn('block');
+        },function(){
+            $(this).next('.text').stop(true,false).fadeOut('block');
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<include file="Common:meta" title="找回密码"/>
+<script type="text/javascript">
+    $(function(){
+        $('.change').on('click',function(){
+            var that = document.getElementById('code_img');
+            that.src = that.src + '&' + Math.random();
+        });
+        $('#step-btn01').on('click',function(){
+            var phone = $('input[name=mobile]').val();
+            var code = $('input[name=code]').val();
+            var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+            if(phone==''||phone==null){
+                $('.tip-show').html('手机号码不能为空');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            if(!rp.test(phone)){
+                $('.tip-show').html('您输入的手机号有误');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            if(code==''||code==null){
+                $('.tip-show').html('验证码不能为空');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            $('.tip-show').fadeOut('block');
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/pass?submit=1')}",
+                data:{phone:phone,code:code},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/pass_1')}";
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .tip-show{display: none;width: 100%;line-height: 30px;text-align: center;color: red;}
+</style>
+</head>
+    <body>
+        <header class="top_header_box">
+            <div class="top_header">
+                <div class="left">
+                    <a href="javascript:void(0);" class="link_a back_a goBack"></a>
+                </div>
+                <div class="center"><p class="title">找回密码</p></div>
+                <div class="right">
+                    <a href="{:U('User/login')}" class="link_a"><p class="text red">登录</p></a>
+                </div>
+            </div>
+        </header>
+        <div class="co_second_warp co_login_warp">
+            <div class="co_second_warp_box">
+                <ul class="lo_form">
+                    <li>
+                        <div class="key">
+                            <p class="title">手机号</p>
+                        </div>
+                        <div class="name">
+                            <input type="text" name="mobile" class="ipt_text" placeholder="请输入您的手机号码" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">验证码</p>
+                        </div>
+                        <div class="name clo2">
+                            <input type="text" name="code" class="ipt_text" placeholder="请输入验证码" />
+                            <img class="change" id="code_img" src="{:U('Index/code?code_len=4&font_size=14&width=100&height=38&code='.time())}" style="position: absolute;right: 0px;top: 50%;margin-top: -19px;">
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button_box">
+                            <div class="tip-show"></div>
+                            <a href="javascript:void(0);" class="button_a red" id="step-btn01">账号验证</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

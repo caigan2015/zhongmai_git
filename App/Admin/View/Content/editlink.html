@@ -1,0 +1,144 @@
+<include file="Public:meta" title="导航编辑"/>
+<style>
+.selurl{display:none;}
+</style>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-link-edit">
+	<input type="hidden" name="id" value="{$info.id}"/>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">导航类型：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select seltype" name="type">
+				<if condition="$info.type eq 2">
+				<option value="2" class="sel-level1"> 站外导航   </option>
+				</if>
+				<if condition="$info.type eq 1">
+		     	<option value="1" class="sel-level2"> 站内导航  </option>
+		     	</if>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<if condition="$info.type eq 1">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>导航名称：</label>
+		<div class="formControls col-xs-8 col-sm-5">
+			<input type="text" class="input-text" value="{$info.name}" placeholder="请输入导航名称" id="name" name="name" readonly="readonly">
+		</div>
+	</div>
+	<else/>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>导航名称：</label>
+		<div class="formControls col-xs-8 col-sm-5">
+			<input type="text" class="input-text" value="{$info.name}" placeholder="请输入导航名称" id="name" name="name">
+		</div>
+	</div>
+	</if>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>导航地址：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="{$info.url}" placeholder="请输入导航地址" id="url" name="url">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否新建：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<if condition="$info.jump eq 1">
+			<div class="radio-box">
+				<input name="jump" type="radio" value="1" id="jump-1" checked>
+				<label for="jump-1">新建</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="jump-0" value="0" name="jump">
+				<label for="jump-0">不新建</label>
+			</div>
+			<else/>
+			<div class="radio-box">
+				<input name="jump" type="radio" value="1" id="jump-1">
+				<label for="jump-1">新建</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="jump-0" value="0" name="jump" checked>
+				<label for="jump-0">不新建</label>
+			</div>
+			</if>
+		</div>
+	</div>	
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#form-link-edit").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			url:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Content/editlink?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+	
+	$('.seltype').on('change',function(){
+		var id=$(this).val();
+		if(id=='1'){
+			$('.selurl').fadeIn('block');
+		}else{
+			$('#name').val(null);
+			$('#url').val(null);
+			$('.selmodel').val(0);
+			$('.selurl').fadeOut('block');
+		}	
+	});
+	$('.selmodel').on('change',function(){
+		var id=$(this).val();
+		if(id!='0'){
+			var url = "{:U('Content/seturl')}";
+			$.post(url,{id:id},function(data){
+				str = $.parseJSON(data);
+				$('#name').val(str.name);
+				$('#url').val(str.url);
+			});
+		}else{
+			$('#name').val(null);
+			$('#url').val(null);
+		}
+	});
+});
+</script> 
+</body>
+</html>

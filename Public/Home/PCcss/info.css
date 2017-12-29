@@ -1,0 +1,206 @@
+.path-nav {
+    width: 1200px;
+    margin: 0 auto;
+    font-size: 14px;
+    color: #000;
+    height: 60px;
+    line-height: 60px;
+}
+#SPhotosList, #SPhotosList li {
+    width: 400px;
+    height: 294px;
+    overflow: hidden;
+}
+#SPhotosList {
+    margin-bottom: 10px;
+    position: absolute;
+    z-index: 1;
+}
+#SPhotosBtn {
+    margin-left: 2px;
+    height: 77px;
+    width: 400px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    bottom: 1px;
+}
+#SPhotosBtn li {
+    float: left;
+    width: 90px;
+    height: 77px;
+    margin-right: 1px;
+    padding-top: 10px;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box;
+}
+#SPhotosBtn img {
+    width: 80px;
+    height: 64px;
+    overflow: hidden;
+}
+#SPhotosBtn li.current em {
+    display: block;
+}
+#SPhotosBtn li em {
+    width: 86px;
+    width: 87px\9;
+    height: 77px;
+    display: block;
+    background: url(../PCimages/header_icon.b8bcf3.png) no-repeat left -223px;
+    position: absolute;
+    left: 1px;
+    top: 0;
+    z-index: 10;
+    display: none;
+}
+
+
+#look-apply{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 20000;
+    display: none;
+}
+.show-con{
+    width:600px;
+    height: 500px;
+    background:#fff;
+    left:50%;
+    top:50%;
+    margin-top: -250px;
+    margin-left: -300px;
+    position: absolute;
+}
+.show-con .look-tip{
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid #eee;
+}
+.show-con .look-tip span{
+    display: inline-block;
+    width: 150px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+.show-con .look-tip i{
+    width:40px;
+    line-height: 40px;
+    display: block;
+    float: right;
+    text-align: center;
+    font-size: 1.3em;
+    cursor: pointer;
+    background: url(../PCimages/error.jpg) no-repeat 50%;
+    background-size:20px;
+    text-indent: -9999px;
+}
+#look-apply p{
+    line-height: 40px;
+    text-align: center;
+    color: #1a1a1a;
+}
+#look-apply dl{
+    padding:10px 10px;
+}
+#look-apply dl dd{
+    margin: 0 0 10px 0;
+    padding: 0;
+    height: 40px;
+}
+#look-apply dl dd span{
+    display: inline-block;
+    width: 180px;
+    text-align: right;
+    padding-right: 20px;
+    line-height: 40px;
+}
+#look-apply dl dd input{
+    border: 1px solid #ddd;
+}
+#look-apply dl dd input:-moz-placeholder,#look-apply dl dd input::-moz-placeholder{
+    color: #aaa;
+}
+#look-apply dl dd input.name{
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd label{
+    display: inline-block;
+    width: 60px;
+    line-height: 40px;
+    margin-left: 10px;
+}
+#look-apply dl dd label .sex{
+    margin: 0 10px;
+}
+#look-apply dl dd input.phone{
+    width: 250px;
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd input.code{
+    width: 140px;
+    height: 30px;
+    line-height: 30px;
+    border-right: 0;
+}
+#look-apply dl dd .get-code{
+    margin: 0 0 0 -4px;
+    padding: 0;
+    width: 110px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border: 1px solid #ddd;
+    color: red;
+    cursor: pointer;
+}
+#look-apply dl dd .hui{
+    color: #aaa;
+}
+#look-apply dl dd input.etime{
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd .city{
+    border: 1px solid #ddd;
+    width: 100px;
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd .city option{
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd .sid{
+    border: 1px solid #ddd;
+    width: 250px;
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd .sid option{
+    height: 30px;
+    line-height: 30px;
+}
+#look-apply dl dd .doSave{
+    width: 220px;
+    height: 30px;
+    line-height: 30px;
+    margin: 0 auto;
+    background: #e95a47;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}

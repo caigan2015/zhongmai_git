@@ -1,0 +1,276 @@
+<include file="Public:meta" title="资讯添加"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-article-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>文章标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">副标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="subtitle" name="subtitle">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>分类栏目：</label>
+			<div class="formControls col-xs-8 col-sm-2"> <span class="select-box">
+				<select name="c_id" id="c_id" class="select">
+					<option value="">全部栏目</option>
+					<volist name="clist" id="vc">
+					<option value="{$vc.id}">{$vc.name}</option>
+						<volist name="vc[zi]" id="vz">
+						<option value="{$vz.id}">├{$vz.name}</option>
+						</volist>
+					</volist>
+				</select>
+				</span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">关键词：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="keyword" name="keyword">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">文章作者：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" class="input-text" value="{$author}" placeholder="" id="author" name="author">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">文章来源：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="from" name="from">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">开始日期：</label>
+			<div class="formControls col-xs-8 col-sm-2">
+				<input type="text" onfocus="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" value="{$now}" name="date_time" id="date_time" class="input-text Wdate">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">文章摘要：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="paper" cols="" rows="" class="textarea"  placeholder="说点什么...最多输入400个字符" datatype="*0-400" dragonfly="true" nullmsg="备注不能为空！" onKeyUp="textarealength(this,400)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/400</p>
+			</div>
+		</div>
+		<!-- <div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">允许评论：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="check-box">
+					<input name="ping" value="1" type="checkbox" id="checkbox-pinglun">
+					<label for="checkbox-pinglun">&nbsp;</label>
+				</div>
+			</div>
+		</div> -->
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">定向链接：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="linkto" name="linkto">
+			</div>
+		</div>
+		<div class="row cl">
+			<table>
+				<tr class="img_input" style="height:50px;line-height:50px;">
+					  <td style="text-align:left;height:30px;;font-size:14px;">
+						<label class="form-label col-xs-4 col-sm-2">上传图片：</label>
+						<img class="add_img" title="新增" src="__PUBLIC__/Admin/other/images/add_file.png"/>
+						<span style="margin-left:20px;font-size:12px;color:red;">支持JPG/PNG/GIF格式，单个图片大小建议小于1MB，建议上传590*380像素图片，或此等比大小图片</span>
+					  </td>
+				</tr>
+				<!-- <tr style="height:50px;line-height:50px;">
+					  <td style="text-align:left;font-size:14px;">				
+						<label class="form-label col-xs-4 col-sm-2">上传附件：</label>
+						<img class="add_file" title="新增" src="__PUBLIC__/Admin/other/images/add_file.png"/>
+						<span style="margin-left:20px;font-size:12px;color:red;">注：视频上传仅支持mp4，大小建议小于500MB</span>
+					  </td>
+				</tr> -->
+			</table>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">视频名称：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text" value="" placeholder="" id="videoname" name="videoname">
+			</div>
+			<span style="color:red;">格式：xxxx.mp4(本地)；http://***.com/xxxx.mp4(外链)</span>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">文章内容：</label>
+			<div class="formControls col-xs-8 col-sm-9"> 
+				{$fck} 
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">其它功能：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="check-box">
+					<input type="checkbox" name="tui" value="1" id="checkbox-pinglun">
+					<label for="checkbox-pinglun">&nbsp;是否推荐 </label>
+				</div>
+				<div class="check-box">
+					<input type="checkbox" name="new" value="1" id="checkbox-pinglun">
+					<label for="checkbox-pinglun">&nbsp;是否最新 </label>
+				</div>
+				<div class="check-box">
+					<input type="checkbox" name="advert" value="1" id="checkbox-pinglun">
+					<label for="checkbox-pinglun">&nbsp;首页广告  </label>
+				</div>
+				<div class="check-box">
+					<input type="checkbox" name="activity" value="1" id="checkbox-pinglun">
+					<label for="checkbox-pinglun">&nbsp;是否活动 </label>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+			</div>
+		</div>
+	</form>
+</article>
+<include file="Public:footscript"/> 
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/Admin/other/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+$(function(){
+	
+	//动态删除行
+	$('table').delegate('.delete_file','click', function (event) {
+		if(confirm('确定删除吗？')){
+			$(this).parent('td').parent('tr').remove();
+		}			
+	});
+	
+	//鼠标经过变手形
+	$('table').delegate('.delete_file','mouseover', function (event) {
+		$(this).css('cursor','pointer');
+	});
+	$('table').delegate('.delete_file','mouseout', function (event) {
+		$(this).css('cursor','default');
+	});
+	
+	//异步上传图片
+	function ajaxImgUp(o){						
+		$(o).hide();
+		var loading = $("<span><img class='loading' src='__PUBLIC__/Admin/other/images/loading.gif' style='height:20px;'/> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+		
+		$.ajaxFileUpload({
+	
+			    url:"{:U('Public/ajaxImgUp')}", //你处理上传文件的服务端
+                      secureuri:false,
+                      fileElementId:'img',
+                      dataType: 'json',
+				//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                      success: function (data){
+					
+					loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='img_size[]' value='"+data.size+"' /><input type='hidden' name='img_title[]' value='"+data.name+"' /><input type='hidden' name='img_name[]' value='"+data.savename+"' />　<img width='300' src='__PUBLIC__/upload/img/s_"+data.savename+"'/>");
+				
+                      }
+		});
+		return false;
+            
+           } 
+
+	//添加图片
+	$('.add_img').click(function (event){
+		//动态创建行
+		var s="<tr><td><label class='form-label col-xs-4 col-sm-2'>&nbsp;</label><img class='delete_file' title='删除' src='__PUBLIC__/admin/other/images/delete_file.png' />　<input type='file' size='50' name='img' id='img' /></td></tr>";
+		
+		$(this).parent('td').parent('tr').after(s);
+		
+	}).css('cursor','pointer');
+	
+	//添加图片的绑定函数
+	$('table').delegate('#img','change', function () {
+		ajaxImgUp(this)
+		
+	});
+	
+	//附件上传
+	function ajaxAttachUp(o){
+		
+		$(o).hide();
+		var loading = $("<span><img class='loading' src='__PUBLIC__/Admin/other/images/loading.gif' style='height:20px;'/> 如果长时间未提交成功，请退出后重新登录！</span>").appendTo($(o).parent('td'));
+		
+		$.ajaxFileUpload({
+	
+			    url:"{:U('Public/ajaxAttachUp')}", //你处理上传文件的服务端
+                      secureuri:false,
+                      fileElementId:'attach',
+                      dataType: 'json',
+				//data:{name:'logan', id:'id'},//通过post的方式以$_POST[**]来取值
+                 success: function (data){					
+					loading.replaceWith("<span style='color:blue'>"+data.name+"　<span style='color:red'>(" + data.mes+")</span></span><input type='hidden' name='attach_size[]' value='"+data.size+"' /><input type='hidden' name='attach_title[]' value='"+data.name+"' /><input type='hidden' name='attach_name[]' value='"+data.savename+"' />");				
+                 }
+		});
+	
+	}
+
+	//添加附件
+	$('.add_file').click(function (event){
+		//动态创建行
+		var s="<tr><td><label class='form-label col-xs-4 col-sm-2'>&nbsp;</label><img class='delete_file' title='删除' src='__PUBLIC__/Admin/other/images/delete_file.png' />　<input type='file' size='50' name='attach' id='attach' /></td></tr>";
+		
+		$(this).parent('td').parent('tr').after(s);
+		
+	}).css('cursor','pointer');
+	
+	//添加附件的绑定函数
+	$('table').delegate('#attach','change', function () {
+		ajaxAttachUp(this);
+		
+	});
+	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-article-add").validate({
+		rules:{
+			title:{
+				required:true,
+			},
+			c_id:{
+				required:true,
+			},
+			author:{
+				required:true,
+			},
+			date_time:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Content/addinfo?dosubmit=1')}";
+			CKupdate(); 
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);                	
+        			removeIframe();
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+function CKupdate() {  
+    for (instance in CKEDITOR.instances)  
+        CKEDITOR.instances[instance].updateElement();  
+} 
+</script>
+</body>
+</html>

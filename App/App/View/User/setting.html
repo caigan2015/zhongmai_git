@@ -1,0 +1,108 @@
+<include file="Common:meta" title="修改密码"/>
+<script type="text/javascript">
+    $(function(){
+        $('#ChangePwdText').on('click',function(){
+            var password = $('input[name=pass]').val();
+            var repass = $('input[name=repass]').val();
+            if(password==''||password==null){
+                $('.tip-show').html('密码不能为空');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            var reg = /^[0-9]+$/;
+            if(reg.test(password)||(password.length<6||password.length>20)){
+                $('.tip-show').html('密码不能为纯数字，6-20位');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            if(repass!=password||repass==''){
+                $('.tip-show').html('您两次输入的密码不一致');
+                $('.tip-show').fadeIn('block');
+                return false;
+            }
+            $('.tip-show').fadeOut('block');
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/setting?submit=1')}",
+                data:{password:password,repass:repass},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    if(str.code=='000'){
+                                        location.href="{:U('User/login')}";
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .tip-show{display: none;width: 100%;line-height: 30px;text-align: center;color: red;}
+</style>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+        <div class="center"><p class="title">修改密码</p></div>
+        <div class="right">
+        </div>
+    </div>
+</header>
+<div class="co_second_warp co_login_warp">
+    <div class="co_second_warp_box">
+        <ul class="lo_form">
+            <li>
+                <div class="key">
+                    <p class="title">新密码</p>
+                </div>
+                <div class="name">
+                    <input type="password" name="pass" class="ipt_text" placeholder="请输入您的登录密码" />
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">确认密码</p>
+                </div>
+                <div class="name">
+                    <input type="password" name="repass" class="ipt_text" placeholder="请确认您的登录密码" />
+                </div>
+            </li>
+            <li>
+                <div class="button_box">
+                    <div class="tip-show"></div>
+                    <a href="javascript:void(0);" id="ChangePwdText" class="button_a red">确认修改</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

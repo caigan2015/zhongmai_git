@@ -1,0 +1,186 @@
+<include file="Common:meta" title="信用信息"/>
+<script type="text/javascript">
+    $(function(){
+        $('#UserQuaSaveBtn').on('click',function(){
+            var i=0;
+            $(".ipt_select").each(function(){
+                if($(this).val()!='0'){
+                    i++;
+                }
+            });
+            if(i==0){
+                return false;
+            }
+            var wid = $('#wid').val();
+            var pid = $('#pid').val();
+            var sid = $('#sid').val();
+            var gid = $('#gid').val();
+            var xid = $('#xid').val();
+            var zid = $('#zid').val();
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/xin?submit=1')}",
+                data:{wid:wid,pid:pid,sid:sid,gid:gid,xid:xid,zid:zid},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    if(str.code=='000'){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            });
+        });
+    });
+</script>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+        <div class="center"><p class="title">信用信息</p></div>
+        <div class="right">
+        </div>
+    </div>
+</header>
+<div class="co_second_warp co_login_warp">
+    <div class="co_second_warp_box">
+        <ul class="lo_form">
+            <li>
+                <div class="key">
+                    <p class="title">职业</p>
+                </div>
+                <div class="name">
+                    <select name="wid" id="wid" class="ipt_select">
+                        <option value="0">请选择职业身份</option>
+                        <foreach name="work" item="w">
+                            <if condition="$key eq $me[wid]">
+                                <option value="{$key}" selected="selected">{$w}</option>
+                                <else/>
+                                <option value="{$key}">{$w}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">工资收入</p>
+                </div>
+                <div class="name">
+                    <select name="pid" id="pid" class="ipt_select">
+                        <option value="0">请选择工资收入</option>
+                        <foreach name="pay" item="p">
+                            <if condition="$key eq $me[pid]">
+                                <option value="{$key}" selected="selected">{$p}</option>
+                                <else/>
+                                <option value="{$key}">{$p}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">社保情况</p>
+                </div>
+                <div class="name">
+                    <select name="sid" id="sid" class="ipt_select">
+                        <option value="0">请选择社保情况</option>
+                        <foreach name="bao" item="bo">
+                            <if condition="$key eq $me[did]">
+                                <option value="{$key}" selected="selected">{$bo}</option>
+                                <else/>
+                                <option value="{$key}">{$bo}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">公积金</p>
+                </div>
+                <div class="name">
+                    <select name="gid" id="gid" class="ipt_select">
+                        <option value="0">请选择公积金</option>
+                        <foreach name="jin" item="j">
+                            <if condition="$key eq $me[gid]">
+                                <option value="{$key}" selected="selected">{$j}</option>
+                                <else/>
+                                <option value="{$key}">{$j}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">信用记录</p>
+                </div>
+                <div class="name">
+                    <select name="xid" id="xid" class="ipt_select">
+                        <option value="0">请选择信用记录</option>
+                        <foreach name="xin" item="x">
+                            <if condition="$key eq $me[xid]">
+                                <option value="{$key}" selected="selected">{$x}</option>
+                                <else/>
+                                <option value="{$key}">{$x}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">住房状态</p>
+                </div>
+                <div class="name">
+                    <select name="zid" id="zid" class="ipt_select">
+                        <option value="0">请选择住房状态</option>
+                        <foreach name="zhu" item="z">
+                            <if condition="$key eq $me[zid]">
+                                <option value="{$key}" selected="selected">{$z}</option>
+                                <else/>
+                                <option value="{$key}">{$z}</option>
+                            </if>
+                        </foreach>
+                    </select>
+                </div>
+            </li>
+            <li>
+                <div class="button_box">
+                    <a href="javascript:void(0);" class="button_a red" id="UserQuaSaveBtn">确认保存</a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

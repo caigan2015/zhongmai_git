@@ -1,0 +1,37 @@
+.pagewrap {
+    width: 1200px;
+    margin: 0 auto;
+    box-shadow: 0 0 5px #dcdcdc;
+}
+.maincont {
+    width:988px;
+    padding:0 30px 0 40px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box
+}
+.nav_area {
+    padding-top:16px
+}
+.nav_list {
+    border-bottom:2px solid #ddd
+}
+.nav_list li {
+    position:relative;
+    top:2px;
+    float:left;
+    font-size:18px;
+    color:#ff6446
+}
+.nav_list li a {
+    display:inline-block;
+    padding:8px 24px;
+    color:#000
+}
+.nav_list li.active {
+    border-bottom:2px solid #ff6446
+}
+.nav_list li.active a {
+    color:#ff6446;
+    cursor:default
+}

@@ -1,0 +1,158 @@
+<include file="Common:meta" title="个人中心"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_left.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/user_con.css">
+<style>
+    .sex{
+        height: 40px;line-height: 40px;width: 220px;border: 1px solid #ddd;padding-left: 10px;
+    }
+    .sex option{
+        height: 30px;line-height: 30px;padding-left: 10px;
+    }
+    .broth{
+        width: 180px;
+        height: 40px;
+        line-height: 40px;
+        padding: 0 20px;
+        border: solid 1px #ddd;
+        color: #333;
+    }
+</style>
+</head>
+<body>
+<include file="Common:header"/>
+
+<div class="bg_col">
+    <article class="user_warp">
+        <include file="Common:left" a="" b="cur" c="" d="" e=""/>
+        <article class="user_con" id="userRight" style="height: 878px;">
+            <div class="title_box">
+                <p class="h2">个人资料</p>
+            </div>
+
+            <section class="user_from_box">
+                <div class="tab_text_box" id="userProfileText">
+                    <ul class="user_from">
+                        <li class="item">
+                            <div class="txt">手机号码</div>
+                            <div class="info">
+                                <span class="i_txt" id="NickNameTxt">{$userInfo.show_phone}</span>
+                            </div>
+                        </li>
+
+                        <li class="item">
+                            <div class="txt">性 &nbsp; &nbsp;  &nbsp; 别</div>
+                            <div class="info">
+                                    <select name="sex" class="sex">
+                                        <if condition="$us.sex eq 1">
+                                            <option selected="selected" value="1">男</option>
+                                            <option value="0">女</option>
+                                        <else/>
+                                            <option value="1">男</option>
+                                            <option selected="selected" value="0">女</option>
+                                        </if>
+                                    </select>
+                                </span>
+                            </div>
+                        </li>
+                        <li class="item">
+                            <div class="txt">出生年月</div>
+                            <div class="info">
+                                <span class="i_txt" id="BirthdayTxt"><input type="text" name="broth" value="{$us.broth}" onfocus="WdatePicker()" class="Wdate broth" readonly="readonly"/></span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="user_btn_box">
+                        <a href="javascript:;" class="btn_org" id="UserEditBtn">编辑</a>
+                    </div>
+                </div>
+
+            </section>
+
+        </article>
+    </article>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript" src="__PUBLIC__/Admin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.user_icon i').hover(function(){
+            $(this).next('.text').stop(true,false).fadeIn('block');
+        },function(){
+            $(this).next('.text').stop(true,false).fadeOut('block');
+        });
+        $('#UserEditBtn').on('click',function(){
+            var sex = $('.sex').val();
+            var broth = $('input[name=broth]').val();
+            if(broth==''||broth==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请选择出生年月',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/my?submit=1')}",
+                data:{sex:sex,broth:broth},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

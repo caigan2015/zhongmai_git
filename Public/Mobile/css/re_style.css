@@ -1,0 +1,49 @@
+body{padding:0px;margin:0px;font-size:14px;font-family:Arial,Microsoft Yahei;color:#333;}
+*{margin:0px;padding:0px; list-style:none;-webkit-tap-highlight-color:rgba(0,0,0,0);-webkit-tap-highlight-color:transparent;outline: none;}
+h2{ font-weight:normal;font-size:1.4em;color:#7E181D;margin-bottom:1em;}
+input{ background:url(../active_img/input.gif) repeat;font-size:100%;font-family:Arial,Microsoft Yahei;line-height:1em;}
+.ac_top_20160114{position:absolute;top:0px;left:0px;width:100%;height:3.571em;z-index:9;}
+.ac_logo_20160114{float:left;padding-left:.5em;padding-top:.5em;}
+.ac_logo_20160114 img{max-height:1.8em;width:auto;}
+.ac_banner_20160114,.ac_step_img{display:block;width:100%; text-align:center;}
+.ac_banner_20160114 img{display:block;width:100%;}
+.ac_step_img img{display:block;width:90%;margin:0px auto;}
+.ac_center_ad{ text-align:center;margin:1em 0em;padding:0em 1em;box-sizing:border-box;}
+.ac_center_ad_title{font-size:1.6em;color:#7E181D;}
+.ac_center_ad_title span{font-size:0.5em;}
+.ac_center_ad_p{color:#BE8C8E;font-size:0.856em; white-space:nowrap;overflow:hidden;width:100%; text-overflow:ellipsis;}
+.ac_form_inputText{box-sizing:border-box;width:100%;padding:1em 1em 1em 3em;border:solid 1px #7E181D;border-radius:.5em;}
+.ac_form_submit{box-sizing:border-box;width:100%;padding:1em 0em;font-size:1.2em; background-color:#7E181D;color:#FFF;border:none;border-radius:.5em;}
+.button_1{box-sizing:border-box;display:inline-block; text-align:center; text-decoration:none;padding:.7em 0em;font-size:1.2em; background-color:#7E181D;color:#FFF;border:none;border-radius:.5em;}
+.button_2{box-sizing:border-box;display:inline-block; text-align:center; text-decoration:none;padding:.7em 0em;font-size:1.2em; background-color:#F7B400;color:#7E181D;border:none;border-radius:.5em;}
+.ac_form_div{padding:1em 2em;}
+.ac_form_ul li{margin-bottom:1em;}
+.ac_form_ul li.ac_form_ul_tx_li{margin-bottom:.5em;font-size:0.856em;}
+.what_a{position:relative;color:#7E181D; text-decoration:none;}
+.what_a:after{ content:'?';display:inline-block;width:1.2em;height:1.2em;border-radius:1.2em;line-height:1.2em;font-size:0.714em; text-align:center;margin-left:.3em; background-color:#C79C9E;color:#FFF;}
+.ac_ad_text{ text-align:center;margin-top:2em;margin-bottom:1em;}
+.ac_ad_text_title{font-size:1.6em;color:#000;}
+.ac_ad_text_p{color:#999;}
+.ac_ad_text_p span{color:#7E181D;}
+.ac_ad_text_p em{color:#FFF; background-color:#7E181D;padding:0em .5em; font-style:normal;}
+.info_div{padding:1em;}
+.info_article{display:inline-block;line-height:2em;}
+.inputText_icon.name{ background:url(../active_img/icon_1.png) no-repeat .5em center; background-size:auto 60%;}
+.inputText_icon.phone{ background:url(../active_img/icon_2.png) no-repeat .5em center; background-size:auto 60%;}
+.inputText_icon.mail{ background:url(../active_img/icon_3.png) no-repeat .5em center; background-size:auto 60%;}
+.inputText_icon.add{ background:url(../active_img/icon_4.png) no-repeat .5em center; background-size:auto 60%;}
+.inputText_icon.pwb{ background:url(../active_img/icon_5.png) no-repeat .5em center; background-size:auto 60%;}
+.button_div{display:block;box-sizing:border-box;width:100%;padding:2em 1.2em;}
+.button_div a{width:80%;}
+.yes_body{background:url(../active_img/yes_bg.jpg) no-repeat; background-size:cover;}
+.ac_yes_section{ text-align:center;display:inline-block;width:100%;margin-top:4em;}
+.ac_yes_bg{display:block}
+.ac_yes_title img{width:40%;max-width:300px;}
+.ac_yes_img img{width:60%;max-width:300px;}
+.ac_yes_p{color:#FFF;margin:2em 0em;font-size:1.2em;}
+.footer_copy{color:#963818; position:fixed;bottom:1em;left:0px;width:100%; text-align:center;font-size:0.8546em;}
+.ac_form_inputText_left{width:60%;}
+.ac_form_inputText_right{display:inline-block;width:36%; text-align:center;float:right;padding:1.15em 0em 1.15em 0em;border:solid 1px #7E181D;border-radius:.5em;box-sizing:border-box;color:#FFF; text-decoration:none;font-size:0.856em; white-space:nowrap;overflow:hidden; text-overflow:ellipsis; background-color:#7E181D;}
+.ac_form_inputText_right.hui_bg{ background-color:#CCC;border-color:#CCC;}
+.ac_top_right_20160114{ position:absolute;top:.5em;right:.5em;}
+.ac_top_right_20160114 a{color:#FFF; text-decoration:none;}

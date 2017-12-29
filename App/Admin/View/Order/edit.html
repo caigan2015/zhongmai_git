@@ -1,0 +1,133 @@
+<include file="Public:meta" title="订单详情"/>
+</head>
+<body>
+<article class="page-container">
+	<volist name="order" id="ord">
+	<table class="table table-border table-bordered table-striped">
+		<tr>
+			<th width="15%">订单号：</th>
+			<td width="20%">{$ord['order_num']}</td>
+			<th width="15%">订单状态：</th>
+			<td width="20%"><p style="{$ord['color']}">{$ord['state']}</p></td>
+			<th width="15%">下单时间：</th>
+			<td width="20%">{$ord['postdate']}</td>
+		</tr>
+		<tr>
+			<th>运费金额：</th>
+			<td>{$ord['express']}</td>
+			<th>订单总额（含邮）：</th>
+			<td>{$ord['amount']}</td>
+			<th>实际支付：</th>
+			<td>{$ord['amount']}</td>
+		</tr>
+		<tr>
+			<th>是否使用优惠券：</th>
+			<td>{$ord['use_coupon']}</td>
+			<th>优惠金额：</th>
+			<td>{$ord['coupon_money']}</td>
+			<th></th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>收件人：</th>
+			<td>{$ord['recipient']}</td>
+			<th>联系电话：</th>
+			<td>{$ord['phone']}</td>
+			<th></th>
+			<td></td>
+		</tr>
+		<tr>
+			<th>收件地址：</th>
+			<td colspan="5">{$ord['address']}</td>
+		</tr>
+	</table>
+	</volist>
+	<table class="table table-border table-bordered table-striped" style="margin-top: 10px;">
+		<tbody>
+			<tr>
+				<th width="13%">商品id</th>
+				<th width="30%">商品名称</th>
+				<th width="10%">缩略图</th>
+				<th width="19%">商品规格</th>
+				<th width="15%">购买数量</th>
+				<th width="13%">单价（元）</th>
+			</tr>
+			<!-- 需要在此处使用循环输出买家所买的商品 -->
+			<volist name="order_info" id="order">			
+			<if condition="$order.goods_name eq ''">
+			<tr>
+				<td colspan="6">该商品已被删除</td>
+			</tr>
+			<else/>
+			<tr>
+				<td>{$order['goods_id']}</p></td>
+				<td>{$order['goods_name']}</p></td>
+				<td><img src="__PUBLIC__/upload/product/{$order['smallpic']}" height="40" width="45"></td>
+				<td>{$order['specs']}</td>
+				<td>{$order['quantity']}</td>
+				<td>{$order['price']}</td>
+			</tr>
+			</if>
+			</volist>
+		</tbody>
+	</table>
+	
+	<if condition="$state neq 8">
+	<form class="form form-horizontal" id="form-order-edit">
+	<input type="hidden" name="order_id" value="{$order_id}"/>
+	<table class="table table-border table-bordered table-striped" id="check-order" style="margin-top: 10px ;">		
+		<tr>
+			<td width="20%">现在处理状态：</td>
+			<td width="40%">
+				<select class="select" name="state">
+					<option value="">选择状态</option>
+					<option value="1">已支付</option>
+					<option value="2">物流配送中</option>
+					<option value="3">已完成</option>
+					<option value="5">已退款</option>
+					<option value="7">已退货</option>
+					<option value="8">已取消</option>
+				</select>
+			</td>
+			<td width="40%"><input type="submit" class="btn btn-primary btn2" value="确定"></td>
+		</tr>		
+	</table>
+	</form>
+	</if>
+</article>
+
+<include file="Public:footscript"/> 
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript">
+$(function(){	
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-order-edit").validate({
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Order/check_order?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+});
+</script> 
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

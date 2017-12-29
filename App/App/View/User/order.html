@@ -1,0 +1,226 @@
+<include file="Common:meta" title="申请详情"/>
+<link rel="stylesheet" href="__PUBLIC__/Apps/css/order_con.css">
+<script type="text/javascript">
+    $(function(){
+        $('.doPing').on('click',function(){
+            var id = $('input[name=oid]').val();
+            var star = $('input[name=star]').val();
+            var con = $('.con').val();
+            if(star=='0'){
+                alert('请选择星数');
+                return false;
+            }
+            if(con.length<2||con.length>200){
+                alert('请填写2-200字的内容');
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/comment?submit=1')}",
+                data:{id:id,star:star,con:con},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+        $('.starP').on('click','i',function(){
+            tt=$(this).index();
+            $(this).parent().find('i').removeClass('ac');
+            for(i=0;i<=tt;i++){
+                $(this).parent().find('i').eq(i).addClass('ac');
+            }
+            $(this).parent().find('input').val(parseInt($(this).index())+1);
+        })
+    });
+</script>
+</head>
+<body>
+    <header class="top_header_box">
+        <div class="top_header">
+            <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+            <div class="center"><p class="title">申请详情</p></div>
+            <div class="right">
+
+            </div>
+        </div>
+    </header>
+    <div class="co_second_warp co_my_apply_warp">
+        <div class="co_second_warp_box">
+            <div class="co_my_apply_title">
+                <p class="title">申请详情</p>
+            </div>
+            <ul class="lo_stap">
+                <li><p class="title"> 当前状态</p><p class="data">{$info.state}</p></li>
+                <li><p class="title"> 预约门店</p><p class="data">{$info.store}</p></li>
+                <li><p class="title"> 申 请 人</p><p class="data">{$info.name}</p></li>
+                <li><p class="title"> 手机号码</p><p class="data">{$info.phone}</p></li>
+                <li><p class="title"> 性　　别</p><p class="data"><if condition="$info.sex eq 1"> 先生<else/> 女士</if></span></p></li>
+                <li><p class="title"> 预约城市</p><p class="data">{$info.city}</p></li>
+                <li><p class="title"> 到店时间</p><p class="data">{$info.etime}</p></li>
+            </ul>
+        </div>
+    </div>
+    <div class="co_second_warp co_my_apply_warp">
+        <div class="co_second_warp_box">
+            <div class="co_my_apply_title">
+                <p class="title">商品信息</p>
+            </div>
+            <ul class="lo_my_apply">
+                <li>
+                    <div class="left">
+                        <a href="my_apply_info.html"><img src="__PUBLIC__/upload/product/{$pro.img}" class="img" /></a>
+                    </div>
+                    <div class="right">
+                        <p class="title">{$pro.title}</p>
+                        <p class="des"><span class="key">厂商指导价：</span><span class="name">{$pro.money}万</span></p>
+                        <p class="des"><span class="key">平台：</span><span class="name">中迈租赁</span></p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="co_second_warp co_my_apply_warp">
+        <div class="co_second_warp_box">
+            <div class="co_my_apply_title">
+                <p class="title">分期信息</p>
+            </div>
+            <ul class="lo_lrtext">
+                <li>
+                    <div class="left">参考报价</div>
+                    <div class="right">{$pro.money}万</div>
+                </li>
+                <li>
+                    <div class="left">首  付</div>
+                    <div class="right">{$pro.cost}万</div>
+                </li>
+                <li>
+                    <div class="left">月　供</div>
+                    <div class="right">{$pro.price}元({$pro.num}月)</div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="co_second_warp co_my_apply_warp">
+        <if condition="$ping eq ''">
+        <div class="co_second_warp_box">
+            <div class="co_my_apply_title">
+                <p class="title">我要评价</p>
+            </div>
+            <dl class="ping">
+                <dt><span>评价星数<input type="hidden" name="oid" value="{$info.id}"/></span>
+                <p class="star_p starP">
+                    <i class="star_big_icon"></i>
+                    <i class="star_big_icon"></i>
+                    <i class="star_big_icon"></i>
+                    <i class="star_big_icon"></i>
+                    <i class="star_big_icon"></i>
+                    <input type="hidden" name="star" value="0"/>
+                </p>
+                </dt>
+                <dd><span>评价内容</span>
+                    <textarea name="con" class="con" placeholder="可填写2-200个字" style="font-size: 16px;"></textarea>
+                </dd>
+                <dd style="padding-top: 20px;"><span>　</span><input type="button" value="提交" class="doPing"/></dd>
+            </dl>
+        </div>
+        <else/>
+            <div class="co_second_warp_box">
+                <div class="co_my_apply_title">
+                    <p class="title">我的评价</p>
+                </div>
+                <dl class="ping">
+                    <dt style="padding: 0;"><span>评价用户</span> {$ping.phone}</dt>
+                    <dt style="padding: 0;"><span>评价星数</span>
+                    <p class="star_p" style="float: left;">
+                        <switch name="ping[star]">
+                            <case value="1">
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                            </case>
+                            <case value="2">
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                            </case>
+                            <case value="3">
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon"></i>
+                                <i class="star_big_icon"></i>
+                            </case>
+                            <case value="4">
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon"></i>
+                            </case>
+                            <case value="5">
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                                <i class="star_big_icon ac"></i>
+                            </case>
+                        </switch>
+                    </p>
+                    </dt>
+                    <dd><span>评价内容</span></dd>
+                    <dd><p style="width: 90%;display: inline-block;padding: 0;margin: 0;line-height: 30px;">{$ping.content}</p></dd>
+                    <dd style="line-height: 30px;"><span>评价时间：</span> {$ping.ctime|date='Y-m-d',###}</dd>
+                </dl>
+            </div>
+        </if>
+    </div>
+</body>
+</html>

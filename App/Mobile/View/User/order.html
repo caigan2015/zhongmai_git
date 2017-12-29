@@ -1,0 +1,37 @@
+﻿<include file="common:head" title="我的订单"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>我的订单</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="pro_con list_show">
+	<volist name="order_list" id="order">
+	<ul class="order_ul">
+    	<li>
+        <p class="order_key hui">订单号：</p><a href="{:U('User/order_state',array('order_id'=>$order['id']))}"><p class="order_con">{$order['order_num']}</p></a></li>
+        <if condition="$order.goods_name eq ''">
+        <li class="order_pro_li"><a href="{:U('User/order_state',array('order_id'=>$order['id']))}" class="block_a"></a>该商品已被删除</li>
+        <else/>
+        <li class="order_pro_li"><a href="{:U('User/order_state',array('order_id'=>$order['id']))}" class="block_a"></a><div class="left_f"><img src="__PUBLIC__/upload/product/{$order['smallpic']}"/></div><div class="right_f"><p class="pro_title">{$order['goods_name']}</p><p class="pro_price">￥{$order['price_now']}</p></div>
+        </if>
+        <div class="order_state"></div>
+        </li>
+        <li><p class="order_play_price">实付款：￥{$order['amount']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$order['h_state']}</p><p class="order_del"><a href="{:U('User/delete_order',array('order_id'=>$order['id']))}" class="order_del_icon">删除订单</a></p></li>
+    </ul>
+    </volist>
+</div>
+<if condition="$order_list eq ''">
+<p class="tips" style="text-align:center;padding:2em 0em;display:none;{$block}">{$tips}</p>
+</if>
+<if condition="$tips eq ''">
+    <if condition="$order_list neq ''">
+        <div class="load_more_div load_ajax_list"><a href="javascript:void(0);" data-url="{:U('User/order_temp')}" data-page="{$page}">点击加载更多</a></div>
+    </if>
+</if>
+<include file="Common:footer" />
+</body>
+</html>

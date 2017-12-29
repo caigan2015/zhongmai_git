@@ -1,0 +1,118 @@
+<include file="Common:meta" title="意见反馈"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/feedback.css">
+</head>
+<body>
+<include file="Common:header"/>
+
+<article class="container clrfix">
+    <dl class="layout-left">
+        <dt>意见反馈</dt>
+        <dd>
+            请留下您的意见和建议，帮助我们做的更好<br>电话咨询请拨打{$sys.phone}（{$sys.time}）<br>
+            <textarea name="con" class="con" id="messageTextarea" placeholder="请在此输入您的问题和建议" maxlength="200"></textarea><br>
+            您的姓名：<br>
+            <input id="nameInput" name="name" value="" placeholder="" maxlength="10" type="text"><br>
+            手机号：<br>
+            <input id="telInput" name="phone" value="" placeholder="" maxlength="11" type="text"><br>
+            <div id="submitBtn">提交</div>
+        </dd>
+    </dl>
+
+    <dl class="layout-right">
+        <dt>常见问题</dt>
+        <dd class="question-list swiper-container">
+            <div class="swiper-slide swiper-slide-duplicate" style="width: 470px; min-height: 122px;">
+            <volist name="que" id="qi" key="k">
+                <dl class="swiper-slide" style="width: 470px; min-height: 122px;">
+                    <dt><span>{$k}</span>{$qi.title}</dt>
+                    <dd>{$qi.content}</dd>
+                </dl>
+            </volist>
+            </div>
+        </dd>
+    </dl>
+
+</article>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    $(function(){
+        $('#submitBtn').on('click',function(){
+            var con = $('.con').val();
+            var name= $('input[name=name]').val();
+            var phone= $('input[name=phone]').val();
+            if(con.length<2||con.length>200){
+                alert('请填写2-200字的内容');
+                return false;
+            }
+            if(name==''||name==null){
+                alert('请填写您的姓名');
+                return false;
+            }
+            if(phone==''||phone==null){
+                alert('请填写您的手机号码');
+                return false;
+            }
+            var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+            if(!rp.test(phone)){
+                alert('手机号码格式不正确');
+                return false;
+            }
+
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('Index/feedback?submit=1')}",
+                data:{phone:phone,name:name,con:con},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

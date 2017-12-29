@@ -1,0 +1,75 @@
+<include file="Public:meta" title="联系方式"/>
+</head>
+<body>
+<article class="page-container">
+    <form class="form form-horizontal" id="form-about-add">
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">经纬度：</label>
+            <div class="formControls col-xs-8 col-sm-5">
+                <input type="text" class="input-text" value="{$info.lon}" placeholder="请输入经度" id="lon" name="lon" style="width: 200px;">
+                -
+                <input type="text" class="input-text" value="{$info.lat}" placeholder="请输入纬度" id="lat" name="lat" style="width: 200px;">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">营业地址：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <input type="text" class="input-text" value="{$info.address}" placeholder="营业地址" id="address" name="address">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">联系电话：</label>
+            <div class="formControls col-xs-8 col-sm-4">
+                <input type="text" class="input-text" value="{$info.phone}" placeholder="联系电话" id="phone" name="phone">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3">服务时间：</label>
+            <div class="formControls col-xs-8 col-sm-2">
+                <input type="text" class="input-text" value="{$info.time}" placeholder="服务时间" id="time" name="time">
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+                <button class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 保存并提交</button>
+                <button onClick="removeIframe();" class="btn btn-default radius" type="button">&nbsp;&nbsp;取消&nbsp;&nbsp;</button>
+            </div>
+        </div>
+    </form>
+</article>
+<include file="Public:footscript"/>
+<!--异步上传文件插件-->
+<script type="text/javascript" src="__PUBLIC__/Admin/other/js/ajaxfileupload.js"></script>
+<script type="text/javascript">
+    $(function(){
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-about-add").validate({
+            onkeyup:false,
+            focusCleanup:true,
+            success:"valid",
+            submitHandler:function(form){
+                var url = "{:U('System/contact?dosubmit=1')}";
+                $.post(url,$(form).serialize(),function(data){
+                    str = $.parseJSON(data);
+                    if(str.error==0){
+                        alert(str.msg);
+                        refresh();
+                    }else{
+                        alert(str.msg);
+                    }
+                });
+            }
+        });
+    });
+    /*刷新页面*/
+    function refresh(){
+        window.location.reload();
+    }
+</script>
+</body>
+</html>

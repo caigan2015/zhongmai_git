@@ -1,0 +1,31 @@
+﻿<include file="common:head" title="最新活动"/>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>最新活动</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="pro_con">
+  <ul class="pro_ul active_ul">
+  	<volist name="list" id="lis">
+    <li>
+      <div class="left_f"><a href="{:U('Index/active_info',array('news_id'=>$lis['id']))}"><img src="__PUBLIC__/upload/img/{$lis['smallpic']}" alt="{$lis['title']}"/></a></div>
+      <div class="right_f"><a href="{:U('Index/active_info',array('news_id'=>$lis['id']))}">
+        <p class="pro_title">{$lis['title']}</p>
+        </a>
+        <p class="active_time hui">{$lis['postdate']}</p>
+        <i class="active_view">{$lis['tuijian']}<p>{$lis['hit']}浏览</p></i>
+      </div>
+    </li>
+    </volist>
+  </ul>
+  <!--  <div class="load_more_div"><a href="javascript:void(0);">加载中...</a></div>-->
+</div>
+<if condition="$list eq ''">
+<p style="text-align:center;padding:2em 0em;">暂无信息</p>
+</if>
+<include file="Common:footer" />
+</body>
+</html>

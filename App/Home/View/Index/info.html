@@ -1,0 +1,447 @@
+<include file="Common:meta" title="商品详情"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/info.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/detail.css">
+</head>
+<body>
+<include file="Common:header"/>
+
+<nav class="path-nav">
+    <div class="breadcrumb">
+        <a href="{:U('Index/index')}">首页</a>
+        <i> &gt; </i>
+        <a href="{:U('Index/list')}">车型列表页</a>
+        <i> &gt; </i>
+        <a href="javascript:void(0);">{$info.title}</a>
+    </div>
+</nav>
+<div class="detail-wrapper clrfix" id="Content">
+    <section class="car-infomation">
+        <div class="photo-wrap">
+            <div class="carphoto">
+                <div class="scroll-photos">
+                    <ul id="SPhotosList" style="width: 400px; left: 0px;">
+                        <li>
+                            <img src="__PUBLIC__/upload/product/{$info.img}">
+                        </li>
+                    </ul>
+                    <ul id="SPhotosBtn">
+                        <volist name="imgs" id="m">
+                        <li <if condition="$key eq 0">class="current"</if> >
+                            <img src="__PUBLIC__/upload/product/{$m.name}">
+                            <em></em>
+                        </li>
+                        </volist>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+        <div class="text-wrap">
+            <h3>{$info.title}</h3>
+
+            <span></span>
+            <div class="price">厂商指导价&nbsp;<em>{$info.money}万</em></div>
+            <dl class="detail">
+                <!--<dt>先开一年<em>（首年花费）</em></dt>-->
+                <dd>
+                    <p>
+                        <span class="phrase"><span>首付</span><strong>{$info.cost}万</strong></span>
+                        <span class="phrase"><span>月供</span><strong>{$info.price}元</strong></span>
+                        <span class="phrase"><span>期限</span><strong>{$info.num}期</strong></span>
+                    </p>
+                    <ul class="lo_ul">
+                    <li>带厂家发票，享受厂家所有售后保修保养政策</li>
+                    <li>包含购置税、交强险、车船税、第三者100万、车损险、盗抢险、涉水险、司机险、乘客险、玻璃险、不计免赔等超全保险以及上牌费和GPS安装费</li>
+                </ul>
+                </dd>
+            </dl>
+            <div class="btnwrap">
+                <a href="javascript:void(0)" class="apply-btn">预约到店</a>
+                <a href="javascript:void(0)" class="advice-btn" style="display: inline-block;"><span class="tel-box"><em>{$sys.phone}</em></span>
+                  <span class="adv-list hide">
+                    <span class="adv-box">
+                      <dl>
+
+                      </dl>
+                      <span class="adviser-tip bg-white">
+                        <b>小贴士 : </b>顾问服务时间为 <font>{$sys.time}</font>，<br>我们将为您提供免费的租赁咨询及申请服务，期待您的来电！
+                      </span>
+                    </span>
+                  </span>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="details-con" id="details-con">
+        <section class="product-intro" id="ceilingBox" style="position: absolute; left: 0px;">
+            <div class="product-intro-title">
+                <a class="cur first-child" data-name="loanDetails" href="javascript:void(0)">产品详情</a>
+                <a data-name="userEvaluate" href="javascript:void(0)">最近申请</a>
+                <a data-name="commonProblem" href="javascript:void(0)">常见问题</a>
+            </div>
+
+            <div class="btn-wrap">
+                <span class="tag" style="display: none;">首付<em>{$info.cost}万</em></span>
+                <span class="tag" style="display: none;">月供<em>{$info.price}元X{$info.num}期</em></span>
+                <a href="javascript:void(0)" class="apply-btn">预约到店</a>
+            </div>
+        </section>
+        <section class="details-left-box">
+            <!--贷款详情start-->
+            <div id="loanDetails">
+                {$info.content}
+            </div>
+            <div id="userEvaluate">
+                <h3><span>最近申请</span></h3>
+                <div id="pagedCommentDiv">
+                    <table>
+                        <tbody>
+                        <tr>
+                            <th>购车人</th>
+                            <th>所在城市</th>
+                            <th>选择车型</th>
+                            <th>成交时间</th>
+                        </tr>
+                        <volist name="apply" id="vp">
+                        <tr>
+                            <td>{$vp.phone}</td>
+                            <td>{$vp.city}</td>
+                            <td>{$vp.title}</td>
+                            <td>{$vp.otime}</td>
+                        </tr>
+                        </volist>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="commonProblem">
+                <h3><span>常见问题</span></h3>
+                <dl class="qa-list">
+                    <volist name="que" id="q">
+                    <dt>{$q.title}</dt>
+                    <dd>{$q.content}</dd>
+                    </volist>
+                </dl>
+            </div>
+        </section>
+    </section>
+</div>
+
+<div id="look-apply">
+    <div class="show-con">
+        <div class="look-tip">
+            <span>预约到店</span>　
+            <i onclick="document.getElementById('look-apply').style.display='none';">X</i>
+        </div>
+        <p>请留下您的联系方式并选择附近门店，我们将2小时内安排门店销售顾问与您联系</p>
+        <input type="hidden" name="id" value="{$info.id}"/>
+        <dl>
+            <dd>
+                <span>姓名</span>
+                <input type="text" name="name" placeholder="请输入姓名" class="name"/>
+                <label><input type="radio" name="sex" value="1" class="sex" checked>男</label>
+                <label><input type="radio" name="sex" value="2" class="sex">女</label>
+            </dd>
+            <dd>
+                <span>手机号</span>
+                <input type="text" name="phone" placeholder="请输入手机号码" class="phone"/>
+            </dd>
+            <dd>
+                <span>验证码</span>
+                <input type="text" name="code" placeholder="请输入验证码" minlength="6" maxlength="6" class="code"/>
+                <span class="get-code hui">发送验证码</span>
+            </dd>
+            <dd>
+                <span>到店时间</span>
+                <input type="text" name="etime" placeholder="格式：2017-01-01" class="Wdate etime" readonly onfocus="WdatePicker()" />
+            </dd>
+            <dd>
+                <span>现在城市</span>
+                <select name="city" class="city">
+                    <option value="0">选择城市</option>
+                    <volist name="ca" id="ca">
+                        <option value="{$ca.id}">{$ca.name}</option>
+                    </volist>
+                </select>
+            </dd>
+            <dd>
+                <span>预约门店</span>
+                <select name="sid" class="sid">
+                    <option value="0">选择门店</option>
+                </select>
+            </dd>
+            <dd style="text-align: center;padding-top: 10px;">
+                <input type="button" name="doSave" class="doSave" value="确定"/>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<include file="Common:footer"/>
+<script type="text/javascript" src="__PUBLIC__/Admin/lib/My97DatePicker/WdatePicker.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var no = '<option value="0">选择门店</option>';
+        $('.city').on('change', function () {
+            var id = $(this).val();
+            if(id!='0'){
+                $.post("{:U('Index/find_store')}",{id:id},function(data){
+                    if(data!='0'){
+                        $('.sid').html(data);
+                    }else{
+                        $('.sid').html(no);
+                    }
+                });
+            }else{
+                $('.sid').html(no);
+            }
+        });
+        $('.doSave').on('click',function(){
+            var id = $('input[name=id]').val();
+            var name= $('input[name=name]').val();
+            var sex= $('input[name=sex]:checked').val();
+            var phone= $('input[name=phone]').val();
+            var code= $('input[name=code]').val();
+            var etime= $('input[name=etime]').val();
+            var sid = $('.sid').val();
+            if(name==''||name==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写姓名',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+            if(phone==''||phone==null||!rp.test(phone)){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写正确的手机号码',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(code==''||code==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写验证码',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(etime==''||etime==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请填写到店时间',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(sid=='0'){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '请选择预约门店',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            //提交数据
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/apply?submit=1')}",
+                data:{id:id,name:name,sex:sex,phone:phone,code:code,etime:etime,sid:sid},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        location.href="{:U('User/index')}";
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+
+        });
+        $('.apply-btn').on('click',function(){
+            var id = "{$_GET['id']}";
+            $.post("{:U('Index/checkLogin')}",{id:id},function(data){
+                str = $.parseJSON(data);
+                if(str.code=='000'){
+                    $('#look-apply').fadeIn('block');
+                }else{
+                    location.href = "{:U('User/login')}";
+                }
+            });
+        });
+       $('ul#SPhotosBtn > li').on('click',function(){
+           $('ul#SPhotosBtn > li').removeClass('current');
+           $(this).addClass('current');
+           var src=$(this).find('img').attr('src');
+           $('#SPhotosList > li > img').attr('src',src);
+       }) ;
+        $('.advice-btn').hover(function(){
+            $('.adv-list').removeClass('hide');
+        },function(){
+            $('.adv-list').addClass('hide');
+        });
+        $('.product-intro-title > a').on('click',function(){
+            var name = $(this).attr('data-name');
+            var left = $('.details-left-box').offset().left;
+            $('.product-intro-title > a').removeClass('cur');
+            $(this).addClass('cur');
+            /*$('#ceilingBox').addClass('fixed');
+            $('#ceilingBox').css({
+                position: "fixed",
+                left: left+"px"
+            });*/
+            $('html,body').animate({scrollTop:$('#'+name).offset().top},1000)
+        });
+        $(window).scroll(function () {
+            var scrolls = $(this).scrollTop();
+            var top = $('#details-con').offset().top;
+            var left = $('.details-left-box').offset().left;
+            if (scrolls > top) {
+                $('#ceilingBox').addClass('fixed');
+                $('#ceilingBox').css({
+                    position: "fixed",
+                    left: left+"px"
+                });
+                $('.tag').fadeIn('block');
+            }else{
+                $('.tag').fadeOut('block');
+                $('#ceilingBox').removeClass('fixed');
+                $('#ceilingBox').css({
+                    position: "absolute",
+                    left: "0px"
+                });
+            }
+        });
+        $('.get-code').on('click',function(){
+            if($(this).hasClass('hui')){
+                return false;
+            }
+            var now_code=0;
+            getCode(now_code);
+        });
+
+    });
+    function getCode(now_code){
+        if(now_code==1) return false;
+        var url = "{:U('Index/getPhoneCode')}";
+        $.ajax({url:url,type:"POST",async:true,data:{phone:$("input[name=phone]").val()},success:function(data){
+            str = $.parseJSON(data);
+            if(str.error==0){
+                now_code=1;
+                calltime(0);
+            }else{
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: str.msg,
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+
+        },
+            error:function(){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        })
+    }
+    function calltime(n){
+        if(n>=60){
+            now_code=0;
+            $('.get-code').html('重新获取验证码');
+            $('.get-code').removeClass('hui');
+            return false;
+        }
+        $('.get-code').addClass('hui');
+        $('.get-code').html(60-n+'s后重新获取');
+        setTimeout(function(){calltime(n+1)},1000);
+    }
+    $('input[name=phone]').live('input propertychange', function()
+    {
+        var phone = $(this).val();
+        var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(!rp.test(phone)){
+            $('.get-code').addClass('hui');
+        }else{
+            $('.get-code').removeClass('hui');
+        }
+    });
+</script>
+</body>
+</html>

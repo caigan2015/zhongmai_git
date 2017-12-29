@@ -1,0 +1,29 @@
+.ping{padding:10px 30px;}
+.ping dt{height: 30px;line-height: 30px;padding-bottom: 10px;}
+.ping dt span{float: left;display: inline-block;width: 100px;text-align: right;}
+.ping dd{margin: 0;padding: 0;}
+.ping dd span{float: left;display: inline-block;width: 100px;text-align: right;}
+.ping dd .con{border: 1px solid #ddd;width: 500px;height: 200px;}
+.doPing{border: 0;background: #e95a47;color:#fff;width: 150px;height: 30px;cursor: pointer;}
+.star_p {
+    float: left;
+    color: #F8B600;
+}
+.star_big_icon {
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+.star_big_icon.ac {
+    background-position: 0px center;
+}
+.star_big_icon {
+    background: url(../PCimages/top_header_icon.png) no-repeat -20px center;
+    background-position-x: -20px;
+    background-position-y: center;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: -2px;
+}

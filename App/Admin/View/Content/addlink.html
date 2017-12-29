@@ -1,0 +1,150 @@
+<include file="Public:meta" title="导航添加"/>
+<style>
+.selurl{display:none;}
+</style>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-link-add">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">导航类型：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select seltype" name="type">
+				<option value="2" class="sel-level1"> 站外导航   </option>
+		     	<option value="1" class="sel-level2"> 站内导航  </option>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div class="row cl selurl">
+		<label class="form-label col-xs-4 col-sm-3">选择栏目：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select selmodel" name="cid">
+				<option value="0" class="sel-level1"> 请选择栏目   </option>
+				<volist name="column" id="vc">
+		     	<option value="{$vc.id}" class="sel-level2"> {$vc.name}  </option>
+		     		<volist name="vc[zi]" id="vz">
+		     		<option value="{$vz.id}" class="sel-level3"> &nbsp;&nbsp;└{$vz.name}  </option>
+		     		</volist>
+		     	</volist>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div class="row cl sel_out_url">
+		<label class="form-label col-xs-4 col-sm-3">选择栏目：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select" name="ocid">
+				<option value="0" class="sel-level1"> 请选择栏目   </option>
+				<volist name="ocolumn" id="ovc">
+		     	<option value="{$ovc.id}" class="sel-level2"> {$ovc.name}  </option>		     		
+		     	</volist>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>导航名称：</label>
+		<div class="formControls col-xs-8 col-sm-5">
+			<input type="text" class="input-text" value="" placeholder="请输入导航名称" id="name" name="name">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>导航地址：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="" placeholder="请输入导航地址" id="url" name="url">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否新建：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<div class="radio-box">
+				<input name="jump" type="radio" value="1" id="jump-1">
+				<label for="jump-1">新建</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="jump-0" value="0" name="jump" checked>
+				<label for="jump-0">不新建</label>
+			</div>
+		</div>
+	</div>	
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#form-link-add").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			url:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Content/addlink?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+	
+	$('.seltype').on('change',function(){
+		var id=$(this).val();
+		if(id=='1'){
+			$('.sel_out_url').fadeOut('block');
+			$('.selurl').fadeIn('block');
+		}else{
+			$('#name').val(null);
+			$('#url').val(null);
+			$('.selmodel').val(0);
+			$('.selurl').fadeOut('block');
+			$('.sel_out_url').fadeIn('block');
+		}	
+	});
+	$('.selmodel').on('change',function(){
+		var id=$(this).val();
+		if(id!='0'){
+			var url = "{:U('Content/seturl')}";
+			$.post(url,{id:id},function(data){
+				str = $.parseJSON(data);
+				$('#name').val(str.name);
+				$('#url').val(str.url);
+			});
+		}else{
+			$('#name').val(null);
+			$('#url').val(null);
+		}
+	});
+});
+</script> 
+</body>
+</html>

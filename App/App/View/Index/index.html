@@ -1,0 +1,97 @@
+<include file="Common:meta" title="首页"/>
+</head>
+    <body>
+        <include file="Common:header"/>
+        <div class="co_index_banner" id="mBanner">
+            <ul class="lo_index_banner">
+                <volist name="banner" id="str">
+                <li>
+                    <a href="{$str['url']}" target="_blank" class=""><img src="__PUBLIC__/upload/banner/{$str['img']}"></a>
+                </li>
+                </volist>
+            </ul>
+        </div>
+        <section class="co_index_intro">
+            <ul>
+                <li>车辆首付灵活掌控</li>
+                <li>免购置税和保险</li>
+                <li>享厂家售后保修保养</li>
+                <li>提供牌照省心省力</li>
+            </ul>
+        </section>
+        <div class="co_index_warp">
+            <div class="co_index_warp_box">
+                    <h3 class="co_title">
+                        <p class="title">热卖车型</p>
+                    </h3>
+                </div>
+            <ul class="lo_index_ad">
+                <volist name="hot" id="h">
+                <li>
+                    <section class="co_pro_section" style="background-image:url(__PUBLIC__/upload/product/{$h.img})">
+                        <a href="{:U('Index/info',array('id'=>$h['id']))}" class="fixed_a"></a>
+                        <div class="title" style="font-size: 15px;font-family:'幼圆';">{$h.title}</div>
+                        <div class="text">
+                            <p class="list">
+                                <span class="key">首付</span>
+                                <span class="name">{$h.cost}万</span>
+                            </p>
+                            <p class="list" style="margin-top: 10px;border-top: 1px dotted #d24747;">
+                                <span class="key">月供</span>
+                                <span class="name">{$h.price}元</span>
+                            </p>
+                            <if condition="$h.specs neq ''">
+                            <div class="tip">{$h.specs}</div>
+                            </if>
+                        </div>
+                        <!--<aside class="aside">
+                                <p class="aside_title">热买</p>
+                        </aside>-->
+                    </section>
+                </li>
+                </volist>
+            </ul>
+
+            </div>
+        <div class="co_index_warp">
+            <div class="co_index_warp_box">
+                    <h3 class="co_title">
+                        <p class="title">活动推荐</p>
+                    </h3>
+                </div>
+            <ul class="lo_index_ad">
+                <volist name="act" id="a">
+                <li>
+                    <section class="co_pro_section" style="background-image:url(__PUBLIC__/upload/product/{$a.img})">
+                        <a href="{:U('Index/info',array('id'=>$a['id']))}" class="fixed_a"></a>
+                        <div class="title" style="font-size: 15px;font-family:'幼圆';">{$a.title}</div>
+                        <div class="text">
+                            <p class="list">
+                                <span class="key">首付</span>
+                                <span class="name">{$a.cost}万</span>
+                            </p>
+                            <p class="list" style="margin-top: 10px;border-top: 1px dotted #d24747;">
+                                <span class="key">月供</span>
+                                <span class="name">{$a.price}元</span>
+                            </p>
+                            <if condition="$a.specs neq ''">
+                            <div class="tip">{$a.specs}</div>
+                            </if>
+                        </div>
+                        <aside class="aside">
+                                <p class="aside_title">促销</p>
+                        </aside>
+                    </section>
+                </li>
+                </volist>
+            </ul>
+             <div class="co_index_more">
+                <a href="{:U('Index/lists')}" class="link_a">更多车源 ></a>
+            </div>
+        </div>
+        <include file="Common:shen"/>
+        <include file="Common:wen"/>
+
+        <include file="Common:footer"/>
+    </body>
+</html>

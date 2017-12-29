@@ -1,0 +1,110 @@
+﻿<include file="common:head" title="订单详情"/>
+<script>
+  $(function(){
+      $('.check_order').click(function(){
+          var order_id = "{$order_id}";
+          var type = $(this).attr('data-val');
+          $.get("{:U('User/setting_order')}",{type:type,order_id:order_id},function(data){
+            str = $.parseJSON(data);
+            $.confirm({
+              'title'		: '提示',
+              'message'	: str.msg,
+              'buttons'	: {
+                '确定'	: {
+                  'class'	: 'all',
+                  'action': function(){
+                    if(str.status!='100'){
+                      location.href = str.url;
+                    }
+                  }
+                }
+              }
+            });
+            return false;
+          });
+      });
+  });
+</script>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="{:U('User/order')}" class="skin_back_icon"></a></div>
+  <h1><span>订单详情</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="pro_con">
+  <ul class="order_ul {$end}">
+    <li>
+      <p class="order_key hui">订单号：</p>
+      <a href="#">
+      <p class="order_con">{$order_num}</p>
+      </a><div class="order_state" style="top:1em;"></div></li>
+      <volist name="order_info" id="order">
+      <if condition="$order.goods_name eq ''">
+       <li class="order_pro_li">
+     	  该商品已被删除
+       </li>
+      <else/>
+	    <li class="order_pro_li"><a href="javascript:;" class="block_a"></a>
+	      <div class="left_f"><img src="__PUBLIC__/upload/product/{$order['smallpic']}"/></div>
+	      <div class="right_f">
+	        <p class="pro_title">{$order['goods_name']}</p>
+	        <p class="pro_price">￥{$order['price']}    *     {$order['quantity']}</p>
+	      </div>     
+	    </li>
+     </if>
+     </volist>
+  </ul>
+  <ul class="order_ul">
+    <li>
+      <p class="order_key hui">订单详细：</p>
+    </li>
+    <li>
+      <div class="orderSmall_con">
+        <p class="order_key">购买时间：</p>
+        <p class="order_con">{$order_postdate}</p>
+      </div>
+      <div class="orderSmall_con">
+        <p class="order_key">&nbsp;&nbsp;&nbsp;收件人：</p>
+        <p class="order_con">{$recipient}</p>
+      </div>
+      <div class="orderSmall_con">
+        <p class="order_key">联系电话：</p>
+        <p class="order_con">{$phone}</p>
+      </div>
+      <div class="orderSmall_con">
+        <p class="order_key">收件地址：</p>
+        <p class="order_con">{$address}</p>
+      </div>
+    </li>
+  </ul>
+  <ul class="order_ul">
+    <li>
+      <p class="order_key hui">商品总额：</p>
+    </li>
+    <li>
+      <div class="orderSmall_con">
+        <p class="order_key">商品总价（不含邮）：</p>
+        <p class="order_del reb">￥{$goods_amount}</p>
+      </div>
+      <div class="orderSmall_con">
+        <p class="order_key">运费：</p>
+        <p class="order_del reb">￥{$order_express}</p>
+      </div>
+    </li>
+    <li>
+    	<p class="order_key"></p>
+      <p class="order_del">实付款：<span class="sbig_font reb">￥{$order_amount}</span><br>
+      {$paydate}
+ </p>
+    </li>
+  </ul>
+ <!--  {$form} -->
+  
+</div>
+
+<include file="Common:footer" />
+</body>
+</html>

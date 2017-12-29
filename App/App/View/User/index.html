@@ -1,0 +1,42 @@
+<include file="Common:meta" title="我的申请"/>
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/Apps/css/scrollbar.css">
+
+</head>
+<body>
+    <header class="top_header_box">
+        <div class="top_header">
+            <div class="left"><a href="{:U('User/user')}" class="link_a back_a"></a></div>
+            <div class="center"><p class="title">我申请的</p></div>
+            <div class="right">
+            </div>
+        </div>
+    </header>
+    <div class="co_second_warp co_my_apply_warp" id="wrapper" style="top: 51px;">
+        <div class="co_second_warp_box">
+            <ul class="lo_my_apply" id="loading-list">
+                <volist name="list" id="a">
+                <li>
+                    <div class="data"><a href="{:U('User/order',array('id'=>$a['id']))}"><span class="staus red">{$a.state}</span>申请时间：{$a.ctime} </a></div>
+                    <div class="left">
+                        <a href="javascript:void(0);"><img src="__PUBLIC__/upload/product/s_{$a.img}" class="img" /></a>
+                    </div>
+                    <div class="right">
+                        <p class="title">{$a.title}</p>
+                        <p class="des"><span class="key">厂商指导价：</span><span class="name">{$a.money}万</span></p>
+                        <p class="des"><span class="key">月　　 供：</span><span class="name">{$a.price}元</span></p>
+                    </div>
+                </li>
+                </volist>
+            </ul>
+            <div id="pullUp" <if condition="$flag neq 1">style="display:none;"</if> >
+                <input type="hidden" class="ajax-url" value="{:U('User/ajax_index')}"/>
+                <input type="hidden" class="next-page" value="2"/>
+                <input type="hidden" class="flag-page" value="{$flag}"/>
+                <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript" src="__PUBLIC__/Apps/js/iscroll.js"></script>
+    <script type="application/javascript" src="__PUBLIC__/Apps/js/uploading.js"></script>
+</body>
+</html>

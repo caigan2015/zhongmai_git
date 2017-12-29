@@ -1,0 +1,145 @@
+<include file="Common:meta" title="个人中心"/>
+<script type="text/javascript">
+    $(function(){
+        $('#UserEditBtnCer').on('click',function(){
+            var name = $('input[name=name]').val();
+            var card = $('input[name=card]').val();
+            if(name==''||name==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '姓名不能为空',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            if(card==''||card==null){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '证件号码不能为空',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/check_card')}",
+                data:{name:name,card:card},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        window.location.reload();
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+<style>
+    .success-ctn{width: 90%;margin: 5% auto;line-height: 30px;color:#999;padding-top: 30px;}
+    .success-ctn .success-tip {line-height: 40px;text-indent: 5px;}
+    .success-ctn .success-tip img{width: 30px;margin: 5px 2px 0 25px;float: left;}
+    .success-ctn .success-des{text-indent: 25px;line-height: 40px;}
+    .success-ctn .success-des span{margin-right: 10px;}
+</style>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+        <div class="center"><p class="title">实名验证</p></div>
+        <div class="right">
+        </div>
+    </div>
+</header>
+<div class="co_second_warp co_login_warp">
+    <div class="co_second_warp_box">
+        <if condition="$my.status neq 1">
+        <ul class="lo_form">
+            <li>
+                <div class="key">
+                    <p class="title">真实姓名</p>
+                </div>
+                <div class="name">
+                    <input type="text" name="name" class="ipt_text" placeholder="请输入您的真实姓名" />
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">证件类型</p>
+                </div>
+                <div class="name">
+                    <p class="content">身份证</p>
+                </div>
+            </li>
+            <li>
+                <div class="key">
+                    <p class="title">证件号码</p>
+                </div>
+                <div class="name">
+                    <input type="text" name="card" class="ipt_text" placeholder="请输入你的证件号码" />
+                </div>
+            </li>
+            <li>
+                <div class="button_box">
+                    <a href="javascript:void(0);" class="button_a red" id="UserEditBtnCer">提交认证信息</a>
+                </div>
+                <div class="tip">
+                    <p class="text">
+                        注册即视为同意<a href="javascript:void(0)" class="red">《网络服务条款》</a>内容条款
+                    </p>
+                </div>
+            </li>
+        </ul>
+        <else/>
+            <div class="fl success-ctn">
+                <div class="success-tip"><img src="__PUBLIC__/Apps/images/is_success.png">您已通过实名认证！</div>
+                <div class="success-des"><span>真实姓名</span>{$my.sname}</div>
+                <div class="success-des"><span>证件类型</span>身份证</div>
+                <div class="success-des"><span>证件号码</span>{$my.card}</div>
+            </div>
+        </if>
+    </div>
+</div>
+</body>
+</html>

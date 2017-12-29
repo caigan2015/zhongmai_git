@@ -1,0 +1,151 @@
+<include file="Public:meta" title="管理员列表"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+	<form class="Huiform" method="post" action="{:U('Admin/index?dosubmit=1')}" target="_self">
+	<div class="text-c"> 注册日期范围：
+		<input type="text" onfocus="WdatePicker()" name="stime" value="{$stime}" id="datemin" class="input-text Wdate" style="width:120px;">
+		-
+		<input type="text" onfocus="WdatePicker()" name="etime" value="{$etime}" id="datemax" class="input-text Wdate" style="width:120px;">
+		<input type="text" class="input-text" style="width:250px" placeholder="输入管理员名称" value="{$nickname}" id="" name="nickname">
+		<button type="submit" class="btn btn-success" id="" name=""><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+	</div>
+	</form>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><!-- <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> --> <a href="javascript:;" onclick="admin_add('添加管理员','{:U('Admin/addadmin')}','800','500')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span> <span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+	<div class="mt-20">
+		<table class="table table-border table-bordered table-hover table-bg table-sort">
+			<thead>
+				<tr class="text-c">
+					<!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+					<th width="40">ID</th>
+					<th width="150">登录名</th>
+					<th width="150">昵称</th>
+					<th width="150">手机</th>
+					<th width="150">邮箱</th>
+					<th>角色</th>
+					<th width="130">加入时间</th>
+					<th width="100">是否已启用</th>
+					<th width="100">操作</th>
+				</tr>
+			</thead>
+			<tbody>
+				<volist name="list" id="vo">
+				<if condition="$vo.power neq 1">
+				<tr class="text-c">
+					<!-- <td><input type="checkbox" value="1" name=""></td> -->
+					<td>{$vo.id}</td>
+					<td>{$vo.username}</td>
+					<td>{$vo.nickname}</td>
+					<td>{$vo.phone}</td>
+					<td>{$vo.email}</td>
+					<td>{$vo.role}</td>
+					<td>{$vo.register_time}</td>
+					<td class="td-status">
+						<if condition="$vo.status eq 1">
+						<span class="label label-success radius">已启用</span>
+						<else/>
+						<span class="label radius">已停用</span>
+						</if>
+					</td>
+					<td class="td-manage">
+						<if condition="$vo.status eq 0">
+						<a style="text-decoration:none" onClick="admin_start(this,'{$vo.id}')" href="javascript:;" title="启用"><i class="Hui-iconfont">&#xe615;</i></a>
+						<else/>
+						<a style="text-decoration:none" onClick="admin_stop(this,'{$vo.id}')" href="javascript:;" title="停用"><i class="Hui-iconfont">&#xe631;</i></a> 
+						</if>
+						<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','{:U('Admin/editadmin')}','{$vo.id}','800','500')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+						<a title="删除" href="javascript:;" onclick="admin_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a>
+					</td>
+				</tr>
+				</if>
+				</volist>
+			</tbody>
+		</table>
+	</div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+/*
+	参数解释：
+	title	标题
+	url		请求的url
+	id		需要操作的数据id
+	w		弹出层宽度（缺省调默认值）
+	h		弹出层高度（缺省调默认值）
+*/
+/*管理员-增加*/
+function admin_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*管理员-删除*/
+function admin_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		var url = "{:U('Admin/deleteadmin')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").remove();
+				layer.msg(str.msg,{icon:1,time:1000});
+			}else{
+				layer.msg(str.msg,{icon:0,time:1000});
+			}
+		});
+	});
+}
+/*管理员-编辑*/
+function admin_edit(title,url,id,w,h){
+	var getUrl = url + '&id=' + id;
+	layer_show(title,getUrl,w,h);
+}
+/*管理员-停用*/
+function admin_stop(obj,id){
+	layer.confirm('确认要停用吗？',function(index){
+		var url = "{:U('Admin/adminforbid')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_start(this,id)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
+				refresh();
+			}
+		});
+	});
+}
+
+$('.table-sort').dataTable({
+	"aaSorting": [[ 0, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[1,2,3,4,5,7,8]}// 制定列不参与排序
+	]
+});
+
+/*管理员-启用*/
+function admin_start(obj,id){
+	layer.confirm('确认要启用吗？',function(index){
+		var url = "{:U('Admin/adminstart')}";
+		$.post(url,{id:id},function(data){
+			str = $.parseJSON(data);
+			if(str.error==0){
+				$(obj).parents("tr").find(".td-manage").prepend('<a onClick="admin_stop(this,id)" href="javascript:;" title="停用" style="text-decoration:none"><i class="Hui-iconfont">&#xe631;</i></a>');
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+				$(obj).remove();
+				layer.msg('已启用!', {icon: 6,time:1000});
+				refresh();
+			}
+		});
+	});
+}
+
+/*刷新页面*/ 
+function refresh(){
+	window.location.reload();
+}
+</script>
+</body>
+</html>

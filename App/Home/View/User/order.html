@@ -1,0 +1,231 @@
+<include file="Common:meta" title="详情页"/>
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/order_detail.css">
+<link rel="stylesheet" href="__PUBLIC__/Home/PCcss/order_con.css">
+
+</head>
+<body>
+<include file="Common:header"/>
+
+<section class="pagewrap clrfix">
+
+    <div class="page_bread">
+        <a href="{：U('User/index')}">我的申请</a> &gt; 申请详情
+    </div>
+
+    <div class="page_detail">
+
+        <p class="page_title">申请详情</p>
+        <div class="deta_item">
+            <section class="deta_item_body">
+                <div class="deta_p">
+                    <span>预约门店：{$info.store}</span>
+                    <span>当前状态：{$info.state}</span>
+                </div>
+                <div class="deta_well deta_welldark">
+                    <ul>
+                        <li>&nbsp;申&nbsp;请&nbsp;人：<span>{$info.name}</span></li>
+                        <li>手机号码：<span>{$info.phone}</span></li>
+                        <li>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：<span><if condition="$info.sex eq 1"> 男<else/> 女</if></span></li>
+                        <li>预约城市：<span>{$info.city}</span></li>
+                        <li>到店时间：<span>{$info.etime}</span></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="deta_item">
+            <div class="deta_item_head" style="">
+                <h2 style="border-left: 0;">分期信息</h2>
+                <aside class="sidetxt">参考报价：<span class="highlight">{$pro.money}万</span></aside>
+            </div>
+            <section class="deta_item_body">
+                <div class="deta_well">
+                    <ul class="style_depart">
+                        <li class="fz16">
+                            首  付：
+                            <span>{$pro.cost}万</span>
+                        </li>
+                        <li class="fz16">
+                            月  供：
+                            <span>{$pro.price}元({$pro.num}月)</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        <div class="deta_item">
+            <div class="deta_item_head">
+                <h2 style="border-left: 0;">商品信息</h2>
+            </div>
+            <section class="deta_item_body">
+                <div class="deta_prod" style="padding: 10px 0;">
+                    <img src="__PUBLIC__/upload/product/{$pro.img}" alt="" class="deta_prod_img">
+                    <dl class="detail">
+                        <dt>{$pro.title}</dt>
+                        <dd>厂商指导价：<span class="highlight">{$pro.money}万</span></dd>
+                        <dd>平台：<span>中迈租赁</span></dd>
+                    </dl>
+                </div>
+            </section>
+        </div>
+        <if condition="$ping eq ''">
+        <div class="deta_item">
+            <header class="deta_item_head">
+                <h2 style="border-left: 0;">我要评价</h2>
+                <input type="hidden" name="oid" value="{$info.id}"/>
+            </header>
+            <dl class="ping">
+                <dt><span>评价星数：</span>
+                    <p class="star_p starP">
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <input type="hidden" name="star" value="0"/>
+                    </p>
+                </dt>
+                <dd><span>我想说：</span>
+                    <textarea name="con" class="con" placeholder="可填写2-200个字" style="font-size: 16px;"></textarea>
+                </dd>
+                <dd style="padding-top: 20px;"><span>　</span><input type="button" value="提交" class="doPing"/></dd>
+            </dl>
+        </div>
+        <else/>
+        <div class="deta_item">
+            <header class="deta_item_head">
+                <h2 style="border-left: 0;">我的评价</h2>
+            </header>
+            <dl class="ping">
+                <dt><span>评价用户：</span> {$ping.phone}</dt>
+                <dt><span>评价星数：</span>
+                <p class="star_p">
+                <switch name="ping[star]">
+                    <case value="1">
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                    </case>
+                    <case value="2">
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                    </case>
+                    <case value="3">
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon"></i>
+                        <i class="star_big_icon"></i>
+                    </case>
+                    <case value="4">
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon"></i>
+                    </case>
+                    <case value="5">
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                        <i class="star_big_icon ac"></i>
+                    </case>
+                </switch>
+                </p>
+                </dt>
+                <dd><span>评价内容：</span>
+                    <p style="width: 500px;display: inline-block;">{$ping.content}</p>
+                </dd>
+                <dd style="line-height: 50px;"><span>评价时间：</span> {$ping.ctime|date='Y-m-d',###}</dd>
+            </dl>
+        </div>
+        </if>
+    </div>
+
+</section>
+
+<include file="Common:footer"/>
+<script type="text/javascript">
+    $(function(){
+        $('.doPing').on('click',function(){
+            var id = $('input[name=oid]').val();
+            var star = $('input[name=star]').val();
+            var con = $('.con').val();
+            if(star=='0'){
+                alert('请选择星数');
+                return false;
+            }
+            if(con.length<2||con.length>200){
+                alert('请填写2-200字的内容');
+                return false;
+            }
+            $.ajax({
+                cache: true,
+                type: "POST",
+                url:"{:U('User/comment?submit=1')}",
+                data:{id:id,star:star,con:con},
+                async: false,
+                error: function(request) {
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '网络有问题！！请检查网络连接！',
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                },
+                success: function(data) {
+                    str = $.parseJSON(data);
+                    if(str.code=='000'){
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '确定'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                        window.location.reload();
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }else{
+                        $.confirm({
+                            'title'		: '提示',
+                            'message'	: str.msg,
+                            'buttons'	: {
+                                '关闭'	: {
+                                    'class'	: 'all',
+                                    'action': function(){
+                                    }
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                }
+            });
+        });
+        $('.starP').on('click','i',function(){
+            tt=$(this).index();
+            $(this).parent().find('i').removeClass('ac');
+            for(i=0;i<=tt;i++){
+                $(this).parent().find('i').eq(i).addClass('ac');
+            }
+            $(this).parent().find('input').val(parseInt($(this).index())+1);
+        })
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<include file="Common:meta" title="忘记密码"/>
+
+</head>
+<body>
+<include file="Common:header"/>
+<div class="forgetPwd">
+    <div class="for-ctn bor-box">
+        <div class="ctn-header">
+            <div class="header-text">找回密码</div>
+        </div>
+        <blockquote id="nav" class="nav">
+            <div class="step-box step04"></div>
+        </blockquote>
+        <article>
+
+            <blockquote id="form04" class="forget-box pad280">
+                <div class="clrfix success-box">
+                    <label class="fl success-icon"></label>
+                    <div class="fl success-ctn">
+                        <div class="success-tit">密码修改成功！</div>
+                        <div class="success-des">请牢记新密码，如有疑问请拨打400-662-6660客服热线</div>
+                    </div>
+                </div>
+                <a href="{:U('User/login')}" class="btn btn-gray font-9 re-login" style="border: 1px solid #ddd;">重新登录</a>
+            </blockquote>
+
+        </article>
+    </div>
+</div>
+<div class="footer-bottom">
+    Copyright © 2015-{$data.time|default=time()|date='Y',###} 版权所有 中迈融资租赁（广州）有限公司. &nbsp;&nbsp;<a href="http://www.miibeian.gov.cn/" target="_blank" style="color: #737476;font-size: 12px;">粤ICP备17115139号</a> <a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=44030002000001" target="_blank" style="color: #737476;font-size: 12px;"><img src="__PUBLIC__/Home/PCimages/icon_yuewangga1.png" style="margin: -2px 0 0 5px;"> 粤公网安备 44030002000001号</a>
+</div>
+
+<script src="__PUBLIC__/Home/PCscript/jquery-1.3.2.min.js"></script>
+<script src="__PUBLIC__/Home/PCscript/function.js"></script>
+<script src="__PUBLIC__/Home/PCscript/main.js"></script>
+<script src="__PUBLIC__/Home/confirm/jquery.confirm.js"></script>
+<script type="text/javascript">
+    $(function(){});
+</script>
+</body>
+</html>

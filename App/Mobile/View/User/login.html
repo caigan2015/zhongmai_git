@@ -1,0 +1,87 @@
+﻿<include file="common:head" title="登录"/>
+<script type="text/javascript">
+$(function(){
+	$('#doLogin').click(function(){
+		var phone =  $('input[name=phone]').val();
+		var pass = $('input[name=password]').val();
+		if(phone==''){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '请输入登录账号',
+                'buttons'	: {
+                    '确定'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+		if(pass==''){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '请输入登录密码',
+                'buttons'	: {
+                    '确定'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+		$.post("{:U('User/login')}",{phone:phone,password:pass,inde:1},function(data){
+			str = $.parseJSON(data);
+			$.confirm({
+                'title'		: '提示',
+                'message'	: str.msg,
+                'buttons'	: {
+                    '确定'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        	if(str.code=='000'){
+                				location.href=str.url;
+                			}
+                        }
+                    }
+                }
+            });
+            return false;
+		});
+	});
+});
+</script>
+</head>
+<body>
+<header class="skin_topHeader">
+  <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+  <h1><span>登录帐号</span></h1>
+  <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+
+<div class="index_kuang">
+<section class="myInfoCon">
+    <div class="myImg"><img src="__PUBLIC__/Mobile/images/my_pic.png"/></div>
+    <div class="login_div">
+	    <ul class="form_ul">
+	    <li><input type="text" value="" name="phone" placeholder="请输入手机号或邮箱" class="inputText phone_icon"></li>
+	    <li><input type="password" name="password" placeholder="请输入您的密码" class="inputText pwd_icon"></li>
+	    <li class="submit_li"><input type="button" value="登 录" class="inputSubmit" id="doLogin"></li>
+	    <li class="formTx_li">
+	        <a href="{:U('Index/wj_password')}" class="left_f">忘记密码</a>
+	        <a href="{:U('User/reg')}" class="right_f">免费注册</a>
+	    </li>
+	    </ul>
+    </div>
+  </section>
+</div>
+
+
+
+
+<include file="Common:footer" />
+</body>
+</html>

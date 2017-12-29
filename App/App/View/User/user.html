@@ -1,0 +1,53 @@
+<include file="Common:meta" title="个人中心"/>
+<style>
+    .co_my_link_box .button_a {
+        display: block;
+        text-align: center;
+        padding: .8em 1em;
+        line-height: 1em;
+        border-radius: 4px;
+        width: 80%;
+        margin: 10px auto;
+    }
+    .co_my_link_box .button_a.red {
+        background-color: #C82126;
+        color: #FFF;
+    }
+</style>
+</head>
+    <body>
+    <header class="top_header_box">
+        <div class="top_header">
+            <div class="left"><a href="{:U('Index/index')}" class="link_a back_a"></a></div>
+            <div class="center"><p class="title">个人中心</p></div>
+            <div class="right">
+
+            </div>
+        </div>
+    </header>
+    <div class="co_second_warp co_my_main_warp">
+        <div class="co_my_main_box">
+            <div class="left">
+                <a href="{:U('User/my')}" class="link_a img_box">
+                    <img src="__PUBLIC__/Apps/images/car-002.png" class="img" /></a></div>
+            <div class="right">
+                <p class="title">{$userInfo.show_phone}</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="co_second_warp co_login_warp">
+        <div class="co_my_link_box">
+            <ul class="lo_my_link">
+                <li><a href="{:U('User/index')}" class="link_a">我的申请</a></li>
+                <li><a href="{:U('User/my')}" class="link_a">个人资料</a></li>
+                <li><a href="{:U('User/xin')}" class="link_a">信用信息</a></li>
+                <li><a href="{:U('User/check')}" class="link_a">实名认证</a></li>
+                <li><a href="{:U('User/setting')}" class="link_a">修改密码</a></li>
+            </ul>
+            <a href="{:U('User/logout')}" class="button_a red">退出登录</a>
+        </div>
+    </div>
+    </body>
+</html>

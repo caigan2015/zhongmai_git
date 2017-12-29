@@ -1,0 +1,80 @@
+<include file="common:head" title="找回密码"/>
+    <script>
+        $(function(){
+            $('.inputSubmit').click(function(){
+                var password = $('input[name=password]').val();
+                var repassword = $('input[name=repassword]').val();
+                if(password.length<6){
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '新密码必须大于6位',
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+                if(repassword!=password){
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: '确认密码与原密码不一致',
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+                $.post("{:U('Index/fd_reset')}",$("form").serialize(),function(data){
+                    str = $.parseJSON(data);
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    if(str.status!='100'){
+                                        location.href = str.url;
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<header class="skin_topHeader">
+    <div class="skin_topLeft"><a href="javascript:history.go(-1);" class="skin_back_icon"></a></div>
+    <h1><span>找回密码</span></h1>
+    <div class="skin_topRight"><a href="javascript:void(0);" class="skin_menu_icon showMenu" data-obj="menuSection"></a></div>
+</header>
+<include file="Common:link" />
+<div class="index_kuang">
+    <section class="myInfoCon">
+        <div class="login_div">
+            <form action="" method="post">
+                <ul class="form_ul">
+                    <li><input type="password" name="password" placeholder="您的新密码" class="inputText"/></li>
+                    <li><input type="password" name="repassword" placeholder="确认新密码" class="inputText"/></li>
+                    <li class="submit_li"><input type="button" value="重置密码" class="inputSubmit"/></li>
+                </ul>
+            </form>
+        </div>
+    </section>
+
+</div>
+<include file="Common:footer" />
+</body>
+</html>

@@ -1,0 +1,141 @@
+<include file="Public:meta" title="申请列表"/>
+</head>
+<body>
+<include file="Public:nav"/>
+<div class="page-container">
+    <form class="Huiform" method="post" action="{:U('Order/apply?dosubmit=1')}" target="_self">
+        <div class="text-c">
+		<span class="select-box inline">
+		<select name="status" class="select">
+            <option value="">全部状态</option>
+            <if condition="$status eq '0'">
+                <option value="0" selected="selected">审核中</option>
+                <else/>
+                <option value="0">审核中</option>
+            </if>
+            <if condition="$status eq '1'">
+                <option value="1" selected="selected">申请成功</option>
+                <else/>
+                <option value="1">申请成功</option>
+            </if>
+            <if condition="$status eq '2'">
+                <option value="2" selected="selected">已取消</option>
+                <else/>
+                <option value="2">已取消</option>
+            </if>
+        </select>
+		</span> 日期范围：
+            <input type="text" onfocus="WdatePicker()" name="stime" value="{$stime}" id="datemin" class="input-text Wdate" style="width:120px;">
+            -
+            <input type="text" onfocus="WdatePicker()" name="etime" value="{$etime}" id="datemax" class="input-text Wdate" style="width:120px;">
+            <input type="text" name="number" value="{$number}" id="" placeholder="手机号码" style="width:250px" class="input-text">
+            <button name="" id="" class="btn btn-success" type="submit"><i class="Hui-iconfont">&#xe665;</i> 搜订单</button>
+        </div>
+    </form>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">  <span class="r">共有数据：<strong>{$num}</strong> 条</span> </div>
+    <div class="mt-20">
+        <table class="table table-border table-bordered table-bg table-hover table-sort">
+            <thead>
+            <tr class="text-c">
+                <!-- <th width="25"><input type="checkbox" name="" value=""></th> -->
+                <th width="80">ID</th>
+                <th>商品信息</th>
+                <th width="100">申请人</th>
+                <th width="150">手机号码</th>
+                <th width="80">月供</th>
+                <th width="100">定金</th>
+                <th width="180">申请时间</th>
+                <th width="60">状态</th>
+                <th width="120">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="list" id="vo">
+                <tr class="text-c">
+                    <td>{$vo.id}</td>
+                    <td class="text-l"><u style="cursor:pointer" class="text-primary" onClick="apply_saw('查看','{:U('Order/saw_a')}','{$vo.id}','800','500')" title="查看">{$vo.title}</u></td>
+                    <td>{$vo.name}</td>
+                    <td>{$vo.phone}</td>
+                    <td>{$vo.price}</td>
+                    <td>无需定金</td>
+                    <td>{$vo.ctime}</td>
+                    <td class="td-status">{$vo.state}</td>
+                    <td class="f-14 td-manage">
+                        <if condition="$vo.status eq 0">
+                            <a style="text-decoration:none" onClick="apply_shenhe(this,'{$vo.id}')" href="javascript:;" title="审核">审核</a> |
+                        </if>
+                        <a style="text-decoration:none" onClick="apply_saw('查看','{:U('Order/saw_a')}','{$vo.id}','800','500')" href="javascript:;" title="查看">查看</a>
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+    </div>
+</div>
+<include file="Public:footer"/>
+<include file="Public:footscript"/>
+<script type="text/javascript">
+    $('.table-sort').dataTable({
+        "aaSorting": [[ 0, "desc" ]],//默认第几个排序
+        "bStateSave": true,//状态保存
+        "aoColumnDefs": [
+            //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+            {"orderable":false,"aTargets":[1,2,3,5,7,8]}// 不参与排序的列
+        ]
+    });
+
+    /*刷新页面*/
+    function refresh(){
+        window.location.reload();
+    }
+
+    /*申请-查看*/
+    function apply_saw(title,url,id,w,h){
+        var getUrl = url + '&id=' + id;
+        layer_show(title,getUrl,w,h);
+    }
+
+    /*申请-审核*/
+    function apply_shenhe(obj,id){
+        layer.confirm('确定要审核吗？', {
+            btn: ['通过','不通过','取消'],
+            shade: false,
+            closeBtn: 0
+        },
+        function(){
+            var url = "{:U('Order/audit_a')}";
+            $.post(url,{id:id,status:1},function(){
+                layer.msg('审核成功', {icon:6,time:1000});
+                refresh();
+            });
+        },
+        function(){
+            var url = "{:U('Order/audit_a')}";
+            $.post(url,{id:id,status:2},function(){
+                layer.msg('已取消', {icon:5,time:1000});
+                refresh();
+            });
+        });
+    }
+
+    /*订单-删除*/
+    function apply_del(obj,id){
+        layer.confirm('确认要彻底删除吗？',function(index){
+            var url = "{:U('Order/del_a')}";
+            $.post(url,{id:id},function(data){
+                str = $.parseJSON(data);
+                if(str.error==0){
+                    $(obj).parents("tr").remove();
+                    layer.msg(str.msg,{icon:1,time:1000});
+                    refresh();
+                }else{
+                    layer.msg(str.msg,{icon:0,time:1000});
+                    refresh();
+                }
+            });
+        });
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,263 @@
+<include file="Common:meta" title="用户注册"/>
+<script type="text/javascript">
+$(function(){
+    $('.get_code').on('click',function(){
+        if($(this).hasClass('ac')){
+            return false;
+        }
+        var now_code=0;
+        getCode(now_code);
+    });
+    $('.doReg').on('click',function(){
+        var phone = $('input[name=mobile]').val();
+        var code = $('input[name=code]').val();
+        var password = $('input[name=password]').val();
+        var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+        if(phone!=''&&phone!=null){
+            if(!rp.test(phone)){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '手机号码不正确',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        }else{
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '手机号码不能为空',
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+        if(code==''||code==null){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '验证码不能为空',
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+        if(password==''||password==null){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '密码不能为空',
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }else{
+            var reg = /^[0-9]+$/;
+            if(reg.test(password)||(password.length<6||password.length>20)){
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '密码不能为纯数字，6-20位',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            }
+        }
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:"{:U('User/register?submit=1')}",
+            data:{phone:phone,code:code,password:password},
+            async: false,
+            error: function(request) {
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            },
+            success: function(data) {
+                str = $.parseJSON(data);
+                if(str.code=='000'){
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    location.href="{:U('User/user')}";
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }else{
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            }
+        });
+    });
+});
+$('input[name=mobile]').live('input propertychange', function()
+{
+    var phone = $(this).val();
+    var rp= /^(13[0-9]|15[0|1|2|3|6|7|8|9]|18[0-9])\d{8}$/;
+    if(phone!=''&&phone!=null){
+        if(!rp.test(phone)){
+            $('.get_code').addClass('ac');
+        }else{
+            $('.get_code').removeClass('ac');
+        }
+    }else{
+        $('.get_code').addClass('ac');
+    }
+});
+function getCode(now_code){
+    if(now_code==1) return false;
+    var url = "{:U('Index/getPhoneCode')}";
+    $.ajax({url:url,type:"POST",async:true,data:{phone:$('input[name=mobile]').val()},success:function(data){
+        str = $.parseJSON(data);
+        if(str.error==0){
+            now_code=1;
+            calltime(0);
+        }else{
+            $.confirm({
+                'title'		: '提示',
+                'message'	: str.msg,
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+
+    },
+        error:function(){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '网络有问题！！请检查网络连接！',
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+    })
+}
+function calltime(n){
+    if(n>=60){
+        now_code=0;
+        $('.get_code').html('重新获取验证码');
+        $('.get_code').removeClass('ac');
+        return false;
+    }
+    $('.get_code').addClass('ac');
+    $('.get_code').html(60-n+'s后重新获取');
+    setTimeout(function(){calltime(n+1)},1000);
+}
+</script>
+</head>
+    <body>
+        <header class="top_header_box">
+            <div class="top_header">
+                <div class="left">
+                    <a href="javascript:void(0);" class="link_a back_a goBack"></a>
+                </div>
+                <div class="center"><p class="title">注册</p></div>
+                <div class="right">
+                </div>
+            </div>
+        </header>
+        <div class="co_second_warp co_login_warp">
+            <div class="co_second_warp_box">
+                <ul class="lo_form">
+                    <li>
+                        <div class="key">
+                            <p class="title">手机号</p>
+                        </div>
+                        <div class="name">
+                            <input type="text" name="mobile" value="" class="ipt_text" placeholder="请输入您的手机号码" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">验证码</p>
+                        </div>
+                        <div class="name clo2">
+                            <input type="text" name="code" value="" class="ipt_text" placeholder="请输入验证码" />
+                            <a href="javascript:void(0);" class="other_a get_code ac">获取验证码</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="key">
+                            <p class="title">设置密码</p>
+                        </div>
+                        <div class="name">
+                            <input type="password" name="password" value="" class="ipt_text" placeholder="请输入您的登录密码" />
+                        </div>
+                    </li>
+                    <li>
+                        <div class="button_box">
+                            <a href="javascript:void(0);" class="button_a doReg red">确认注册</a>
+                        </div>
+                        <div class="tip">
+                            <p class="text">
+                                注册即视为同意<a href="{:U('Index/terms')}" class="red">《网络服务条款》</a>内容条款
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,144 @@
+<include file="Common:meta" title="个人资料"/>
+<script type="text/javascript">
+$(function(){
+    $('#UserEditBtn').on('click',function(){
+        var sex = $('.sex').val();
+        var broth = $('input[name=broth]').val();
+        if(broth==''||broth==null){
+            $.confirm({
+                'title'		: '提示',
+                'message'	: '请选择出生年月',
+                'buttons'	: {
+                    '关闭'	: {
+                        'class'	: 'all',
+                        'action': function(){
+                        }
+                    }
+                }
+            });
+            return false;
+        }
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url:"{:U('User/my?submit=1')}",
+            data:{sex:sex,broth:broth},
+            async: false,
+            error: function(request) {
+                $.confirm({
+                    'title'		: '提示',
+                    'message'	: '网络有问题！！请检查网络连接！',
+                    'buttons'	: {
+                        '关闭'	: {
+                            'class'	: 'all',
+                            'action': function(){
+                            }
+                        }
+                    }
+                });
+                return false;
+            },
+            success: function(data) {
+                str = $.parseJSON(data);
+                if(str.code=='000'){
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '确定'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                    window.location.reload();
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }else{
+                    $.confirm({
+                        'title'		: '提示',
+                        'message'	: str.msg,
+                        'buttons'	: {
+                            '关闭'	: {
+                                'class'	: 'all',
+                                'action': function(){
+                                }
+                            }
+                        }
+                    });
+                    return false;
+                }
+            }
+        });
+    });
+});
+</script>
+</head>
+<body>
+    <header class="top_header_box">
+        <div class="top_header">
+            <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+            <div class="center"><p class="title">个人资料</p></div>
+            <div class="right">
+            </div>
+        </div>
+    </header>
+    <div class="co_second_warp co_login_warp">
+        <div class="co_second_warp_box">
+            <ul class="lo_form">
+                <li>
+                    <div class="key">
+                        <p class="title">头像</p>
+                    </div>
+                    <div class="name">
+                        <div class="pic user">
+                            <img src="__PUBLIC__/Apps/images/car-002.png" class="img" />
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <p class="title">手机号码</p>
+                    </div>
+                    <div class="name">
+                        <p class="title">{$userInfo.show_phone}</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <p class="title">性别</p>
+                    </div>
+                    <div class="name">
+                        <select name="sex" class="ipt_select sex">
+                            <option value="">请选择性别</option>
+                            <if condition="$us.sex eq 1">
+                                <option value="1" selected="selected">先生</option>
+                            <else/>
+                                <option value="1">先生</option>
+                            </if>
+                            <if condition="$us.sex eq '0'">
+                                <option value="0" selected="selected">小姐</option>
+                            <else/>
+                                <option value="0">小姐</option>
+                            </if>
+                        </select>
+                    </div>
+                </li>
+                <li>
+                    <div class="key">
+                        <p class="title">出生日期</p>
+                    </div>
+                    <div class="name">
+                        <input type="date" name="broth" value="{$us.broth}"  class="ipt_text"  />
+                    </div>
+                </li>
+                <li>
+                    <div class="button_box">
+                        <a href="javascript:void(0);" class="button_a red" id="UserEditBtn">确认修改</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

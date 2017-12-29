@@ -1,0 +1,29 @@
+<include file="Common:meta" title="中迈简介"/>
+<script type="text/javascript">
+    $(function(){
+        if($(window).width()<=480){
+            $('.co_second_warp_box').find('img').removeAttr("style");
+        }
+    });
+</script>
+</head>
+<body>
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="javascript:void(0);" class="link_a back_a goBack"></a></div>
+        <div class="center"><p class="title">中迈简介</p></div>
+        <div class="right">
+
+        </div>
+    </div>
+</header>
+
+
+
+<div class="co_second_warp co_about_warp">
+    <div class="co_second_warp_box co_about_info">
+        {$sys.about}
+    </div>
+</div>
+</body>
+</html>

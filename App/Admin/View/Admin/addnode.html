@@ -1,0 +1,144 @@
+<include file="Public:meta" title="节点添加"/>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-node-add">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点名：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="" placeholder="节点名必须跟代码下的方法名一样" id="name" name="name">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>节点简称：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<input type="text" class="input-text" value="" placeholder="请输入节点简称" id="title" name="title">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否显示：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<div class="radio-box">
+				<input name="display" type="radio" value="1" id="display-1">
+				<label for="display-1">显示</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="display-0" value="0" name="display" checked>
+				<label for="display-0">不显示</label>
+			</div>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">是否授权：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<div class="radio-box">
+				<input name="licensed" type="radio" value="1" id="licensed-1" checked>
+				<label for="licensed-1">授权</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="licensed-0" value="0" name="licensed">
+				<label for="licensed-0">不授权</label>
+			</div>
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">模块等级：</label>
+		<div class="formControls col-xs-8 col-sm-9"> 
+			<span class="select-box" style="width:150px;">
+			<select class="select sel" name="level">
+				<option value="" class="sel-level1"> 选择模块   </option>
+		     	<option value="2" class="sel-level2"> 二级模块  </option>
+		     	<option value="3" class="sel-level3"> 三级模块   </option>
+			</select>
+			</span> 
+		</div>
+	</div>
+	<div id="model">
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">节点排序：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="0" placeholder="请输入节点排序" id="sort" name="sort">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">图标icon：</label>
+		<div class="formControls col-xs-8 col-sm-2">
+			<input type="text" class="input-text" value="" placeholder="图标icon" id="sign" name="sign">
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3">备注：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			<textarea name="remark" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="textarealength(this,100)"></textarea>
+			<p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+		</div>
+	</div>
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<include file="Public:footscript"/> 
+
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	$("#form-node-add").validate({
+		rules:{
+			name:{
+				required:true,
+			},
+			title:{
+				required:true,
+			},
+			display:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			var url = "{:U('Admin/addnode?dosubmit=1')}";
+			$.post(url,$(form).serialize(),function(data){
+				str = $.parseJSON(data);
+                if(str.error==0){
+                	alert(str.msg);
+                	parent.refresh();
+                	var index = parent.layer.getFrameIndex(window.name);
+        			parent.$('.btn-refresh').click();
+        			parent.layer.close(index);      			
+                }else{
+                	alert(str.msg);
+                }
+			});
+		}
+	});
+	$('.sel').on('change',function(){
+		var id=$(this).val();
+		var url = "{:U('Public/findmodel')}";
+		if(id!=''){
+			$.get(url,{'id':id},function(data){
+				if(data!='0'){
+					$('#model').html(data);
+				}else{
+					$('#model').html(null);
+					$('.sel').val('');
+				}
+			});
+		}else{
+			$('.model').html(null);
+		}	
+	});
+});
+</script> 
+</body>
+</html>

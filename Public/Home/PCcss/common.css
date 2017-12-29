@@ -1,0 +1,573 @@
+nav#HeaderNav {
+    float:left;
+    line-height:100px;
+    margin-left:40px
+}
+nav#HeaderNav ul {
+    float:left;
+    margin-right:-32px
+}
+nav#HeaderNav li {
+    position:relative;
+    margin-right:32px;
+    font-size:16px;
+    color:#333;
+    font-weight:300;
+    float:left
+}
+nav#HeaderNav li a {
+    color:#34495e;
+    display:block
+}
+nav#HeaderNav li.current a,nav#HeaderNav li a:hover {
+    color:#e95a47;
+    font-weight:400;
+    text-decoration:none
+}
+nav#HeaderNav li.nav-mask {
+    height:1px;
+    background:#fff;
+    width:76px;
+    position:absolute;
+    bottom:0;
+    display:none
+}
+
+.header_mid .login-status {
+    position:relative;
+    float:right;
+    font-size:14px;
+    overflow:hidden;
+    line-height:100px;
+    height:100px
+}
+.header_mid .login-status a {
+    position:relative;
+    z-index:10;
+    display:block;
+    padding-left:36px;
+    color:#666
+}
+.header_mid .login-status i {
+    position:absolute;
+    left:0;
+    top:50%;
+    width:20px;
+    height:20px;
+    margin-top:-10px;
+    background:url(../PCimages/user.png) no-repeat 0 0
+}
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.login {
+    background-position:50%;
+    background-repeat:no-repeat;
+    background-size:auto 600px;
+    height:600px;
+    position:relative
+}
+.login-form {
+    padding-bottom:20px;
+    position:absolute;
+    left:50%;
+    top:40px;
+    margin-left:250px;
+    width:350px;
+    background:#fff;
+    box-shadow:0 2px 8px 0 rgba(0,0,0,.2);
+    font-size:14px;
+    color:#999
+}
+.clrfix {
+    zoom:1
+}
+.clrfix:after {
+    clear:both;
+    display:block;
+    height:0;
+    visibility:hidden;
+    content:"."
+}
+.disable {
+    background-color:#e7e7e7!important;
+    color:#878787!important;
+    border:1px solid #e7e7e7!important
+}
+.tab-box {
+    position:relative;
+    padding:24px 0;
+    color:#999;
+    font-size:16px;
+    line-height:150%
+}
+.tab-box aside {
+    width:50%;
+    float:left;
+    text-align:center;
+    cursor:pointer
+}
+.tab-box aside.cur {
+    color:#e95a47;
+    font-weight:700
+}
+.tab-box aside.reg-tab {
+    text-align:left;
+    padding-left:40px;
+    color:#686868;
+    box-sizing:border-box
+}
+.tab-box:before {
+    height:16px;
+    width:1px;
+    background:#f4f4f4;
+    content:" ";
+    position:absolute;
+    left:50%;
+    top:50%;
+    margin-top:-8px
+}
+.tab-box>div {
+    font-weight:400;
+    text-align:right;
+    padding-right:25px;
+    font-size:14px
+}
+.tab-box>div a {
+    color:#e95a47
+}
+.login-con {
+    width:300px;
+    margin:0 auto
+}
+.login-con .pad10B {
+    margin-bottom:14px;
+    position:relative
+}
+.login-con .pad10B input {
+    width:300px;
+    height:40px;
+    line-height:40px;
+    border:1px solid #e5e5e5;
+    font-size:14px;
+    border-radius:2px;
+    padding:0 15px;
+    box-sizing:border-box;
+}
+.login-con .pad10B input.unsubmit {
+    border-color:#e95a47
+}
+.login-con #ImgValidateCode1,.login-con #ImgValidateCode2 {
+    width:248px
+}
+.login-con #GetImgValidateCode1,.login-con #GetImgValidateCode2 {
+    position:absolute;
+    height:38px;
+    right:53px;
+    top:1px;
+    z-inde:2
+}
+.login-con #GetImgValidateCode1 img,.login-con #GetImgValidateCode2 img {
+    height:38px;
+    border-left: 1px solid #e5e5e5;
+}
+.login-con .change {
+    height:40px;
+    line-height:40px;
+    font-size:14px;
+    color:#999;
+    cursor:pointer
+}
+.login-con .hide{
+    display: none;
+}
+#RegValidateCode, #ValidateCode {
+    width: 178px;
+}
+#GetRegValidateCode, #GetValidateCode {
+    width: 110px;
+    height: 40px;
+    border: 0;
+    font-size: 14px;
+    border-radius: 2px;
+    line-height: 40px;
+    box-sizing: border-box;
+    text-align: center;
+    cursor: pointer;
+    color: #e95a47;
+}
+#GetRegValidateCode.disable,#GetValidateCode.disable {
+    cursor:default!important;
+    background:none!important;
+    color:#c4c4c4!important;
+    border:0!important
+}
+input:-moz-placeholder, input::-moz-placeholder {
+    color: #c4c4c4;
+}
+.codebox {
+    border: 1px solid #e5e5e5;
+}
+.codebox input {
+    border: 0 !important;
+}
+.codebox .input-box {
+    position: relative;
+}
+.codebox .input-box::after {
+    content: "";
+    display: block;
+    width: auto;
+    height: 24px;
+    border-right: 1px solid #e5e5e5;
+    position: absolute;
+    top: 50%;
+    margin-top: -12px;
+    right: 0;
+}
+blockquote {
+    margin: 0;
+    padding: 0;
+}
+#GetRegValidateCode,#GetValidateCode {
+    width:110px;
+    height:40px;
+    border:0;
+    font-size:14px;
+    border-radius:2px;
+    line-height:40px;
+    box-sizing:border-box;
+    text-align:center;
+    cursor:pointer;
+    color:#e95a47
+}
+.reg-btn,.user-btn {
+    background:#e95a47;
+    border-radius:3px;
+    font-size:16px;
+    color:#fff;
+    line-height:42px;
+    text-align:center;
+    margin-bottom:10px;
+    cursor:pointer
+}
+.reg-btn.disable,.user-btn.disable {
+    background:#d0d0d0;
+    cursor:default
+}
+.reg-link {
+    text-align:center
+}
+.reg-link a {
+    color:#999;
+    font-size:14px
+}
+.terms-service {
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+.checked-num {
+    background:#fef6f6;
+    border:1px solid #e95a47;
+    border-radius:2px;
+    font-weight:400;
+    font-size:12px;
+    color:#e95a47;
+    line-height:18px;
+    width:265px;
+    text-align:center;
+    position:relative;
+    top:-5px
+}
+.checked-num:after {
+    top:-5px;
+    left:16px;
+    border-left:5px solid transparent;
+    border-right:5px solid transparent;
+    border-bottom:6px solid #fef6f6
+}
+.checked-num:after,.checked-num:before {
+    position:absolute;
+    content:" ";
+    width:0;
+    height:0
+}
+.checked-num:before {
+    top:-6px;
+    left:15px;
+    border-left:6px solid transparent;
+    border-right:6px solid transparent;
+    border-bottom:6px solid #e95a47
+}
+.jyts-box {
+    color:#e95a47;
+    font-size:14px;
+    text-align:right;
+    min-height:21px
+}
+.jyts-box>div {
+    text-align:left
+}
+.jyts {
+    display:none
+}
+#Footer .footer-bottom {
+    color:#999;
+    line-height:100%;
+    height:auto;
+    font-size:14px;
+    padding:40px 0;
+    font-weight:400;
+    background:#fff
+}
+
+.footer-bottom {
+    color:#999;
+    line-height:100%;
+    height:auto;
+    font-size:14px;
+    padding:40px 0;
+    font-weight:400;
+    background:#fff;
+    text-align: center;
+}
+.footer-bottom a,.footer-bottom a:link,.footer-bottom a:visited {
+    color:#999
+}
+.footer-bottom a:hover {
+    text-decoration:underline
+}
+
+.forgetPwd {
+    width:100%;
+    padding:30px 0
+}
+.forgetPwd .nav {
+    padding:40px 0 90px
+}
+.forgetPwd .for-ctn {
+    width: 1200px;
+    height: 510px;
+    margin: 0 auto;
+}
+.forgetPwd .ctn-header {
+    width: 100%;
+    height: 45px;
+    border-bottom: 1px solid #eee;
+    position: relative;
+}
+.forgetPwd .header-text {
+    font-size: 25px;
+    color: #000;
+}
+.forgetPwd .nav {
+    padding: 40px 0 90px;
+}
+.forgetPwd .step-box {
+    width: 710px;
+    height: 40px;
+    margin: 0 auto;
+    background: url(../PCimages/step.png) no-repeat;
+    background-position-x: 0%;
+    background-position-y: 0%;
+}
+.forgetPwd .step01 {
+    background-position: 0 0;
+}
+.forgetPwd .step02 {
+    background-position: 0 -44px;
+}
+.forgetPwd .step03 {
+    background-position:0 -88px
+}
+.forgetPwd .step04 {
+    background-position:0 -132px
+}
+.forgetPwd .forget-box {
+    width: 710px;
+    margin: 0 auto;
+}
+blockquote, li, ul {
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    margin: 0;
+    padding: 0;
+}
+.forgetPwd .pad175L {
+    padding-left: 175px !important;
+}
+.forgetPwd .pad30RL {
+    padding-right: 30px;
+    padding-left: 30px;
+}
+.forgetPwd .pad10B {
+    padding-bottom: 10px;
+}
+.forgetPwd .forget-box .input-item {
+    width: 330px;
+}
+.forgetPwd .input-item {
+    border: 1px solid #ddd;
+}
+.forgetPwd .input-item .icon-box {
+    padding: 10px;
+    line-height: 0;
+    background-color: #f4f4f4;
+}
+.forgetPwd .input-item .icon.icon01 {
+    background-position: -9px -9px;
+}
+.forgetPwd .input-item .icon.icon03 {
+    background-position: -9px -84px;
+}
+.forgetPwd .input-item .icon {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    background: #f4f4f4 url(../PCimages/forgot.png) no-repeat;
+    background-position-x: 0%;
+    background-position-y: 0%;
+}
+.forgetPwd .input-item .input-box {
+    padding: 6px 10px;
+}
+.bindAccount .input-name,.forgetPwd #form03 .input-name {
+    width:80px;
+    padding:6px;
+    text-align:right;
+    font-size:16px;
+    line-height:32px
+}
+.forgetPwd .w-150 {
+    width: 150px !important;
+}
+.forgetPwd .w-210 {
+    width: 210px !important;
+}
+.forgetPwd .forget-box img {
+    display: block;
+    height: 44px;
+    width: 110px;
+    height: 40px;
+    margin-left: 10px;
+}
+img {
+    overflow: hidden;
+}
+.forgetPwd .no-border{
+    border: 0;
+}
+.forgetPwd .input-item input {
+    height: 30px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #333;
+    width: 220px;
+    border-width: 0;
+}
+.forgetPwd #form03 .input-box {
+    border: 1px solid #ddd;
+    width: 216px;
+}
+.code-btn:hover, .reg-btn:hover, .sbtn01:hover, .step-btn:hover, .user-btn:hover {
+    background-color: #e95a47 !important;
+}
+.forgetPwd .forget-box .code-btn {
+    margin-left: 10px;
+}
+.forgetPwd .code-btn {
+    width: 110px;
+    height: 42px;
+    line-height: 42px;
+    margin: 0 auto;
+    background-color: #e95a47;
+    text-align: center;
+    cursor: pointer;
+}
+.forgetPwd .btn-group .sbtn {
+    width: 160px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+}
+.forgetPwd .step-btn {
+    width: 330px;
+    margin-left: 175px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    color: #fff;
+    background-color: #e95a47;
+    text-align: center;
+    cursor: pointer;
+}
+.sbtn.sbtn01 {
+    background-color: #e95a47;
+    margin-right: 10px;
+}
+.sbtn.sbtn02 {
+    background-color: #f5f5f5;
+    color: #999;
+}
+.checked-num2,.checked-num3 {
+    padding-bottom: 15px;
+    font-size: 12px;
+    padding-left: 266px;
+}
+.forgetPwd .success-icon {
+    width:52px;
+    height:52px;
+    background:url(../PCimages/pass_yes.png) no-repeat;
+    display:block
+}
+.success-box {
+    padding-bottom:40px
+}
+.forgetPwd .success-ctn {
+    margin-left:20px
+}
+.forgetPwd .success-tit {
+    font-size:22px;
+    color:#666;
+    padding-bottom:10px
+}
+.forgetPwd .success-des {
+    font-size:14px;
+    color:#999
+}
+.re-login {
+    width: 180px;
+    margin-left: 140px;
+    display: block;
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    text-align: center;
+    cursor: pointer;
+    color: #999 !important;
+}
+.forgetPwd .forget-box .jyts {
+    background-color: #fff3ea;
+    color: #666;
+    font-size: 12px;
+    border: 1px solid #e95a47;
+    padding: 0 5px;
+    position: relative;
+    top: 10px;
+    margin-left: 10px;
+}
+.forgetPwd .forget-box .font-red {
+    color: #ff6446 !important;
+}
+em, i {
+    font-style: normal;
+}
+.out-order{border:0;}

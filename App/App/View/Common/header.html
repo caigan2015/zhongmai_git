@@ -1,0 +1,25 @@
+<header class="top_header_box">
+    <div class="top_header">
+        <div class="left"><a href="index.html" class="link_a top_logo"><img src="__PUBLIC__/Apps/images/logo.png" class="logo" alt="" /></a></div>
+        <div class="center">
+            <div style="text-align:left;width: 60%;border: 1px solid #eee;border-radius: .06667rem;float: right;height: 25px;line-height: 25px;margin-top: 13px;margin-right: 10px;">
+                <span style="float: left;position: absolute;width: 25px;height:  25px;background: url('__PUBLIC__/Apps/images/search-icon.png') no-repeat center;background-size:  15px  15px;"></span>
+                <form action="{:U('Index/lists')}">
+                    <input type="text" name="keys" value="{$keys}" placeholder="请输入关键字" style="width: 70%;height: 25px;line-height: 25px;padding-left: 25px;"/>
+                </form>
+            </div>
+        </div>
+        <div class="right">
+            <div class="top_more_box">
+                <a href="javascript:void(0);" class="link_a top_more_a openParent"></a>
+                <div class="top_more">
+                    <a href="{:U('Index/index')}" class="button_a"><i class="icon home"></i><span>首页</span></a>
+                    <a href="{:U('User/user')}" class="button_a"><i class="icon user"></i><span>个人中心</span></a>
+                    <a href="{:U('Index/about')}" class="button_a"><i class="icon about"></i><span>关于我们</span></a>
+                    <a href="{:U('Index/contact')}" class="button_a"><i class="icon contact"></i><span>联系我们</span></a>
+                    <a href="{:U('Index/help')}" class="button_a"><i class="icon shace"></i><span>使用帮助</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
